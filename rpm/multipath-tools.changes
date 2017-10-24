@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Oct 24 08:54:49 UTC 2017 - mwilck@suse.com
+
+- multipath.init.suse: wait for daemon initialization
+
+-------------------------------------------------------------------
 Tue Sep 12 21:30:32 UTC 2017 - mwilck@suse.com
 
 - kpartx.rules: don't bump link prio if DM_UDEV_LOW_PRIORITY_FLAG
