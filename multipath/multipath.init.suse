@@ -81,6 +81,28 @@ case "$1" in
 
 	# Start the program directly as checkproc doesn't work here
 	$PROGRAM -v 0
+	echo -n " (waiting for daemon)"
+	wait=$MPATH_DEVICE_TIMEOUT
+	sleep 1
+	# multipathd show daemon will print "configure" during initial
+	# device detection.
+	while [ $wait -gt 0 ] ; do
+	    case "x$($PROGRAM show daemon)" in
+		xpid*running)
+		    break;;
+		x)
+		    echo " ERROR: daemon not running"
+		    rc_failed 1
+		    break;;
+	    esac
+	    wait=$((wait - 1))
+	    sleep 1
+	done
+	if [ $wait -le 0 ] ; then
+	    # no FAILED state here yet
+	    echo -n " timeout: status \"$($PROGRAM show daemon)\""
+	fi
+
 	echo -n " (waiting for udev)"
 	# Wait for all multipathed devices to appear
 	maplist=$(/sbin/dmsetup ls --target multipath | sed '/No devices/d' | sed -n 's/\(^[^ ()]*\)[\t ]*.*/\1/p')
