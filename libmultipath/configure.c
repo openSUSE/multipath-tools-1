@@ -789,15 +789,6 @@ fail:
 	return 1;
 }
 
-/*
- * Return value:
- */
-#define DOMAP_RETRY	-1
-#define DOMAP_FAIL	0
-#define DOMAP_OK	1
-#define DOMAP_EXIST	2
-#define DOMAP_DRY	3
-
 int domap(struct multipath *mpp, char *params, int is_daemon)
 {
 	int r = DOMAP_FAIL;
@@ -999,8 +990,8 @@ out:
 int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 		    int force_reload, enum mpath_cmds cmd)
 {
-	int r = 1;
-	int k, i;
+	int ret = CP_FAIL;
+	int k, i, r;
 	int is_daemon = (cmd == CMD_NONE) ? 1 : 0;
 	char params[PARAMS_SIZE];
 	struct multipath * mpp;
@@ -1010,6 +1001,7 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 	vector pathvec = vecs->pathvec;
 	struct config *conf;
 	int allow_queueing;
+	uint64_t *size_mismatch_seen;
 
 	/* ignore refwwid if it's empty */
 	if (refwwid && !strlen(refwwid))
@@ -1020,6 +1012,14 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 			pp1->mpp = NULL;
 		}
 	}
+
+	if (VECTOR_SIZE(pathvec) == 0)
+		return CP_OK;
+	size_mismatch_seen = calloc((VECTOR_SIZE(pathvec) - 1) / 64 + 1,
+				    sizeof(uint64_t));
+	if (size_mismatch_seen == NULL)
+		return CP_FAIL;
+
 	vector_foreach_slot (pathvec, pp1, k) {
 		int invalid;
 		/* skip this path for some reason */
@@ -1039,8 +1039,8 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 			continue;
 		}
 
-		/* 2. if path already coalesced */
-		if (pp1->mpp)
+		/* 2. if path already coalesced, or seen and discarded */
+		if (pp1->mpp || is_bit_set_in_array(k, size_mismatch_seen))
 			continue;
 
 		/* 3. if path has disappeared */
@@ -1089,9 +1089,10 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 				 * ouch, avoid feeding that to the DM
 				 */
 				condlog(0, "%s: size %llu, expected %llu. "
-					"Discard", pp2->dev_t, pp2->size,
+					"Discard", pp2->dev, pp2->size,
 					mpp->size);
 				mpp->action = ACT_REJECT;
+				set_bit_in_array(i, size_mismatch_seen);
 			}
 		}
 		verify_paths(mpp, vecs);
@@ -1120,8 +1121,10 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 					"ignoring" : "removing");
 				remove_map(mpp, vecs, 0);
 				continue;
-			} else /* if (r == DOMAP_RETRY) */
-				return r;
+			} else /* if (r == DOMAP_RETRY && !is_daemon) */ {
+				ret = CP_RETRY;
+				goto out;
+			}
 		}
 		if (r == DOMAP_DRY)
 			continue;
@@ -1163,7 +1166,7 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 		if (newmp) {
 			if (mpp->action != ACT_REJECT) {
 				if (!vector_alloc_slot(newmp))
-					return 1;
+					goto out;
 				vector_set_slot(newmp, mpp);
 			}
 			else
@@ -1194,7 +1197,10 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 				condlog(2, "%s: remove (dead)", alias);
 		}
 	}
-	return 0;
+	ret = CP_OK;
+out:
+	free(size_mismatch_seen);
+	return ret;
 }
 
 struct udev_device *get_udev_device(const char *dev, enum devtypes dev_type)
@@ -1290,7 +1296,7 @@ int get_refwwid(enum mpath_cmds cmd, char *dev, enum devtypes dev_type,
 		conf = get_multipath_config();
 		pthread_cleanup_push(put_multipath_config, conf);
 		if (pp->udev && pp->uid_attribute &&
-		    filter_property(conf, pp->udev) > 0)
+		    filter_property(conf, pp->udev, 3) > 0)
 			invalid = 1;
 		pthread_cleanup_pop(1);
 		if (invalid)
@@ -1330,7 +1336,7 @@ int get_refwwid(enum mpath_cmds cmd, char *dev, enum devtypes dev_type,
 		conf = get_multipath_config();
 		pthread_cleanup_push(put_multipath_config, conf);
 		if (pp->udev && pp->uid_attribute &&
-		    filter_property(conf, pp->udev) > 0)
+		    filter_property(conf, pp->udev, 3) > 0)
 			invalid = 1;
 		pthread_cleanup_pop(1);
 		if (invalid)
@@ -1359,7 +1365,7 @@ int get_refwwid(enum mpath_cmds cmd, char *dev, enum devtypes dev_type,
 		conf = get_multipath_config();
 		pthread_cleanup_push(put_multipath_config, conf);
 		if (pp->udev && pp->uid_attribute &&
-		    filter_property(conf, pp->udev) > 0)
+		    filter_property(conf, pp->udev, 3) > 0)
 			invalid = 1;
 		pthread_cleanup_pop(1);
 		if (invalid)

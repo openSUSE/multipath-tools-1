@@ -334,6 +334,7 @@ remove_map_and_stop_waiter(struct multipath *mpp, struct vectors *vecs)
 {
 	/* devices are automatically removed by the dmevent polling code,
 	 * so they don't need to be manually removed here */
+	condlog(3, "%s: removing map from internal tables", mpp->alias);
 	if (!poll_dmevents)
 		stop_waiter_thread(mpp, vecs);
 	remove_map(mpp, vecs, PURGE_VEC);
@@ -491,13 +492,12 @@ retry:
 	verify_paths(mpp, vecs);
 	mpp->action = ACT_RELOAD;
 
-	extract_hwe_from_path(mpp);
 	if (setup_map(mpp, params, PARAMS_SIZE, vecs)) {
 		condlog(0, "%s: failed to setup new map in update", mpp->alias);
 		retries = -1;
 		goto fail;
 	}
-	if (domap(mpp, params, 1) <= 0 && retries-- > 0) {
+	if (domap(mpp, params, 1) == DOMAP_FAIL && retries-- > 0) {
 		condlog(0, "%s: map_udate sleep", mpp->alias);
 		sleep(1);
 		goto retry;
@@ -654,7 +654,7 @@ flush_map(struct multipath * mpp, struct vectors * vecs, int nopaths)
 		condlog(2, "%s: map flushed", mpp->alias);
 	}
 
-	orphan_paths(vecs->pathvec, mpp);
+	orphan_paths(vecs->pathvec, mpp, "map flushed");
 	remove_map_and_stop_waiter(mpp, vecs);
 
 	return 0;
@@ -700,7 +700,7 @@ ev_add_map (char * dev, const char * alias, struct vectors * vecs)
 	int delayed_reconfig, reassign_maps;
 	struct config *conf;
 
-	if (!dm_is_mpath(alias)) {
+	if (dm_is_mpath(alias) != 1) {
 		condlog(4, "%s: not a multipath map", alias);
 		return 0;
 	}
@@ -786,7 +786,6 @@ uev_remove_map (struct uevent * uev, struct vectors * vecs)
 		goto out;
 	}
 
-	orphan_paths(vecs->pathvec, mpp);
 	remove_map_and_stop_waiter(mpp, vecs);
 out:
 	lock_cleanup_pop(vecs->lock);
@@ -925,6 +924,14 @@ ev_add_path (struct path * pp, struct vectors * vecs, int need_do_map)
 		goto fail; /* leave path added to pathvec */
 	}
 	mpp = find_mp_by_wwid(vecs->mpvec, pp->wwid);
+	if (mpp && pp->size && mpp->size != pp->size) {
+		condlog(0, "%s: failed to add new path %s, device size mismatch", mpp->alias, pp->dev);
+		int i = find_slot(vecs->pathvec, (void *)pp);
+		if (i != -1)
+			vector_del_slot(vecs->pathvec, i);
+		free_path(pp);
+		return 1;
+	}
 	if (mpp && mpp->wait_for_udev &&
 	    (pathcount(mpp, PATH_UP) > 0 ||
 	     (pathcount(mpp, PATH_GHOST) > 0 && pp->tpgs != TPGS_IMPLICIT &&
@@ -940,17 +947,6 @@ ev_add_path (struct path * pp, struct vectors * vecs, int need_do_map)
 	pp->mpp = mpp;
 rescan:
 	if (mpp) {
-		if (pp->size && mpp->size != pp->size) {
-			condlog(0, "%s: failed to add new path %s, "
-				"device size mismatch",
-				mpp->alias, pp->dev);
-			int i = find_slot(vecs->pathvec, (void *)pp);
-			if (i != -1)
-				vector_del_slot(vecs->pathvec, i);
-			free_path(pp);
-			return 1;
-		}
-
 		condlog(4,"%s: adopting all paths for path %s",
 			mpp->alias, pp->dev);
 		if (adopt_paths(vecs->pathvec, mpp))
@@ -958,7 +954,6 @@ rescan:
 
 		verify_paths(mpp, vecs);
 		mpp->action = ACT_RELOAD;
-		extract_hwe_from_path(mpp);
 	} else {
 		if (!should_multipath(pp, vecs->pathvec, vecs->mpvec)) {
 			orphan_path(pp, "only one path");
@@ -998,15 +993,14 @@ rescan:
 	/*
 	 * reload the map for the multipath mapped device
 	 */
-retry:
 	ret = domap(mpp, params, 1);
-	if (ret <= 0) {
-		if (ret < 0 && retries-- > 0) {
-			condlog(0, "%s: retry domap for addition of new "
-				"path %s", mpp->alias, pp->dev);
-			sleep(1);
-			goto retry;
-		}
+	while (ret == DOMAP_RETRY && retries-- > 0) {
+		condlog(0, "%s: retry domap for addition of new "
+			"path %s", mpp->alias, pp->dev);
+		sleep(1);
+		ret = domap(mpp, params, 1);
+	}
+	if (ret == DOMAP_FAIL || ret == DOMAP_RETRY) {
 		condlog(0, "%s: failed in domap for addition of new "
 			"path %s", mpp->alias, pp->dev);
 		/*
@@ -1157,7 +1151,7 @@ ev_remove_path (struct path *pp, struct vectors * vecs, int need_do_map)
 		 * reload the map
 		 */
 		mpp->action = ACT_RELOAD;
-		if (domap(mpp, params, 1) <= 0) {
+		if (domap(mpp, params, 1) == DOMAP_FAIL) {
 			condlog(0, "%s: failed in domap for "
 				"removal of path %s",
 				mpp->alias, pp->dev);
@@ -1909,6 +1903,16 @@ check_path (struct vectors * vecs, struct path * pp, int ticks)
 	pp->tick = checkint;
 
 	newstate = path_offline(pp);
+	if (newstate == PATH_UP) {
+		conf = get_multipath_config();
+		pthread_cleanup_push(put_multipath_config, conf);
+		newstate = get_state(pp, conf, 1, newstate);
+		pthread_cleanup_pop(1);
+	} else {
+		checker_clear_message(&pp->checker);
+		condlog(3, "%s: state %s, checker not called",
+			pp->dev, checker_state_name(newstate));
+	}
 	/*
 	 * Wait for uevent for removed paths;
 	 * some LLDDs like zfcp keep paths unavailable
@@ -1916,14 +1920,6 @@ check_path (struct vectors * vecs, struct path * pp, int ticks)
 	 */
 	if (newstate == PATH_REMOVED)
 		newstate = PATH_DOWN;
-
-	if (newstate == PATH_UP) {
-		conf = get_multipath_config();
-		pthread_cleanup_push(put_multipath_config, conf);
-		newstate = get_state(pp, conf, 1, newstate);
-		pthread_cleanup_pop(1);
-	} else
-		checker_clear_message(&pp->checker);
 
 	if (pp->wwid_changed) {
 		condlog(2, "%s: path wwid has changed. Refusing to use",
@@ -2264,7 +2260,7 @@ checkerloop (void *ap)
 			if (num_paths) {
 				unsigned int max_checkint;
 
-				condlog(3, "checked %d path%s in %lu.%06lu secs",
+				condlog(4, "checked %d path%s in %lu.%06lu secs",
 					num_paths, num_paths > 1 ? "s" : "",
 					diff_time.tv_sec,
 					diff_time.tv_nsec / 1000);
@@ -2369,7 +2365,7 @@ configure (struct vectors * vecs)
 	ret = coalesce_paths(vecs, mpvec, NULL, force_reload, CMD_NONE);
 	if (force_reload == FORCE_RELOAD_WEAK)
 		force_reload = FORCE_RELOAD_YES;
-	if (ret) {
+	if (ret != CP_OK) {
 		condlog(0, "configure failed while coalescing paths");
 		goto fail;
 	}
