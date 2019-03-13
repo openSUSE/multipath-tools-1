@@ -371,6 +371,12 @@ check_rdac(struct path * pp)
 	int len;
 	char buff[44];
 
+	if (pp->bus != SYSFS_BUS_SCSI)
+		return 0;
+	/* Avoid ioctl if this is likely not an RDAC array */
+	if (!pp->hwe || !pp->hwe->checker_name ||
+	    strcmp(pp->hwe->checker_name, RDAC))
+		return 0;
 	len = get_vpd_sgio(pp->fd, 0xC9, buff, 44);
 	if (len <= 0)
 		return 0;
