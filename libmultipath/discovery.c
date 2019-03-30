@@ -1890,17 +1890,12 @@ get_vpd_uid(struct path * pp)
 	return get_vpd_sysfs(parent, 0x83, pp->wwid, WWID_SIZE);
 }
 
-static ssize_t scsi_uid_fallback(struct path *pp, int path_state,
-			     const char **origin)
+static ssize_t uid_fallback(struct path *pp, int path_state,
+			    const char **origin)
 {
-	ssize_t len = 0;
-	int retrigger;
-	struct config *conf;
+	ssize_t len = -1;
 
-	conf = get_multipath_config();
-	retrigger = conf->retrigger_tries;
-	put_multipath_config(conf);
-	if (pp->retriggers >= retrigger &&
+	if (pp->bus == SYSFS_BUS_SCSI &&
 	    !strcmp(pp->uid_attribute, DEFAULT_UID_ATTRIBUTE)) {
 		len = get_vpd_uid(pp);
 		*origin = "sysfs";
@@ -1914,6 +1909,13 @@ static ssize_t scsi_uid_fallback(struct path *pp, int path_state,
 		}
 	}
 	return len;
+}
+
+static int has_uid_fallback(struct path *pp)
+{
+	return ((pp->bus == SYSFS_BUS_SCSI &&
+		 !strcmp(pp->uid_attribute, DEFAULT_UID_ATTRIBUTE)) ||
+		pp->bus == SYSFS_BUS_NVME);
 }
 
 int
@@ -1963,8 +1965,15 @@ get_uid (struct path * pp, int path_state, struct udev_device *udev)
 			len = get_vpd_uid(pp);
 			origin = "sysfs";
 		}
-		if (len <= 0 && pp->bus == SYSFS_BUS_SCSI)
-			len = scsi_uid_fallback(pp, path_state, &origin);
+		if (len <= 0 && has_uid_fallback(pp)) {
+			int retrigger_tries;
+
+			conf = get_multipath_config();
+			retrigger_tries = conf->retrigger_tries;
+			put_multipath_config(conf);
+			if (pp->retriggers >= retrigger_tries)
+				len = uid_fallback(pp, path_state, &origin);
+		}
 	}
 	if ( len < 0 ) {
 		condlog(1, "%s: failed to get %s uid: %s",
