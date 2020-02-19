@@ -22,6 +22,7 @@
 #define HOST_NAME_LEN		16
 #define SLOT_NAME_SIZE		40
 #define PRKEY_SIZE		19
+#define VPD_DATA_SIZE		128
 
 #define SCSI_VENDOR_SIZE	9
 #define SCSI_PRODUCT_SIZE	17
@@ -222,6 +223,18 @@ enum all_tg_pt_states {
 	ALL_TG_PT_ON = YNU_YES,
 };
 
+enum vpd_vendor_ids {
+	VPD_VP_UNDEF,
+	VPD_VP_HP3PAR,
+	VPD_VP_ARRAY_SIZE, /* This must remain the last entry */
+};
+
+struct vpd_vendor_page {
+	int pg;
+	const char *name;
+};
+extern struct vpd_vendor_page vpd_vendor_pages[VPD_VP_ARRAY_SIZE];
+
 struct sg_id {
 	int host_no;
 	int channel;
@@ -256,6 +269,7 @@ struct path {
 	char rev[PATH_REV_SIZE];
 	char serial[SERIAL_SIZE];
 	char tgt_node_name[NODE_NAME_SIZE];
+	char vpd_data[VPD_DATA_SIZE];
 	unsigned long long size;
 	unsigned int checkint;
 	unsigned int tick;
@@ -289,6 +303,7 @@ struct path {
 	int io_err_pathfail_cnt;
 	int io_err_pathfail_starttime;
 	int find_multipaths_timeout;
+	int vpd_vendor_id;
 	/* configlet pointers */
 	vector hwe;
 	struct gen_path generic_path;

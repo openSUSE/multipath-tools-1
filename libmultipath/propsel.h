@@ -38,3 +38,4 @@ void reconcile_features_with_options(const char *id, char **features,
 				     int* no_path_retry,
 				     int *retain_hwhandler, int *skip_kpartx);
 int select_all_tg_pt (struct config *conf, struct multipath * mp);
+int select_vpd_vendor_id (struct config *conf, struct path *pp);
