@@ -371,7 +371,7 @@ snprint_multipath_vpd_data(char * buff, size_t len,
 
 	vector_foreach_slot(mpp->pg, pgp, i)
 		vector_foreach_slot(pgp->paths, pp, j)
-			if (strlen(pp->vpd_data))
+			if (pp->vpd_data)
 				return snprintf(buff, len, "%s", pp->vpd_data);
 	return snprintf(buff, len, "[undef]");
 }
@@ -693,7 +693,7 @@ snprint_path_protocol(char * buff, size_t len, const struct path * pp)
 static int
 snprint_path_vpd_data(char * buff, size_t len, const struct path * pp)
 {
-	if (strlen(pp->vpd_data) > 0)
+	if (pp->vpd_data)
 		return snprintf(buff, len, "%s", pp->vpd_data);
 	return snprintf(buff, len, "[undef]");
 }
