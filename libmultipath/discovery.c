@@ -1195,14 +1195,14 @@ parse_vpd_c0_hp3par(const unsigned char *in, size_t in_len,
 
 	memset(out, 0x0, out_len);
 	if (in_len <= 4 || (in[4] > 3 && in_len < 44)) {
-		condlog(3, "HP/3PAR vendor specific VPD page length too short: %lu", in_len);
+		condlog(3, "HP/3PAR vendor specific VPD page length too short: %zu", in_len);
 		return -EINVAL;
 	}
 	if (in[4] <= 3) /* revision must be > 3 to have Vomlume Name */
 		return -ENODATA;
 	len = get_unaligned_be32(&in[40]);
 	if (len > out_len || len + 44 > in_len) {
-		condlog(3, "HP/3PAR vendor specific Volume name too long: %lu",
+		condlog(3, "HP/3PAR vendor specific Volume name too long: %zu",
 			len);
 		return -EINVAL;
 	}
