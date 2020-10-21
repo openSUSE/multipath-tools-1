@@ -2114,8 +2114,11 @@ get_uid (struct path * pp, int path_state, struct udev_device *udev,
 			len = strlen(pp->wwid);
 		origin = "callout";
 	} else {
-		bool udev_available = udev && pp->uid_attribute
+		bool valid_uid_attr = pp->uid_attribute
 			&& *pp->uid_attribute;
+		bool empty_uid_attr = pp->uid_attribute
+			&& !*pp->uid_attribute;
+		bool udev_available = udev && valid_uid_attr;
 
 		if (udev_available) {
 			len = get_udev_uid(pp, pp->uid_attribute, udev);
@@ -2125,7 +2128,8 @@ get_uid (struct path * pp, int path_state, struct udev_device *udev,
 		}
 		if ((!udev_available || (len <= 0 && allow_fallback))
 		    && has_uid_fallback(pp)) {
-			used_fallback = 1;
+			if (!udev || !empty_uid_attr)
+				used_fallback = 1;
 			len = uid_fallback(pp, path_state, &origin);
 		}
 	}
