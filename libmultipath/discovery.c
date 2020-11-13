@@ -330,6 +330,9 @@ sysfs_get_tgt_nodename(struct path *pp, char *node)
 		tgtdev = udev_device_get_parent(parent);
 		while (tgtdev) {
 			tgtname = udev_device_get_sysname(tgtdev);
+			if (sscanf(tgtname, "end_device-%d:%d:%d",
+				   &host, &channel, &tgtid) == 3)
+				break;
 			if (sscanf(tgtname, "end_device-%d:%d",
 				   &host, &tgtid) == 2)
 				break;
