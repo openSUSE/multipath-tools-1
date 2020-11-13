@@ -710,12 +710,28 @@ sysfs_set_session_tmo(struct multipath *mpp, struct path *pp)
 static void
 sysfs_set_nexus_loss_tmo(struct multipath *mpp, struct path *pp)
 {
-	struct udev_device *sas_dev = NULL;
-	char end_dev_id[64];
+	struct udev_device *parent, *sas_dev = NULL;
+	const char *end_dev_id = NULL;
 	char value[11];
+	static const char ed_str[] = "end_device-";
 
-	sprintf(end_dev_id, "end_device-%d:%d",
-		pp->sg_id.host_no, pp->sg_id.transport_id);
+	if (!pp->udev)
+		return;
+
+	for (parent = udev_device_get_parent(pp->udev);
+	     parent;
+	     parent = udev_device_get_parent(parent)) {
+		const char *ed = udev_device_get_sysname(parent);
+
+		if (!strncmp(ed, ed_str, sizeof(ed_str) - 1)) {
+			end_dev_id = ed;
+			break;
+		}
+	}
+	if (!end_dev_id) {
+		condlog(1, "%s: No SAS end device", pp->dev);
+		return;
+	}
 	sas_dev = udev_device_new_from_subsystem_sysname(udev,
 				"sas_end_device", end_dev_id);
 	if (!sas_dev) {
