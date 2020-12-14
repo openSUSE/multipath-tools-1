@@ -681,6 +681,33 @@ sysfs_set_max_sectors_kb(struct multipath *mpp, int is_reload)
 	return err;
 }
 
+
+/*
+ * MPATH_DEVICE_READY != 1 can mean two things:
+ *  (a) no usable paths
+ *  (b) device was never fully processed (e.g. udev killed)
+ * If we are in this code path (startup or forced reconfigure),
+ * (b) can mean that upper layers like kpartx have never been
+ * run for this map. Thus force udev reload.
+ */
+static bool is_udev_ready(struct multipath *mpp)
+{
+	struct udev_device *mpp_ud;
+	const char *env;
+	bool rc = false;
+
+	mpp_ud = get_udev_for_mpp(mpp);
+	if (mpp_ud) {
+		env = udev_device_get_property_value(mpp_ud,
+						     "MPATH_DEVICE_READY");
+		rc = (env != NULL && !strcmp(env, "1"));
+		udev_device_unref(mpp_ud);
+		condlog(4, "%s: %s: \"%s\" -> %d\n", __func__,
+			mpp->alias, env, rc);
+	}
+	return rc;
+}
+
 void
 select_action (struct multipath *mpp, const struct _vector *curmp,
 	       int force_reload)
@@ -737,6 +764,13 @@ select_action (struct multipath *mpp, const struct _vector *curmp,
 		mpp->force_udev_reload = 1;
 		mpp->action = ACT_RELOAD;
 		condlog(3, "%s: set ACT_RELOAD (forced by user)",
+			mpp->alias);
+		return;
+	}
+	if (!is_udev_ready(cmpp) && count_active_paths(mpp) > 0) {
+		mpp->force_udev_reload = 1;
+		mpp->action = ACT_RELOAD;
+		condlog(3, "%s: set ACT_RELOAD (udev incomplete)",
 			mpp->alias);
 		return;
 	}
