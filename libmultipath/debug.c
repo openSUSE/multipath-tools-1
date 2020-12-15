@@ -14,6 +14,8 @@
 #include "config.h"
 #include "defaults.h"
 #include "debug.h"
+#include "time-util.h"
+#include "util.h"
 
 void dlog (int sink, int prio, const char * fmt, ...)
 {
@@ -31,14 +33,13 @@ void dlog (int sink, int prio, const char * fmt, ...)
 	if (prio <= thres) {
 		if (sink < 1) {
 			if (sink == 0) {
-				time_t t = time(NULL);
-				struct tm *tb = localtime(&t);
-				char buff[16];
+				struct timespec ts;
+				char buff[32];
 
-				strftime(buff, sizeof(buff),
-					 "%b %d %H:%M:%S", tb);
-				buff[sizeof(buff)-1] = '\0';
-
+				get_monotonic_time(&ts);
+				safe_sprintf(buff, "%ld.%03ld",
+					     (long)ts.tv_sec,
+					     ts.tv_nsec/1000000);
 				fprintf(stderr, "%s | ", buff);
 			}
 			vfprintf(stderr, fmt, ap);
