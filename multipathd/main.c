@@ -2615,9 +2615,6 @@ reconfigure (struct vectors * vecs)
 	vecs->pathvec = NULL;
 	delete_all_foreign();
 
-	/* Re-read any timezone changes */
-	tzset();
-
 	dm_tgt_version(conf->version, TGT_MPATH);
 	if (verbosity)
 		conf->verbosity = verbosity;
