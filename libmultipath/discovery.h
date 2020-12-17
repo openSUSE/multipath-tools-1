@@ -55,6 +55,7 @@ ssize_t sysfs_get_inquiry(struct udev_device *udev,
 int sysfs_get_asymmetric_access_state(struct path *pp,
 				      char *buff, int buflen);
 int get_uid(struct path * pp, int path_state, struct udev_device *udev);
+int is_vpd_page_supported(int fd, int pg);
 
 /*
  * discovery bitmask
