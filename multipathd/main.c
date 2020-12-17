@@ -83,6 +83,7 @@
 #include "wwids.h"
 #include "foreign.h"
 #include "../third-party/valgrind/drd.h"
+#include "init_unwinder.h"
 
 #define FILE_NAME_SIZE 256
 #define CMDSIZE 160
@@ -2896,6 +2897,7 @@ child (__attribute__((unused)) void *param)
 	int queue_without_daemon;
 	enum daemon_status state;
 
+	init_unwinder();
 	mlockall(MCL_CURRENT | MCL_FUTURE);
 	signal_init();
 	rcu_init();
