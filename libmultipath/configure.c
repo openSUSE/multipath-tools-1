@@ -515,17 +515,6 @@ get_udev_for_mpp(const struct multipath *mpp)
 	return udd;
 }
 
-static void
-trigger_udev_event(const struct multipath *mpp, const char *action)
-{
-	struct udev_device *udd = get_udev_for_mpp(mpp);
-	if (!udd)
-		return;
-	condlog(3, "triggering %s uevent for %s", action, mpp->alias);
-	sysfs_attr_set_value(udd, "uevent", action, strlen(action));
-	udev_device_unref(udd);
-}
-
 static void trigger_partitions_udev_change(struct udev_device *dev,
 					   const char *action, int len)
 {
@@ -1279,21 +1268,6 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 		}
 		if (r == DOMAP_DRY)
 			continue;
-
-		if (r == DOMAP_EXIST && mpp->action == ACT_NOTHING &&
-		    force_reload == FORCE_RELOAD_WEAK)
-			/*
-			 * First time we're called, and no changes applied.
-			 * domap() was a noop. But we can't be sure that
-			 * udev has already finished setting up this device
-			 * (udev in initrd may have been shut down while
-			 * processing this device or its children).
-			 * Trigger an "add" event, just in case.
-			 * (must be "add", because otherwise the device mapper
-			 * udev rules may ignore it, see 10-dm.rules)
-			 */
-			trigger_udev_event(find_mp_by_wwid(curmp, mpp->wwid),
-					   "add");
 
 		conf = get_multipath_config();
 		allow_queueing = conf->allow_queueing;
