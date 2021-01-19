@@ -2136,8 +2136,8 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 		pathinfo(pp, conf, 0);
 		pthread_cleanup_pop(1);
 		return 1;
-	} else if ((newstate != PATH_UP && newstate != PATH_GHOST) &&
-			(pp->state == PATH_DELAYED)) {
+	} else if ((newstate != PATH_UP && newstate != PATH_GHOST &&
+		    newstate != PATH_PENDING) && (pp->state == PATH_DELAYED)) {
 		/* If path state become failed again cancel path delay state */
 		pp->state = newstate;
 		/*
@@ -2204,8 +2204,9 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 	if ((newstate == PATH_UP || newstate == PATH_GHOST) &&
 	    (san_path_check_enabled(pp->mpp) ||
 	     marginal_path_check_enabled(pp->mpp))) {
-		int was_marginal = pp->marginal;
 		if (should_skip_path(pp)) {
+			if (!pp->marginal && pp->state != PATH_DELAYED)
+				condlog(2, "%s: path is now marginal", pp->dev);
 			if (!marginal_pathgroups) {
 				if (marginal_path_check_enabled(pp->mpp))
 					/* to reschedule as soon as possible,
@@ -2215,13 +2216,18 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 				pp->state = PATH_DELAYED;
 				return 1;
 			}
-			if (!was_marginal) {
+			if (!pp->marginal) {
 				pp->marginal = 1;
 				marginal_changed = 1;
 			}
-		} else if (marginal_pathgroups && was_marginal) {
-			pp->marginal = 0;
-			marginal_changed = 1;
+		} else {
+			if (pp->marginal || pp->state == PATH_DELAYED)
+				condlog(2, "%s: path is no longer marginal",
+					pp->dev);
+			if (marginal_pathgroups && pp->marginal) {
+				pp->marginal = 0;
+				marginal_changed = 1;
+			}
 		}
 	}
 
@@ -2347,11 +2353,8 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 	 */
 	condlog(4, "path prio refresh");
 
-	if (marginal_changed) {
-		condlog(2, "%s: path is %s marginal", pp->dev,
-			(pp->marginal)? "now" : "no longer");
+	if (marginal_changed)
 		reload_and_sync_map(pp->mpp, vecs, 1);
-	}
 	else if (update_prio(pp, new_path_up) &&
 	    (pp->mpp->pgpolicyfn == (pgpolicyfn *)group_by_prio) &&
 	     pp->mpp->pgfailback == -FAILBACK_IMMEDIATE) {
