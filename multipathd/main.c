@@ -1029,7 +1029,7 @@ rescan:
 			 */
 			start_waiter = 1;
 		}
-		if (!start_waiter)
+		else
 			goto fail; /* leave path added to pathvec */
 	}
 
