@@ -83,6 +83,7 @@ struct hwentry {
 	int ghost_delay;
 	int all_tg_pt;
 	int vpd_vendor_id;
+	int recheck_wwid;
 	char * bl_product;
 };
 
@@ -188,6 +189,7 @@ struct config {
 	int skip_delegate;
 	unsigned int version[3];
 	unsigned int sequence_nr;
+	int recheck_wwid;
 
 	char * multipath_dir;
 	char * selector;

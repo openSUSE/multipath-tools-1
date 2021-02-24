@@ -2127,7 +2127,7 @@ static ssize_t uid_fallback(struct path *pp, int path_state,
 	return len;
 }
 
-static bool has_uid_fallback(struct path *pp)
+bool has_uid_fallback(struct path *pp)
 {
 	/*
 	 * Falling back to direct WWID determination is dangerous
@@ -2162,6 +2162,7 @@ get_uid (struct path * pp, int path_state, struct udev_device *udev,
 		conf = get_multipath_config();
 		pthread_cleanup_push(put_multipath_config, conf);
 		select_getuid(conf, pp);
+		select_recheck_wwid(conf, pp);
 		pthread_cleanup_pop(1);
 	}
 
