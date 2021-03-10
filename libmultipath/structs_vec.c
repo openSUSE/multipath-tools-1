@@ -191,7 +191,7 @@ static bool update_pathvec_from_dm(vector pathvec, struct multipath *mpp,
 						must_reload = true;
 						continue;
 					}
-					condlog(2, "%s: adding new path %s",
+					condlog(3, "%s: adding new path %s",
 						mpp->alias, pp->dev);
 					pp->initialized = INIT_PARTIAL;
 					pp->partial_retrigger_delay = 180;
