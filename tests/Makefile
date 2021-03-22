@@ -9,6 +9,7 @@ TESTS := uevent parser util dmevents hwtable blacklist unaligned vpd
 .PRECIOUS: $(TESTS:%=%-test)
 
 all:	$(TESTS:%=%.out)
+progs:	$(TESTS:%=%-test) lib/libchecktur.so
 valgrind:	$(TESTS:%=%.vgr)
 
 # test-specific linker flags
