@@ -9,6 +9,7 @@ TESTS := uevent parser util dmevents hwtable blacklist unaligned
 .PRECIOUS: $(TESTS:%=%-test)
 
 all:	$(TESTS:%=%.out)
+progs:	$(TESTS:%=%-test) lib/libchecktur.so
 
 # test-specific linker flags
 # XYZ-test-TESTDEPS: test libraries containing __wrap_xyz functions

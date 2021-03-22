@@ -46,8 +46,11 @@ install: recurse_install
 
 uninstall: recurse_uninstall
 
-test:	all
-	$(MAKE) -C tests
+test-progs:	all
+	$(MAKE) -C tests progs
+
+test:	test-progs
+	$(MAKE) -C tests all
 
 .PHONY:	TAGS
 TAGS:
