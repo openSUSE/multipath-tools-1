@@ -557,7 +557,7 @@ add_map_without_path (struct vectors *vecs, const char *alias)
 	mpp->mpe = find_mpe(conf->mptable, mpp->wwid);
 	put_multipath_config(conf);
 
-	if (update_multipath_table(mpp, vecs->pathvec, 0) != DMP_OK)
+	if (qupdate_multipath_table(mpp, vecs->pathvec, 0) != DMP_OK)
 		goto out;
 
 	if (!vector_alloc_slot(vecs->mpvec))
