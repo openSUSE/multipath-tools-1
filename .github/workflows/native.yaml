@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        os: [buster, jessie, leap-15.2]
+        os: [buster, leap15.2]
         arch: ['']
     container: mwilck/multipath-build-${{ matrix.os }}${{ matrix.arch }}
     steps:
