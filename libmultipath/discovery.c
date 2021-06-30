@@ -1282,7 +1282,7 @@ scsi_sysfs_pathinfo (struct path * pp, vector hwtable)
 			attr_path = udev_device_get_sysname(parent);
 			if (!attr_path)
 				break;
-			if (sscanf(attr_path, "%i:%i:%i:%i",
+			if (sscanf(attr_path, "%i:%i:%i:%" SCNu64,
 				   &pp->sg_id.host_no,
 				   &pp->sg_id.channel,
 				   &pp->sg_id.scsi_id,
@@ -1317,7 +1317,7 @@ scsi_sysfs_pathinfo (struct path * pp, vector hwtable)
 	/*
 	 * host / bus / target / lun
 	 */
-	condlog(3, "%s: h:b:t:l = %i:%i:%i:%i",
+	condlog(3, "%s: h:b:t:l = %i:%i:%i:%" PRIu64,
 			pp->dev,
 			pp->sg_id.host_no,
 			pp->sg_id.channel,
@@ -1429,7 +1429,7 @@ ccw_sysfs_pathinfo (struct path * pp, vector hwtable)
 		   &pp->sg_id.host_no,
 		   &pp->sg_id.channel,
 		   &pp->sg_id.scsi_id) == 3) {
-		condlog(3, "%s: h:b:t:l = %i:%i:%i:%i",
+		condlog(3, "%s: h:b:t:l = %i:%i:%i:%" PRIu64,
 			pp->dev,
 			pp->sg_id.host_no,
 			pp->sg_id.channel,
@@ -1488,7 +1488,7 @@ cciss_sysfs_pathinfo (struct path * pp, vector hwtable)
 	 */
 	pp->sg_id.lun = 0;
 	pp->sg_id.channel = 0;
-	condlog(3, "%s: h:b:t:l = %i:%i:%i:%i",
+	condlog(3, "%s: h:b:t:l = %i:%i:%i:%" PRIu64,
 		pp->dev,
 		pp->sg_id.host_no,
 		pp->sg_id.channel,
@@ -1644,7 +1644,7 @@ scsi_ioctl_pathinfo (struct path * pp, struct config *conf, int mask)
 			attr_path = udev_device_get_sysname(parent);
 			if (!attr_path)
 				break;
-			if (sscanf(attr_path, "%i:%i:%i:%i",
+			if (sscanf(attr_path, "%i:%i:%i:%" SCNu64,
 				   &pp->sg_id.host_no,
 				   &pp->sg_id.channel,
 				   &pp->sg_id.scsi_id,
