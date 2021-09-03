@@ -1699,6 +1699,15 @@ uxlsnrloop (void * ap)
 	set_handler_callback(UNSETMARGINAL+MAP, cli_unset_all_marginal);
 
 	umask(077);
+
+	/*
+	 * Wait for initial reconfiguration to finish, while
+	 * hadling signals
+	 */
+	while (wait_for_state_change_if(DAEMON_CONFIGURE, 50)
+	       == DAEMON_CONFIGURE)
+		handle_signals(false);
+
 	uxsock_listen(&uxsock_trigger, ux_sock, ap);
 
 out_sock:
