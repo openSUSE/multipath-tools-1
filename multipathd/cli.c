@@ -65,7 +65,7 @@ out:
 }
 
 int
-add_handler (uint64_t fp, int (*fn)(void *, char **, int *, void *))
+add_handler (uint64_t fp, cli_handler *fn)
 {
 	struct handler * h;
 
@@ -100,7 +100,7 @@ find_handler (uint64_t fp)
 }
 
 int
-set_handler_callback (uint64_t fp, int (*fn)(void *, char **, int *, void *))
+set_handler_callback (uint64_t fp, cli_handler *fn)
 {
 	struct handler * h = find_handler(fp);
 
@@ -112,7 +112,7 @@ set_handler_callback (uint64_t fp, int (*fn)(void *, char **, int *, void *))
 }
 
 int
-set_unlocked_handler_callback (uint64_t fp,int (*fn)(void *, char **, int *, void *))
+set_unlocked_handler_callback (uint64_t fp, cli_handler *fn)
 {
 	struct handler * h = find_handler(fp);
 
