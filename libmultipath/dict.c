@@ -337,6 +337,9 @@ declare_def_snprint(verbosity, print_int)
 declare_def_handler(reassign_maps, set_yes_no)
 declare_def_snprint(reassign_maps, print_yes_no)
 
+declare_def_handler(force_reconfigure, set_yes_no)
+declare_def_snprint(force_reconfigure, print_yes_no)
+
 declare_def_handler(multipath_dir, set_str)
 declare_def_snprint(multipath_dir, print_str)
 
@@ -1731,6 +1734,7 @@ init_keywords(vector keywords)
 	install_keyword("polling_interval", &checkint_handler, &snprint_def_checkint);
 	install_keyword("max_polling_interval", &def_max_checkint_handler, &snprint_def_max_checkint);
 	install_keyword("reassign_maps", &def_reassign_maps_handler, &snprint_def_reassign_maps);
+	install_keyword("force_reconfigure", &def_force_reconfigure_handler, &snprint_def_force_reconfigure);
 	install_keyword("multipath_dir", &def_multipath_dir_handler, &snprint_def_multipath_dir);
 	install_keyword("path_selector", &def_selector_handler, &snprint_def_selector);
 	install_keyword("path_grouping_policy", &def_pgpolicy_handler, &snprint_def_pgpolicy);
