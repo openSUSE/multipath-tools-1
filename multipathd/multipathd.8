@@ -195,8 +195,10 @@ group index, starting with 1.
 .
 .TP
 .B reconfigure
-Reconfigures the multipaths. This should be triggered automatically after anyi
-hotplug event.
+Reconfigure the multipaths. This is only necessary after applying configuration
+changes, as multipathd sets up new devices automatically. See the
+\fIforce_reconfigure\fR option in \fBmultipath.conf(5)\fR. Note that multipathd
+can't process most commands while reconfiguring.
 .
 .TP
 .B suspend map|multipath $map
