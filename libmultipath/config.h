@@ -190,6 +190,7 @@ struct config {
 	unsigned int version[3];
 	unsigned int sequence_nr;
 	int recheck_wwid;
+	int force_reconfigure;
 
 	char * multipath_dir;
 	char * selector;

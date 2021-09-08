@@ -766,6 +766,7 @@ load_config (char * file)
 	conf->ghost_delay = DEFAULT_GHOST_DELAY;
 	conf->all_tg_pt = DEFAULT_ALL_TG_PT;
 	conf->recheck_wwid = DEFAULT_RECHECK_WWID;
+	conf->force_reconfigure = DEFAULT_FORCE_RECONFIGURE;
 	/*
 	 * preload default hwtable
 	 */
