@@ -253,7 +253,7 @@ find_key (const char * str)
  *
  * returns:
  * ENOMEM: not enough memory to allocate command
- * EAGAIN: command not found
+ * ESRCH: command not found
  * EINVAL: argument missing for command
  */
 static int
@@ -288,7 +288,7 @@ get_cmdvec (char * cmd, vector *v)
 		}
 		kw = find_key(buff);
 		if (!kw) {
-			r = EAGAIN;
+			r = ESRCH;
 			goto out;
 		}
 		cmdkw = alloc_key();
@@ -378,7 +378,7 @@ do_genhelp(struct strbuf *reply, const char *cmd, int error) {
 	case ENOMEM:
 		rc = print_strbuf(reply, "%s: Not enough memory\n", cmd);
 		break;
-	case EAGAIN:
+	case ESRCH:
 		rc = print_strbuf(reply, "%s: not found\n", cmd);
 		break;
 	case EINVAL:
