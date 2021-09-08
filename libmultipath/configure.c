@@ -1093,12 +1093,27 @@ out:
 	return ret;
 }
 
+static const char* reconfigure_str(int force)
+{
+	switch(force) {
+	case FORCE_RELOAD_NONE:
+		return "new";
+	case FORCE_RELOAD_WEAK:
+		return "changed";
+	case FORCE_RELOAD_YES:
+		return "all";
+	default:
+		return "<undefined>";
+	}
+}
+
 /*
  * The force_reload parameter determines how coalesce_paths treats existing maps.
  * FORCE_RELOAD_NONE: existing maps aren't touched at all
  * FORCE_RELOAD_YES: all maps are rebuilt from scratch and (re)loaded in DM
  * FORCE_RELOAD_WEAK: existing maps are compared to the current conf and only
- * reloaded in DM if there's a difference. This is useful during startup.
+ * reloaded in DM if there's a difference. This is normally sufficient.
+ * This is controlled by the "force_reconfigure" config option.
  */
 int coalesce_paths (struct vectors *vecs, vector mpvec, char *refwwid,
 		    int force_reload, enum mpath_cmds cmd)
@@ -1117,6 +1132,8 @@ int coalesce_paths (struct vectors *vecs, vector mpvec, char *refwwid,
 	int allow_queueing;
 	struct bitfield *size_mismatch_seen;
 
+	condlog(2, "%s: reloading %s maps", __func__,
+		reconfigure_str(force_reload));
 	/* ignore refwwid if it's empty */
 	if (refwwid && !strlen(refwwid))
 		refwwid = NULL;
