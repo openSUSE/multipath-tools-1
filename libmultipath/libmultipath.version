@@ -292,3 +292,8 @@ LIBMULTIPATH_9.1.0 {
 global:
 	timespeccmp;
 } LIBMULTIPATH_9.0.0;
+
+LIBMULTIPATH_9.2.0 {
+global:
+	set_wakeup_fn;
+} LIBMULTIPATH_9.1.0;
