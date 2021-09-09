@@ -588,15 +588,37 @@ static void handle_client(struct client *c, struct vectors *vecs, short revents)
 		if (get_strbuf_len(&c->reply) == 0)
 			default_reply(c, c->error);
 
-		const char *buf = get_strbuf_str(&c->reply);
+		if (c->cmd_len == 0) {
+			size_t len = get_strbuf_len(&c->reply) + 1;
 
-		if (send_packet(c->fd, buf) != 0)
-			dead_client(c);
-		else
-			condlog(4, "cli[%d]: Reply [%zu bytes]", c->fd,
-				get_strbuf_len(&c->reply) + 1);
-		reset_strbuf(&c->reply);
+			if (send(c->fd, &len, sizeof(len), MSG_NOSIGNAL)
+			    != sizeof(len)) {
+				c->error = -ECONNRESET;
+				return;
+			}
+			c->cmd_len = len;
+			return;
+		}
 
+		if (c->len < c->cmd_len) {
+			const char *buf = get_strbuf_str(&c->reply);
+
+			n = send(c->fd, buf + c->len, c->cmd_len, MSG_NOSIGNAL);
+			if (n == -1) {
+				if (errno == EAGAIN || errno == EINTR)
+					return;
+				else {
+					c->error = -ECONNRESET;
+					return;
+				}
+			}
+			c->len += n;
+		}
+		if (c->len < c->cmd_len)
+			/* continue polling */
+			return;
+
+		condlog(4, "cli[%d]: Reply [%zu bytes]", c->fd, c->cmd_len);
 		set_client_state(c, CLT_RECV);
 		break;
 
@@ -701,6 +723,9 @@ void *uxsock_listen(long ux_sock, void *trigger_data)
                         case CLT_RECV:
                                 polls[i].events = POLLIN;
                                 break;
+			case CLT_SEND:
+				polls[i].events = POLLOUT;
+				break;
                         default:
 				/* don't poll for this client */
                                 continue;
