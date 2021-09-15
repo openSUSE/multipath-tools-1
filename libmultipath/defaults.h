@@ -56,6 +56,7 @@
 #define DEFAULT_RECHECK_WWID RECHECK_WWID_OFF
 /* Enable no foreign libraries by default */
 #define DEFAULT_ENABLE_FOREIGN "NONE"
+#define DEFAULT_FORCE_RECONFIGURE YN_NO
 
 #define CHECKINT_UNDEF		UINT_MAX
 #define DEFAULT_CHECKINT	5

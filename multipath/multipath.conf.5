@@ -34,6 +34,7 @@ or \fBmultipathd show config\fR command.
 .SH SYNTAX
 .\" ----------------------------------------------------------------------------
 .
+.
 The configuration file contains entries of the form:
 .RS
 .nf
@@ -161,6 +162,22 @@ Maximal interval between two path checks in seconds.
 .RS
 .TP
 The default is: \fB4 * polling_interval\fR
+.RE
+.
+.
+.TP
+.B force_reconfigure
+This controls what happens when \fBmultipathd reconfigure\fR or
+\fBmultipath -r\fR is executed. If set to \fIyes\fR, all multipath
+maps will be reloaded, regardless if this is necessary or not, which
+may take a lot of time on large systems. This used to be the default
+on previous versions of multipath-tools. If set to \fIno\fR,
+only those maps will be reloaded for which some parameters
+have changed that are relevant for the device-mapper configuration of the map.
+This is the behavior during \fImultipathd\fR startup.
+.RS
+.TP
+The default is: \fBno\fR
 .RE
 .
 .

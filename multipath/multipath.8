@@ -264,9 +264,11 @@ Force new maps to use the specified policy, overriding the configuration in
 .
 .TP
 .B \-r
-Force a reload of all existing multipath maps. This command is delegated to
+Reload existing multipath maps. This command is delegated to
 the multipathd daemon if it's running. In this case, other command line
-switches of the \fImultipath\fR command have no effect.
+switches of the \fImultipath\fR command have no effect, and multipathd
+executes a \fIreconfigure\fR command. See the \fIforce_reconfigure\fR option
+in \fBmultipath.conf(5)\fR.
 .
 .TP
 .BI \-R " retries"
