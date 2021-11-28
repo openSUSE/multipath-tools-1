@@ -309,24 +309,6 @@ free_multipath (struct multipath * mpp, enum free_path_mode free_paths)
 }
 
 void
-drop_multipath (vector mpvec, char * wwid, enum free_path_mode free_paths)
-{
-	int i;
-	struct multipath * mpp;
-
-	if (!mpvec)
-		return;
-
-	vector_foreach_slot (mpvec, mpp, i) {
-		if (!strncmp(mpp->wwid, wwid, WWID_SIZE)) {
-			free_multipath(mpp, free_paths);
-			vector_del_slot(mpvec, i);
-			return;
-		}
-	}
-}
-
-void
 free_multipathvec (vector mpvec, enum free_path_mode free_paths)
 {
 	int i;
