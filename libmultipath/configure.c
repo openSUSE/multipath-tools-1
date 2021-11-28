@@ -645,8 +645,8 @@ select_reload_action(struct multipath *mpp, const char *reason)
 	condlog(3, "%s: set ACT_RELOAD (%s)", mpp->alias, reason);
 }
 
-void select_action (struct multipath *mpp, const struct _vector *curmp,
-		    int force_reload)
+static void select_action (struct multipath *mpp, const struct _vector *curmp,
+			   int force_reload)
 {
 	struct multipath * cmpp;
 	struct multipath * cmpp_by_name;
