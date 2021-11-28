@@ -2060,6 +2060,7 @@ static int reload_map(struct vectors *vecs, struct multipath *mpp, int refresh,
 	int i, r;
 
 	update_mpp_paths(mpp, vecs->pathvec);
+	verify_paths(mpp);
 	if (refresh) {
 		vector_foreach_slot (mpp->paths, pp, i) {
 			struct config *conf = get_multipath_config();
