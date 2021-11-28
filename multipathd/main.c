@@ -2027,7 +2027,7 @@ static int reload_map(struct vectors *vecs, struct multipath *mpp, int refresh,
 		condlog(0, "%s: failed to setup map", mpp->alias);
 		return 1;
 	}
-	select_action(mpp, vecs->mpvec, 1);
+	mpp->action = ACT_RELOAD;
 
 	r = domap(mpp, params, is_daemon);
 	if (r == DOMAP_FAIL || r == DOMAP_RETRY) {
