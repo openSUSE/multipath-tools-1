@@ -204,7 +204,7 @@ static void test_one_group8(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {8};
 
-	mp8.pgpolicyfn = one_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 1);
 }
@@ -215,7 +215,7 @@ static void test_one_group4(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {4};
 
-	mp4.pgpolicyfn = one_group;
+	mp4.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 1);
 }
@@ -226,21 +226,21 @@ static void test_one_group1(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {1};
 
-	mp1.pgpolicyfn = one_group;
+	mp1.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp1, 0), 0);
 	verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
 }
 
 static void test_one_group0(void **state)
 {
-	mp0.pgpolicyfn = one_group;
+	mp0.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp0, 0), 0);
 	verify_pathgroups(&mp0, NULL, NULL, NULL, NULL, 0);
 }
 
 static void test_one_group_null(void **state)
 {
-	mp_null.pgpolicyfn = one_group;
+	mp_null.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp_null, 0), 0);
 	verify_pathgroups(&mp_null, NULL, NULL, NULL, NULL, 0);
 }
@@ -254,7 +254,7 @@ static void test_one_group_all_marginal8(void **state)
 	int group_marginal[] = {1};
 
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 1);
 }
@@ -269,7 +269,7 @@ static void test_one_group_half_marginal8(void **state)
 	int group_marginal[] = {0,1};
 
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 2);
 }
@@ -282,7 +282,7 @@ static void test_one_group_ignore_marginal8(void **state)
 	int group_size[] = {8};
 
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 1);
 }
@@ -297,7 +297,7 @@ static void test_one_group_one_marginal8(void **state)
 	int group_marginal[] = {0,1};
 
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(MULTIBUS);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 2);
 }
@@ -309,7 +309,7 @@ static void test_one_path_per_group_same8(void **state)
 			  &paths[4], &paths[5], &paths[6], &paths[7]};
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -323,7 +323,7 @@ static void test_one_path_per_group_increasing8(void **state)
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -337,7 +337,7 @@ static void test_one_path_per_group_decreasing8(void **state)
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -351,7 +351,7 @@ static void test_one_path_per_group_mixed8(void **state)
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -362,7 +362,7 @@ static void test_one_path_per_group4(void **state)
 	int *groups[] = {&paths[0], &paths[1], &paths[2], &paths[3]};
 	int group_size[] = {1,1,1,1};
 
-	mp4.pgpolicyfn = one_path_per_group;
+	mp4.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 4);
 }
@@ -373,21 +373,21 @@ static void test_one_path_per_group1(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {1};
 
-	mp1.pgpolicyfn = one_path_per_group;
+	mp1.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp1, 0), 0);
 	verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
 }
 
 static void test_one_path_per_group0(void **state)
 {
-	mp0.pgpolicyfn = one_path_per_group;
+	mp0.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp0, 0), 0);
 	verify_pathgroups(&mp0, NULL, NULL, NULL, NULL, 0);
 }
 
 static void test_one_path_per_group_null(void **state)
 {
-	mp_null.pgpolicyfn = one_path_per_group;
+	mp_null.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp_null, 0), 0);
 	verify_pathgroups(&mp_null, NULL, NULL, NULL, NULL, 0);
 }
@@ -404,7 +404,7 @@ static void test_one_path_per_group_mixed_all_marginal8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 8);
 }
@@ -421,7 +421,7 @@ static void test_one_path_per_group_mixed_half_marginal8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = one_path_per_group;
+	mp8.pgpolicyfn = get_pgpolicy_fn(FAILOVER);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 8);
 }
@@ -432,7 +432,7 @@ static void test_group_by_prio_same8(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {8};
 
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 1);
 }
@@ -446,7 +446,7 @@ static void test_group_by_prio_increasing8(void **state)
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -460,7 +460,7 @@ static void test_group_by_prio_decreasing8(void **state)
 	int group_size[] = {1,1,1,1,1,1,1,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -479,7 +479,7 @@ static void test_group_by_prio_mixed8(void **state)
 	int group_size[] = {1,1,1,2,2,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 6);
 }
@@ -498,7 +498,7 @@ static void test_group_by_prio_mixed_no_marginal8(void **state)
 	int group_size[] = {1,1,1,2,2,1};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 6);
 }
@@ -512,7 +512,7 @@ static void test_group_by_prio_2_groups8(void **state)
 	int group_size[] = {4,4};
 
 	set_priority(p8, prio, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 2);
 }
@@ -527,7 +527,7 @@ static void test_group_by_prio_mixed4(void **state)
 	int group_size[] = {2,1,1};
 
 	set_priority(p4, prio, 4);
-	mp4.pgpolicyfn = group_by_prio;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 3);
 }
@@ -541,7 +541,7 @@ static void test_group_by_prio_2_groups4(void **state)
 	int group_size[] = {2,2};
 
 	set_priority(p4, prio, 4);
-	mp4.pgpolicyfn = group_by_prio;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 2);
 }
@@ -552,21 +552,21 @@ static void test_group_by_prio1(void **state)
 	int *groups[] = {paths};
 	int group_size[] = {1};
 
-	mp1.pgpolicyfn = group_by_prio;
+	mp1.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp1, 0), 0);
 	verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
 }
 
 static void test_group_by_prio0(void **state)
 {
-	mp0.pgpolicyfn = group_by_prio;
+	mp0.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp0, 0), 0);
 	verify_pathgroups(&mp0, NULL, NULL, NULL, NULL, 0);
 }
 
 static void test_group_by_prio_null(void **state)
 {
-	mp_null.pgpolicyfn = group_by_prio;
+	mp_null.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp_null, 0), 0);
 	verify_pathgroups(&mp_null, NULL, NULL, NULL, NULL, 0);
 }
@@ -588,7 +588,7 @@ static void test_group_by_prio_mixed_all_marginal8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 6);
 }
@@ -611,7 +611,7 @@ static void test_group_by_prio_mixed_half_marginal8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 7);
 }
@@ -634,7 +634,7 @@ static void test_group_by_prio_mixed_one_marginal8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = group_by_prio;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_PRIO);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 7);
 }
@@ -647,7 +647,7 @@ static void test_group_by_node_name_same8(void **state)
 	int group_size[] = {8};
 
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 1);
 }
@@ -663,7 +663,7 @@ static void test_group_by_node_name_increasing8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -680,7 +680,7 @@ static void test_group_by_node_name_3_groups8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 3);
 }
@@ -696,7 +696,7 @@ static void test_group_by_node_name_2_groups8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 2);
 }
@@ -713,7 +713,7 @@ static void test_group_by_node_name_3_groups4(void **state)
 
 	set_priority(p4, prio, 4);
 	set_tgt_node_name(p4, node_name, 4);
-	mp4.pgpolicyfn = group_by_node_name;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 3);
 }
@@ -729,7 +729,7 @@ static void test_group_by_node_name_2_groups4(void **state)
 
 	set_priority(p4, prio, 4);
 	set_tgt_node_name(p4, node_name, 4);
-	mp4.pgpolicyfn = group_by_node_name;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 2);
 }
@@ -737,26 +737,26 @@ static void test_group_by_node_name_2_groups4(void **state)
 static void test_group_by_node_name1(void **state)
 {
 	char *node_name[] = {"a"};
-        int paths[] = {0};
-        int *groups[] = {paths};
-        int group_size[] = {1};
+	int paths[] = {0};
+	int *groups[] = {paths};
+	int group_size[] = {1};
 
 	set_tgt_node_name(p1, node_name, 1);
-	mp1.pgpolicyfn = group_by_node_name;
-        assert_int_equal(group_paths(&mp1,0), 0);
-        verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
+	mp1.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
+	assert_int_equal(group_paths(&mp1,0), 0);
+	verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
 }
 
 static void test_group_by_node_name0(void **state)
 {
-	mp0.pgpolicyfn = group_by_node_name;
+	mp0.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp0, 0), 0);
 	verify_pathgroups(&mp0, NULL, NULL, NULL, NULL, 0);
 }
 
 static void test_group_by_node_name_null(void **state)
 {
-	mp_null.pgpolicyfn = group_by_node_name;
+	mp_null.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp_null, 0), 0);
 	verify_pathgroups(&mp_null, NULL, NULL, NULL, NULL, 0);
 }
@@ -775,7 +775,7 @@ static void test_group_by_node_name_2_groups_all_marginal8(void **state)
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 2);
 }
@@ -796,7 +796,7 @@ static void test_group_by_node_name_2_groups_half_marginal8(void **state)
 	set_priority(p8, prio, 8);
 	set_marginal(p8, marginal, 8);
 	set_tgt_node_name(p8, node_name, 8);
-	mp8.pgpolicyfn = group_by_node_name;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_NODE_NAME);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 4);
 }
@@ -809,7 +809,7 @@ static void test_group_by_serial_same8(void **state)
 	int group_size[] = {8};
 
 	set_serial(p8, serial, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 1);
 }
@@ -825,7 +825,7 @@ static void test_group_by_serial_increasing8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_serial(p8, serial, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 8);
 }
@@ -842,7 +842,7 @@ static void test_group_by_serial_3_groups8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_serial(p8, serial, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 3);
 }
@@ -858,7 +858,7 @@ static void test_group_by_serial_2_groups8(void **state)
 
 	set_priority(p8, prio, 8);
 	set_serial(p8, serial, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 0), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, NULL, 2);
 }
@@ -875,7 +875,7 @@ static void test_group_by_serial_3_groups4(void **state)
 
 	set_priority(p4, prio, 4);
 	set_serial(p4, serial, 4);
-	mp4.pgpolicyfn = group_by_serial;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 3);
 }
@@ -891,7 +891,7 @@ static void test_group_by_serial_2_groups4(void **state)
 
 	set_priority(p4, prio, 4);
 	set_serial(p4, serial, 4);
-	mp4.pgpolicyfn = group_by_serial;
+	mp4.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp4, 0), 0);
 	verify_pathgroups(&mp4, p4, groups, group_size, NULL, 2);
 }
@@ -899,26 +899,26 @@ static void test_group_by_serial_2_groups4(void **state)
 static void test_group_by_serial1(void **state)
 {
 	char *serial[1] = {"1"};
-        int paths[1] = {0};
-        int *groups[1] = {paths};
-        int group_size[1] = {1};
+	int paths[1] = {0};
+	int *groups[1] = {paths};
+	int group_size[1] = {1};
 
 	set_serial(p1, serial, 1);
-	mp1.pgpolicyfn = group_by_serial;
-        assert_int_equal(group_paths(&mp1, 0), 0);
-        verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
+	mp1.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
+	assert_int_equal(group_paths(&mp1, 0), 0);
+	verify_pathgroups(&mp1, p1, groups, group_size, NULL, 1);
 }
 
 static void test_group_by_serial0(void **state)
 {
-	mp0.pgpolicyfn = group_by_serial;
+	mp0.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp0, 0), 0);
 	verify_pathgroups(&mp0, NULL, NULL, NULL, NULL, 0);
 }
 
 static void test_group_by_serial_null(void **state)
 {
-	mp_null.pgpolicyfn = group_by_serial;
+	mp_null.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp_null, 0), 0);
 	verify_pathgroups(&mp_null, NULL, NULL, NULL, NULL, 0);
 }
@@ -937,7 +937,7 @@ static void test_group_by_serial_2_groups8_all_marginal8(void **state)
 	set_priority(p8, prio, 8);
 	set_serial(p8, serial, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 2);
 }
@@ -958,7 +958,7 @@ static void test_group_by_serial_2_groups8_half_marginal8(void **state)
 	set_priority(p8, prio, 8);
 	set_serial(p8, serial, 8);
 	set_marginal(p8, marginal, 8);
-	mp8.pgpolicyfn = group_by_serial;
+	mp8.pgpolicyfn = get_pgpolicy_fn(GROUP_BY_SERIAL);
 	assert_int_equal(group_paths(&mp8, 1), 0);
 	verify_pathgroups(&mp8, p8, groups, group_size, group_marginal, 4);
 }

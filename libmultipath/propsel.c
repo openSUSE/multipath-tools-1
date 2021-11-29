@@ -27,15 +27,6 @@
 #include <inttypes.h>
 #include <libudev.h>
 
-pgpolicyfn *pgpolicies[] = {
-	NULL,
-	one_path_per_group,
-	one_group,
-	group_by_serial,
-	group_by_prio,
-	group_by_node_name
-};
-
 #define do_set(var, src, dest, msg)					\
 do {									\
 	if (src && src->var) {						\
@@ -238,7 +229,7 @@ int select_pgpolicy(struct config *conf, struct multipath * mp)
 	mp_set_conf(pgpolicy);
 	mp_set_default(pgpolicy, DEFAULT_PGPOLICY);
 out:
-	mp->pgpolicyfn = pgpolicies[mp->pgpolicy];
+	mp->pgpolicyfn = get_pgpolicy_fn(mp->pgpolicy);
 	get_pgpolicy_name(buff, POLICY_NAME_SIZE, mp->pgpolicy);
 	condlog(3, "%s: path_grouping_policy = %s %s", mp->alias, buff, origin);
 	return 0;

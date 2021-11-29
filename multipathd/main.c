@@ -2540,7 +2540,7 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 	if (marginal_changed)
 		reload_and_sync_map(pp->mpp, vecs, 1);
 	else if (update_prio(pp, new_path_up) &&
-	    (pp->mpp->pgpolicyfn == (pgpolicyfn *)group_by_prio) &&
+	    (pp->mpp->pgpolicy == GROUP_BY_PRIO) &&
 	     pp->mpp->pgfailback == -FAILBACK_IMMEDIATE) {
 		condlog(2, "%s: path priorities changed. reloading",
 			pp->mpp->alias);
