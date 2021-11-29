@@ -350,11 +350,8 @@ store_path (vector pathvec, struct path * pp)
 
 int add_pathgroup(struct multipath *mpp, struct pathgroup *pgp)
 {
-	if (!vector_alloc_slot(mpp->pg))
+	if (vector_append_slot(mpp->pg, pgp) == -1)
 		return 1;
-
-	vector_set_slot(mpp->pg, pgp);
-
 	pgp->mpp = mpp;
 	return 0;
 }
