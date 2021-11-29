@@ -19,16 +19,9 @@ enum iopolicies {
 	GROUP_BY_NODE_NAME
 };
 
-int get_pgpolicy_id(char *);
+int get_pgpolicy_id(const char *);
 int get_pgpolicy_name (char *, int, int);
+pgpolicyfn *get_pgpolicy_fn(int);
 int group_paths(struct multipath *, int);
-/*
- * policies
- */
-int one_path_per_group(struct multipath *, vector);
-int one_group(struct multipath *, vector);
-int group_by_serial(struct multipath *, vector);
-int group_by_prio(struct multipath *, vector);
-int group_by_node_name(struct multipath *, vector);
 
 #endif

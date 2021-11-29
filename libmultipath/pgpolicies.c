@@ -13,48 +13,6 @@
 #include "pgpolicies.h"
 #include "switchgroup.h"
 
-int get_pgpolicy_id(char * str)
-{
-	if (0 == strncmp(str, "failover", 8))
-		return FAILOVER;
-	if (0 == strncmp(str, "multibus", 8))
-		return MULTIBUS;
-	if (0 == strncmp(str, "group_by_serial", 15))
-		return GROUP_BY_SERIAL;
-	if (0 == strncmp(str, "group_by_prio", 13))
-		return GROUP_BY_PRIO;
-	if (0 == strncmp(str, "group_by_node_name", 18))
-		return GROUP_BY_NODE_NAME;
-
-	return IOPOLICY_UNDEF;
-}
-
-int get_pgpolicy_name(char * buff, int len, int id)
-{
-	char * s;
-
-	switch (id) {
-	case FAILOVER:
-		s = "failover";
-		break;
-	case MULTIBUS:
-		s = "multibus";
-		break;
-	case GROUP_BY_SERIAL:
-		s = "group_by_serial";
-		break;
-	case GROUP_BY_PRIO:
-		s = "group_by_prio";
-		break;
-	case GROUP_BY_NODE_NAME:
-		s = "group_by_node_name";
-		break;
-	default:
-		s = "undefined";
-		break;
-	}
-	return snprintf(buff, len, "%s", s);
-}
 
 
 void
@@ -172,27 +130,27 @@ fail:
 
 typedef bool (path_match_fn)(struct path *pp1, struct path *pp2);
 
-bool
+static bool
 node_names_match(struct path *pp1, struct path *pp2)
 {
 	return (strncmp(pp1->tgt_node_name, pp2->tgt_node_name,
 			NODE_NAME_SIZE) == 0);
 }
 
-bool
+static bool
 serials_match(struct path *pp1, struct path *pp2)
 {
 	return (strncmp(pp1->serial, pp2->serial, SERIAL_SIZE) == 0);
 }
 
-bool
+static bool
 prios_match(struct path *pp1, struct path *pp2)
 {
 	return (pp1->priority == pp2->priority);
 }
 
-int group_by_match(struct multipath * mp, vector paths,
-		   bool (*path_match_fn)(struct path *, struct path *))
+static int group_by_match(struct multipath * mp, vector paths,
+			  bool (*path_match_fn)(struct path *, struct path *))
 {
 	int i, j;
 	struct bitfield *bitmap;
@@ -258,7 +216,7 @@ out:
 /*
  * One path group per unique tgt_node_name present in the path vector
  */
-int group_by_node_name(struct multipath * mp, vector paths)
+static int group_by_node_name(struct multipath * mp, vector paths)
 {
 	return group_by_match(mp, paths, node_names_match);
 }
@@ -266,7 +224,7 @@ int group_by_node_name(struct multipath * mp, vector paths)
 /*
  * One path group per unique serial number present in the path vector
  */
-int group_by_serial(struct multipath * mp, vector paths)
+static int group_by_serial(struct multipath * mp, vector paths)
 {
 	return group_by_match(mp, paths, serials_match);
 }
@@ -274,12 +232,12 @@ int group_by_serial(struct multipath * mp, vector paths)
 /*
  * One path group per priority present in the path vector
  */
-int group_by_prio(struct multipath *mp, vector paths)
+static int group_by_prio(struct multipath *mp, vector paths)
 {
 	return group_by_match(mp, paths, prios_match);
 }
 
-int one_path_per_group(struct multipath *mp, vector paths)
+static int one_path_per_group(struct multipath *mp, vector paths)
 {
 	int i;
 	struct path * pp;
@@ -307,7 +265,7 @@ out:
 	return 1;
 }
 
-int one_group(struct multipath *mp, vector paths)	/* aka multibus */
+static int one_group(struct multipath *mp, vector paths)	/* aka multibus */
 {
 	int i;
 	struct path * pp;
@@ -334,4 +292,54 @@ out:
 	free_pgvec(mp->pg, KEEP_PATHS);
 	mp->pg = NULL;
 	return 1;
+}
+
+struct pgpolicy_type {
+	int id;
+	const char *name;
+	pgpolicyfn *fn;
+};
+
+static const struct pgpolicy_type _pgpolicies[] = {
+	{ FAILOVER,		"failover",		one_path_per_group },
+	{ MULTIBUS,		"multibus",		one_group },
+	{ GROUP_BY_SERIAL,	"group_by_serial",	group_by_serial },
+	{ GROUP_BY_PRIO,	"group_by_prio",	group_by_prio },
+	{ GROUP_BY_NODE_NAME,	"group_by_node_name",	group_by_node_name }
+};
+
+int get_pgpolicy_id(const char *str)
+{
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(_pgpolicies); i++) {
+		if (!strcmp(str, _pgpolicies[i].name))
+			return _pgpolicies[i].id;
+	}
+	return IOPOLICY_UNDEF;
+}
+
+int get_pgpolicy_name(char *buff, int len, int id)
+{
+	const char *s = "undefined";
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(_pgpolicies); i++)
+		if (id == _pgpolicies[i].id) {
+			s = _pgpolicies[i].name;
+			break;
+		};
+
+	return snprintf(buff, len, "%s", s);
+}
+
+pgpolicyfn *get_pgpolicy_fn(int id)
+{
+	unsigned int i;
+
+	for (i = 0; i < ARRAY_SIZE(_pgpolicies); i++) {
+		if (id == _pgpolicies[i].id)
+			return _pgpolicies[i].fn;
+	}
+	return NULL;
 }
