@@ -386,6 +386,7 @@ struct multipath {
 	unsigned long long size;
 	vector paths;
 	vector pg;
+	vector new_pg;
 	struct dm_info * dmi;
 
 	/* configlet pointers */
