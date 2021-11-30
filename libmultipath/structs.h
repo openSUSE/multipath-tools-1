@@ -473,7 +473,7 @@ void free_pathgroup (struct pathgroup * pgp, enum free_path_mode free_paths);
 void free_pgvec (vector pgvec, enum free_path_mode free_paths);
 void free_multipath (struct multipath *, enum free_path_mode free_paths);
 void free_multipath_attributes (struct multipath *);
-void free_multipathvec (vector mpvec, enum free_path_mode free_paths);
+void free_multipathvec(vector mpvec);
 
 struct adapter_group * alloc_adaptergroup(void);
 struct host_group * alloc_hostgroup(void);

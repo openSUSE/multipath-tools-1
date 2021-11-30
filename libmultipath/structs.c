@@ -305,7 +305,7 @@ free_multipath (struct multipath * mpp, enum free_path_mode free_paths)
 }
 
 void
-free_multipathvec (vector mpvec, enum free_path_mode free_paths)
+free_multipathvec (vector mpvec)
 {
 	int i;
 	struct multipath * mpp;
@@ -314,7 +314,7 @@ free_multipathvec (vector mpvec, enum free_path_mode free_paths)
 		return;
 
 	vector_foreach_slot (mpvec, mpp, i)
-		free_multipath(mpp, free_paths);
+		free_multipath(mpp, KEEP_PATHS);
 
 	vector_free(mpvec);
 }
