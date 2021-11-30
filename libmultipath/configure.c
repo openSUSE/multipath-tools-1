@@ -1234,7 +1234,7 @@ int coalesce_paths (struct vectors *vecs, vector mpvec, char *refwwid,
 out:
 	free(size_mismatch_seen);
 	if (!mpvec)
-		free_multipathvec(newmp, KEEP_PATHS);
+		free_multipathvec(newmp);
 	return ret;
 }
 
