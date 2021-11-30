@@ -286,8 +286,8 @@ found:
 		devpath, r == 0 ? "" : " no");
 free:
 	free(mapname);
-	free_multipath(mpp, FREE_PATHS);
-	vector_free(pathvec);
+	free_multipath(mpp);
+	free_pathvec(pathvec, FREE_PATHS);
 out:
 	udev_device_unref(ud);
 	return r;
@@ -1053,7 +1053,7 @@ main (int argc, char *argv[])
 			printf("successfully reset wwids\n");
 		vector_foreach_slot_backwards(curmp, mpp, i) {
 			vector_del_slot(curmp, i);
-			free_multipath(mpp, KEEP_PATHS);
+			free_multipath(mpp);
 		}
 		vector_free(curmp);
 		goto out;
