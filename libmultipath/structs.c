@@ -266,7 +266,7 @@ void free_multipath_attributes(struct multipath *mpp)
 }
 
 void
-free_multipath (struct multipath * mpp, enum free_path_mode free_paths)
+free_multipath (struct multipath * mpp)
 {
 	if (!mpp)
 		return;
@@ -283,7 +283,7 @@ free_multipath (struct multipath * mpp, enum free_path_mode free_paths)
 		mpp->dmi = NULL;
 	}
 
-	if (!free_paths && mpp->pg) {
+	if (mpp->pg) {
 		struct pathgroup *pgp;
 		struct path *pp;
 		int i, j;
@@ -298,8 +298,8 @@ free_multipath (struct multipath * mpp, enum free_path_mode free_paths)
 		}
 	}
 
-	free_pathvec(mpp->paths, free_paths);
-	free_pgvec(mpp->pg, free_paths);
+	free_pathvec(mpp->paths, KEEP_PATHS);
+	free_pgvec(mpp->pg, KEEP_PATHS);
 	if (mpp->hwe) {
 		vector_free(mpp->hwe);
 		mpp->hwe = NULL;
@@ -318,7 +318,7 @@ free_multipathvec (vector mpvec)
 		return;
 
 	vector_foreach_slot (mpvec, mpp, i)
-		free_multipath(mpp, KEEP_PATHS);
+		free_multipath(mpp);
 
 	vector_free(mpvec);
 }

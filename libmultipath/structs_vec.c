@@ -357,7 +357,7 @@ remove_map(struct multipath *mpp, vector pathvec, vector mpvec)
 	/*
 	 * final free
 	 */
-	free_multipath(mpp, KEEP_PATHS);
+	free_multipath(mpp);
 }
 
 void

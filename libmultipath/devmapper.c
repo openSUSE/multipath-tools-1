@@ -1301,7 +1301,7 @@ struct multipath *dm_get_multipath(const char *name)
 
 	return mpp;
 out:
-	free_multipath(mpp, KEEP_PATHS);
+	free_multipath(mpp);
 	return NULL;
 }
 
@@ -1344,7 +1344,7 @@ dm_get_maps (vector mp)
 			goto out;
 
 		if (!vector_alloc_slot(mp)) {
-			free_multipath(mpp, KEEP_PATHS);
+			free_multipath(mpp);
 			goto out;
 		}
 
