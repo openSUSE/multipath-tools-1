@@ -264,6 +264,22 @@ void free_multipath_attributes(struct multipath *mpp)
 	}
 }
 
+static void detach_pathgroup(vector pgvec) {
+	struct pathgroup *pgp;
+	struct path *pp;
+	int i, j;
+
+	if (pgvec == NULL)
+		return;
+	/*
+	 * Make sure paths carry no reference to this mpp any more
+	 */
+	vector_foreach_slot(pgvec, pgp, i) {
+		vector_foreach_slot(pgp->paths, pp, j)
+			pp->mpp = NULL;
+	}
+}
+
 void
 free_multipath (struct multipath * mpp)
 {
@@ -282,23 +298,12 @@ free_multipath (struct multipath * mpp)
 		mpp->dmi = NULL;
 	}
 
-	if (mpp->pg) {
-		struct pathgroup *pgp;
-		struct path *pp;
-		int i, j;
-
-		/*
-		 * Make sure paths carry no reference to this mpp any more
-		 */
-		vector_foreach_slot(mpp->pg, pgp, i) {
-			vector_foreach_slot(pgp->paths, pp, j)
-				if (pp->mpp == mpp)
-					pp->mpp = NULL;
-		}
-	}
+	detach_pathgroup(mpp->pg);
+	detach_pathgroup(mpp->new_pg);
 
 	free_pathvec(mpp->paths, KEEP_PATHS);
 	free_pgvec(mpp->pg);
+	free_pgvec(mpp->new_pg);
 	if (mpp->hwe) {
 		vector_free(mpp->hwe);
 		mpp->hwe = NULL;

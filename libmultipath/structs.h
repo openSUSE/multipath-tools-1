@@ -301,7 +301,8 @@ struct path {
 	unsigned int checkint;
 	unsigned int tick;
 	int bus;
-	int offline;
+	bool offline;
+	bool mapped;
 	int state;
 	int dmstate;
 	int chkrstate;
