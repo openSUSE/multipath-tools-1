@@ -93,14 +93,13 @@ int group_paths(struct multipath *mp, int marginal_pathgroups)
 {
 	vector normal, marginal;
 
-	if (VECTOR_SIZE(mp->paths) == 0)
-		goto out;
-	if (!mp->pgpolicyfn)
-		goto fail;
-
 	free_pgvec(mp->new_pg);
 	mp->new_pg = vector_alloc();
 	if (mp->new_pg == NULL)
+		goto fail;
+	if (VECTOR_SIZE(mp->paths) == 0)
+		goto out;
+	if (!mp->pgpolicyfn)
 		goto fail;
 
 	if (split_marginal_paths(mp->paths, &normal, &marginal,
@@ -176,7 +175,7 @@ static int group_by_match(struct multipath * mp, vector paths,
 		if (!pgp)
 			goto out1;
 
-		if (vector_append_slot(mp->new_pg, pgp))
+		if (vector_append_slot(mp->new_pg, pgp) == -1)
 			goto out2;
 
 		/* feed the first path */
@@ -249,7 +248,7 @@ static int one_path_per_group(struct multipath *mp, vector paths)
 		if (!pgp)
 			goto out;
 
-		if (vector_append_slot(mp->new_pg, pgp))
+		if (vector_append_slot(mp->new_pg, pgp) == -1)
 			goto out1;
 
 		if (store_path(pgp->paths, pp))
@@ -275,7 +274,7 @@ static int one_group(struct multipath *mp, vector paths)	/* aka multibus */
 	if (!pgp)
 		goto out;
 
-	if (vector_append_slot(mp->new_pg, pgp))
+	if (vector_append_slot(mp->new_pg, pgp) == -1)
 		goto out1;
 
 	for (i = 0; i < VECTOR_SIZE(paths); i++) {
