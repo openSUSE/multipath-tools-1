@@ -44,33 +44,33 @@ sort_pathgroups (struct multipath *mp) {
 }
 
 static int
-split_marginal_paths(vector paths, vector *normal_p, vector *marginal_p)
+split_marginal_paths(vector paths, vector *normal_p, vector *marginal_p,
+		     int marginal_pathgroups)
 {
 	int i;
 	int has_marginal = 0;
-	int has_normal = 0;
 	struct path *pp;
 	vector normal = NULL;
 	vector marginal = NULL;
 
-	*normal_p = *marginal_p = NULL;
-	vector_foreach_slot(paths, pp, i) {
-		if (pp->marginal)
-			has_marginal = 1;
-		else
-			has_normal = 1;
+	if (marginal_pathgroups) {
+		vector_foreach_slot(paths, pp, i) {
+			if (pp->marginal) {
+				has_marginal = 1;
+				break;
+			}
+		}
 	}
 
-	if (!has_marginal || !has_normal)
-		return -1;
-
 	normal = vector_alloc();
-	marginal = vector_alloc();
-	if (!normal || !marginal)
+	if (has_marginal)
+		marginal = vector_alloc();
+
+	if (normal == NULL || (has_marginal && marginal == NULL))
 		goto fail;
 
 	vector_foreach_slot(paths, pp, i) {
-		if (pp->marginal) {
+		if (marginal_pathgroups && pp->marginal) {
 			if (store_path(marginal, pp))
 				goto fail;
 		}
@@ -85,6 +85,7 @@ split_marginal_paths(vector paths, vector *normal_p, vector *marginal_p)
 fail:
 	vector_free(normal);
 	vector_free(marginal);
+	*normal_p = *marginal_p = NULL;
 	return -1;
 }
 
@@ -102,18 +103,16 @@ int group_paths(struct multipath *mp, int marginal_pathgroups)
 	if (!mp->pgpolicyfn)
 		goto fail;
 
-	if (!marginal_pathgroups ||
-	    split_marginal_paths(mp->paths, &normal, &marginal) != 0) {
-		if (mp->pgpolicyfn(mp, mp->paths) != 0)
-			goto fail;
-	} else {
-		if (mp->pgpolicyfn(mp, normal) != 0)
-			goto fail_marginal;
-		if (mp->pgpolicyfn(mp, marginal) != 0)
-			goto fail_marginal;
-		vector_free(normal);
-		vector_free(marginal);
-	}
+	if (split_marginal_paths(mp->paths, &normal, &marginal,
+				 marginal_pathgroups))
+		goto fail;
+	if (VECTOR_SIZE(normal) > 0 && mp->pgpolicyfn(mp, normal) != 0)
+		goto fail_marginal;
+	if (marginal && mp->pgpolicyfn(mp, marginal) != 0)
+		goto fail_marginal;
+
+	vector_free(normal);
+	vector_free(marginal);
 	sort_pathgroups(mp);
 out:
 	vector_free(mp->paths);
