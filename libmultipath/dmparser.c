@@ -193,7 +193,7 @@ int disassemble_map(const struct _vector *pathvec,
 				return 1;
 		}
 	} else {
-		free_pgvec(mpp->pg, KEEP_PATHS);
+		free_pgvec(mpp->pg);
 		mpp->pg = NULL;
 	}
 
@@ -325,7 +325,7 @@ int disassemble_map(const struct _vector *pathvec,
 out1:
 	free(word);
 out:
-	free_pgvec(mpp->pg, KEEP_PATHS);
+	free_pgvec(mpp->pg);
 	mpp->pg = NULL;
 	return 1;
 }
