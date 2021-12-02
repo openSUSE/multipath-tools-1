@@ -135,8 +135,8 @@ static int setup_null(void **state)
 
 static int teardownX(struct multipath *mp)
 {
-	free_pgvec(mp->pg);
-	mp->pg = NULL;
+	free_pgvec(mp->new_pg);
+	mp->new_pg = NULL;
 	return 0;
 }
 
@@ -173,10 +173,10 @@ verify_pathgroups(struct multipath *mp, struct path *pp, int **groups,
 	struct pathgroup *pgp;
 
 	assert_null(mp->paths);
-	assert_non_null(mp->pg);
-	assert_int_equal(VECTOR_SIZE(mp->pg), size);
+	assert_non_null(mp->new_pg);
+	assert_int_equal(VECTOR_SIZE(mp->new_pg), size);
 	for (i = 0; i < size; i++) {
-		pgp = VECTOR_SLOT(mp->pg, i);
+		pgp = VECTOR_SLOT(mp->new_pg, i);
 		assert_non_null(pgp);
 		assert_non_null(pgp->paths);
 		assert_int_equal(VECTOR_SIZE(pgp->paths), group_size[i]);

@@ -359,17 +359,6 @@ int setup_map(struct multipath *mpp, char **params, struct vectors *vecs)
 	if (marginal_path_check_enabled(mpp))
 		start_io_err_stat_thread(vecs);
 
-	/*
-	 * assign paths to path groups -- start with no groups and all paths
-	 * in mpp->paths
-	 */
-	if (mpp->pg) {
-		vector_foreach_slot (mpp->pg, pgp, i)
-			free_pathgroup(pgp);
-
-		vector_free(mpp->pg);
-		mpp->pg = NULL;
-	}
 	if (group_paths(mpp, marginal_pathgroups))
 		return 1;
 
@@ -377,13 +366,13 @@ int setup_map(struct multipath *mpp, char **params, struct vectors *vecs)
 	 * ponders each path group and determine highest prio pg
 	 * to switch over (default to first)
 	 */
-	mpp->bestpg = select_path_group(mpp->pg);
+	mpp->bestpg = select_path_group(mpp->new_pg);
 
 	/* re-order paths in all path groups in an optimized way
 	 * for round-robin path selectors to get maximum throughput.
 	 */
 	if (!strncmp(mpp->selector, "round-robin", 11)) {
-		vector_foreach_slot(mpp->pg, pgp, i) {
+		vector_foreach_slot(mpp->new_pg, pgp, i) {
 			if (VECTOR_SIZE(pgp->paths) <= 2)
 				continue;
 			if (rr_optimize_path_order(pgp)) {
@@ -891,9 +880,13 @@ int domap(struct multipath *mpp, char *params, int is_daemon)
 	case ACT_REJECT:
 	case ACT_NOTHING:
 	case ACT_IMPOSSIBLE:
+		free_pgvec(mpp->new_pg);
+		mpp->new_pg = NULL;
 		return DOMAP_EXIST;
 
 	case ACT_SWITCHPG:
+		free_pgvec(mpp->new_pg);
+		mpp->new_pg = NULL;
 		dm_switchgroup(mpp->alias, mpp->bestpg);
 		/*
 		 * we may have avoided reinstating paths because there where in
@@ -927,6 +920,8 @@ int domap(struct multipath *mpp, char *params, int is_daemon)
 		break;
 
 	case ACT_RESIZE:
+		free_pgvec(mpp->new_pg);
+		mpp->new_pg = NULL;
 		sysfs_set_max_sectors_kb(mpp, 1);
 		if (mpp->ghost_delay_tick > 0 && pathcount(mpp, PATH_UP))
 			mpp->ghost_delay_tick = 0;
@@ -965,6 +960,9 @@ int domap(struct multipath *mpp, char *params, int is_daemon)
 		 * DM_DEVICE_CREATE, DM_DEVICE_RENAME, or DM_DEVICE_RELOAD
 		 * succeeded
 		 */
+		free_pgvec(mpp->pg);
+		mpp->pg = mpp->new_pg;
+		mpp->new_pg = NULL;
 		mpp->force_udev_reload = 0;
 		if (mpp->action == ACT_CREATE &&
 		    (remember_wwid(mpp->wwid) == 1 ||

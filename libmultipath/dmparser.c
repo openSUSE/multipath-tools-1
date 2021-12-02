@@ -57,7 +57,7 @@ int assemble_map(struct multipath *mp, char **params)
 
 	minio = mp->minio;
 
-	nr_priority_groups = VECTOR_SIZE(mp->pg);
+	nr_priority_groups = VECTOR_SIZE(mp->new_pg);
 	initial_pg_nr = (nr_priority_groups ? mp->bestpg : 0);
 
 	if (mp->no_path_retry != NO_PATH_RETRY_UNDEF  &&
@@ -72,8 +72,8 @@ int assemble_map(struct multipath *mp, char **params)
 			 nr_priority_groups, initial_pg_nr) < 0)
 		goto err;
 
-	vector_foreach_slot (mp->pg, pgp, i) {
-		pgp = VECTOR_SLOT(mp->pg, i);
+	vector_foreach_slot (mp->new_pg, pgp, i) {
+		pgp = VECTOR_SLOT(mp->new_pg, i);
 		if (print_strbuf(&buff, " %s %i 1", mp->selector,
 				 VECTOR_SIZE(pgp->paths)) < 0)
 			goto err;
