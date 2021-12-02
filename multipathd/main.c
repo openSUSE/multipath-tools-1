@@ -430,7 +430,7 @@ need_switch_pathgroup (struct multipath * mpp, int refresh)
 	if (!mpp->pg || VECTOR_SIZE(mpp->paths) == 0)
 		return 0;
 
-	bestpg = select_path_group(mpp);
+	bestpg = select_path_group(mpp->pg);
 	if (mpp->pgfailback == -FAILBACK_MANUAL)
 		return 0;
 

@@ -203,7 +203,7 @@ get_dm_mpvec (enum mpath_cmds cmd, vector curmp, vector pathvec, char * refwwid)
 		}
 
 		if (cmd == CMD_LIST_LONG)
-			mpp->bestpg = select_path_group(mpp);
+			mpp->bestpg = select_path_group(mpp->pg);
 
 		if (cmd == CMD_LIST_SHORT ||
 		    cmd == CMD_LIST_LONG)
