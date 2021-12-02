@@ -36,7 +36,7 @@ void path_group_prio_update(struct pathgroup *pgp)
 		pgp->marginal = 1;
 }
 
-int select_path_group(struct multipath *mpp)
+int select_path_group(const struct _vector *pgvec)
 {
 	int i;
 	int normal_pgp = 0;
@@ -45,10 +45,10 @@ int select_path_group(struct multipath *mpp)
 	int max_enabled_paths = 1;
 	struct pathgroup * pgp;
 
-	if (!mpp->pg)
+	if (!pgvec)
 		return 1;
 
-	vector_foreach_slot (mpp->pg, pgp, i) {
+	vector_foreach_slot (pgvec, pgp, i) {
 		if (!pgp->paths)
 			continue;
 

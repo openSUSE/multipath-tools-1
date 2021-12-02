@@ -377,7 +377,7 @@ int setup_map(struct multipath *mpp, char **params, struct vectors *vecs)
 	 * ponders each path group and determine highest prio pg
 	 * to switch over (default to first)
 	 */
-	mpp->bestpg = select_path_group(mpp);
+	mpp->bestpg = select_path_group(mpp->pg);
 
 	/* re-order paths in all path groups in an optimized way
 	 * for round-robin path selectors to get maximum throughput.
