@@ -342,7 +342,7 @@ remove_map(struct multipath *mpp, vector pathvec, vector mpvec)
 	int i;
 
 	free_pathvec(mpp->paths, KEEP_PATHS);
-	free_pgvec(mpp->pg, KEEP_PATHS);
+	free_pgvec(mpp->pg);
 	mpp->paths = mpp->pg = NULL;
 
 	/*
@@ -528,7 +528,7 @@ update_multipath_strings(struct multipath *mpp, vector pathvec)
 	condlog(4, "%s: %s", mpp->alias, __FUNCTION__);
 
 	free_multipath_attributes(mpp);
-	free_pgvec(mpp->pg, KEEP_PATHS);
+	free_pgvec(mpp->pg);
 	mpp->pg = NULL;
 
 	r = update_multipath_table(mpp, pathvec, 0);

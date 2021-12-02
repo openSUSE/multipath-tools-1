@@ -208,7 +208,7 @@ out2:
 out1:
 	free(bitmap);
 out:
-	free_pgvec(mp->pg, KEEP_PATHS);
+	free_pgvec(mp->pg);
 	mp->pg = NULL;
 	return 1;
 }
@@ -260,7 +260,7 @@ static int one_path_per_group(struct multipath *mp, vector paths)
 out1:
 	free_pathgroup(pgp, KEEP_PATHS);
 out:
-	free_pgvec(mp->pg, KEEP_PATHS);
+	free_pgvec(mp->pg);
 	mp->pg = NULL;
 	return 1;
 }
@@ -289,7 +289,7 @@ static int one_group(struct multipath *mp, vector paths)	/* aka multibus */
 out1:
 	free_pathgroup(pgp, KEEP_PATHS);
 out:
-	free_pgvec(mp->pg, KEEP_PATHS);
+	free_pgvec(mp->pg);
 	mp->pg = NULL;
 	return 1;
 }

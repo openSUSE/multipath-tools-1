@@ -470,7 +470,7 @@ void uninitialize_path(struct path *pp);
 void free_path (struct path *);
 void free_pathvec (vector vec, enum free_path_mode free_paths);
 void free_pathgroup (struct pathgroup * pgp, enum free_path_mode free_paths);
-void free_pgvec (vector pgvec, enum free_path_mode free_paths);
+void free_pgvec (vector pgvec);
 void free_multipath(struct multipath *);
 void free_multipath_attributes (struct multipath *);
 void free_multipathvec(vector mpvec);

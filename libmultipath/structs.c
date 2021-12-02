@@ -202,8 +202,7 @@ free_pathgroup (struct pathgroup * pgp, enum free_path_mode free_paths)
 	free(pgp);
 }
 
-void
-free_pgvec (vector pgvec, enum free_path_mode free_paths)
+void free_pgvec(vector pgvec)
 {
 	int i;
 	struct pathgroup * pgp;
@@ -212,7 +211,7 @@ free_pgvec (vector pgvec, enum free_path_mode free_paths)
 		return;
 
 	vector_foreach_slot(pgvec, pgp, i)
-		free_pathgroup(pgp, free_paths);
+		free_pathgroup(pgp, KEEP_PATHS);
 
 	vector_free(pgvec);
 }
@@ -295,7 +294,7 @@ free_multipath (struct multipath * mpp)
 	}
 
 	free_pathvec(mpp->paths, KEEP_PATHS);
-	free_pgvec(mpp->pg, KEEP_PATHS);
+	free_pgvec(mpp->pg);
 	if (mpp->hwe) {
 		vector_free(mpp->hwe);
 		mpp->hwe = NULL;
