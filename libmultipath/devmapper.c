@@ -1590,22 +1590,26 @@ alloc_dminfo (void)
 }
 
 int
-dm_get_info (const char * mapname, struct dm_info ** dmi)
+dm_get_info (const char * mapname, struct dm_info ** dmi_p)
 {
+	struct dm_info *dmi = NULL;
+
 	if (!mapname)
 		return 1;
 
-	if (!*dmi)
-		*dmi = alloc_dminfo();
+	if (!*dmi_p) {
+		dmi = alloc_dminfo();
+		if (!dmi)
+			return 1;
+	} else
+		dmi = *dmi_p;
 
-	if (!*dmi)
+	if (do_get_info(mapname, dmi) != 0) {
+		if (!*dmi_p)
+			free(dmi);
 		return 1;
-
-	if (do_get_info(mapname, *dmi) != 0) {
-		free(*dmi);
-		*dmi = NULL;
-		return 1;
-	}
+	} else if (!*dmi_p)
+		*dmi_p = dmi;
 	return 0;
 }
 
