@@ -388,6 +388,7 @@ struct multipath {
 	vector paths;
 	vector pg;
 	struct dm_info dmi;
+	vector new_pg;
 
 	/* configlet pointers */
 	char * alias;
