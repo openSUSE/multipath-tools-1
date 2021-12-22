@@ -44,9 +44,24 @@ sort_pathgroups (struct multipath *mp) {
 	}
 }
 
+static bool path_is_mapped(const struct path *pp, const struct _vector *pgvec)
+{
+	const struct pathgroup *pgp;
+	const struct path *p;
+	int i, j;
+
+	vector_foreach_slot(pgvec, pgp, i) {
+		vector_foreach_slot(pgp->paths, p, j)
+			if (p == pp)
+				return true;
+	}
+	return false;
+}
+
 static int
-split_marginal_paths(vector paths, vector *normal_p, vector *marginal_p,
-		     int marginal_pathgroups)
+filter_paths_and_split_marginal(vector paths, vector *normal_p,
+				vector *marginal_p, int marginal_pathgroups,
+				const struct _vector *pgvec)
 {
 	int i;
 	int has_marginal = 0;
@@ -71,11 +86,18 @@ split_marginal_paths(vector paths, vector *normal_p, vector *marginal_p,
 		goto fail;
 
 	vector_foreach_slot(paths, pp, i) {
-		if (marginal_pathgroups && pp->marginal) {
+		/*
+		 * The kernel can load maps with offline paths,
+		 * but only if these paths are already in the
+		 * current map.
+		 */
+		if (pp->offline && !path_is_mapped(pp, pgvec)) {
+			condlog(2, "%s: skipping offline path %s",
+				__func__, pp->dev);
+		} else if (marginal_pathgroups && pp->marginal) {
 			if (store_path(marginal, pp))
 				goto fail;
-		}
-		else {
+		} else {
 			if (store_path(normal, pp))
 				goto fail;
 		}
@@ -103,8 +125,8 @@ int group_paths(struct multipath *mp, int marginal_pathgroups)
 	if (!mp->pgpolicyfn)
 		goto fail;
 
-	if (split_marginal_paths(mp->paths, &normal, &marginal,
-				 marginal_pathgroups))
+	if (filter_paths_and_split_marginal(mp->paths, &normal, &marginal,
+					    marginal_pathgroups, mp->pg))
 		goto fail;
 	if (VECTOR_SIZE(normal) > 0 && mp->pgpolicyfn(mp, normal) != 0)
 		goto fail_marginal;
