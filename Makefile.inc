@@ -55,6 +55,11 @@ ifndef SYSTEMDPATH
 	SYSTEMDPATH=usr/lib
 endif
 
+# Allow user to override default location.
+ifndef LINUX_HEADERS_INCDIR
+        LINUX_HEADERS_INCDIR = /usr/include
+endif
+
 prefix		=
 exec_prefix	= $(prefix)
 usr_prefix	= $(prefix)
@@ -137,6 +142,19 @@ check_file = $(shell \
 	echo 1>&2 "Checking if $1 exists ... $$status"; \
 	echo "$$found" \
 	)
+
+# Check whether a file contains a variable with name $1 in header file $2
+check_var = $(shell \
+	if grep -Eq "(^|[[:blank:]])$1([[:blank:]]|=|$$)" "$2"; then \
+                found=1; \
+                status="yes"; \
+        else \
+                found=0; \
+                status="no"; \
+        fi; \
+        echo 1>&2 "Checking for ..  $1 in $2 ... $$status"; \
+        echo "$$found" \
+        )
 
 %.o:	%.c
 	@echo building $@ because of $?

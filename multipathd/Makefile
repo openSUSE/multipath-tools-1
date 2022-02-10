@@ -4,6 +4,10 @@ ifneq ($(call check_func,dm_task_get_errno,/usr/include/libdevmapper.h),0)
 	CFLAGS += -DLIBDM_API_GET_ERRNO
 endif
 
+# SLE15-SP3: The glibc headers are missing the definitions for FPIN
+CFLAGS += -DFPIN_EVENT_HANDLER
+FPIN_SUPPORT = 1
+
 #
 # debugging stuff
 #
@@ -40,6 +44,12 @@ endif
 
 OBJS = main.o pidfile.o uxlsnr.o uxclnt.o cli.o cli_handlers.o waiter.o \
        dmevents.o init_unwinder.o
+
+ifeq ($(FPIN_SUPPORT),1)
+OBJS += fpin_handlers.o
+endif
+
+
 
 EXEC = multipathd
 
