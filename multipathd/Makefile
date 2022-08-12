@@ -9,9 +9,18 @@ include ../Makefile.inc
 CFLAGS += $(BIN_CFLAGS) -I$(multipathdir) -I$(mpathpersistdir) \
 	  -I$(mpathcmddir) -I$(thirdpartydir)
 LDFLAGS += $(BIN_LDFLAGS)
-LIBDEPS += -ludev -ldl -L$(multipathdir) -lmultipath -L$(mpathpersistdir) \
-	   -lmpathpersist -L$(mpathcmddir) -lmpathcmd -lurcu -lpthread \
-	   -ldevmapper -lreadline
+LIBDEPS += -L$(multipathdir) -lmultipath -L$(mpathpersistdir) -lmpathpersist \
+	   -L$(mpathcmddir) -lmpathcmd -ludev -ldl -lurcu -lpthread \
+	   -ldevmapper
+
+ifeq ($(READLINE),libedit)
+CPPFLAGS += -DUSE_LIBEDIT
+LIBDEPS += -ledit
+endif
+ifeq ($(READLINE),libreadline)
+CPPFLAGS += -DUSE_LIBREADLINE
+LIBDEPS += -lreadline
+endif
 
 ifdef SYSTEMD
 	CFLAGS += -DUSE_SYSTEMD=$(SYSTEMD)
