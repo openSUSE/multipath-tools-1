@@ -9,7 +9,7 @@ CFLAGS += -I$(multipathdir) -I$(mpathpersistdir) -I$(mpathcmddir)
 ifdef SYSTEMD
 	CFLAGS += -DUSE_SYSTEMD=$(SYSTEMD)
 endif
-LDFLAGS += -lurcu -lpthread -ldevmapper -lreadline
+LDFLAGS += -lurcu -lpthread -ldevmapper
 ifdef SYSTEMD
 	ifeq ($(shell test $(SYSTEMD) -gt 209 && echo 1), 1)
 		LDFLAGS += -lsystemd
@@ -27,6 +27,14 @@ LDFLAGS += -ludev -ldl \
 #CFLAGS += -DLCKDBG
 #CFLAGS += -D_DEBUG_
 #CFLAGS += -DLOGDBG
+ifeq ($(READLINE),libedit)
+CFLAGS += -DUSE_LIBEDIT
+LDFLAGS += -ledit
+endif
+ifeq ($(READLINE),libreadline)
+CFLAGS += -DUSE_LIBREADLINE
+LDFLAGS += -lreadline
+endif
 
 #
 # object files
