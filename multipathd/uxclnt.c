@@ -16,8 +16,14 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/poll.h>
+
+#ifdef USE_LIBEDIT
+#include <editline/readline.h>
+#endif
+#ifdef USE_LIBREADLINE
 #include <readline/readline.h>
 #include <readline/history.h>
+#endif
 
 #include <uxsock.h>
 #include <memory.h>
