@@ -14,6 +14,11 @@
 #
 # Uncomment to disable dmevents polling support
 # ENABLE_DMEVENTS_POLL = 0
+#
+# Readline library to use, libedit or libreadline
+# Caution: Using libreadline may make the multipathd binary undistributable,
+# see https://github.com/opensvc/multipath-tools/issues/36
+READLINE = libedit
 
 ifeq ($(TOPDIR),)
 	TOPDIR	= ..

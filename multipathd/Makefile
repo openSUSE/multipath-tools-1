@@ -11,7 +11,16 @@ CFLAGS += $(BIN_CFLAGS) -I$(multipathdir) -I$(mpathpersistdir) \
 LDFLAGS += $(BIN_LDFLAGS)
 LIBDEPS += -L$(multipathdir) -lmultipath -L$(mpathpersistdir) -lmpathpersist \
 	   -L$(mpathcmddir) -lmpathcmd -ludev -ldl -lurcu -lpthread \
-	   -ldevmapper -lreadline
+	   -ldevmapper
+
+ifeq ($(READLINE),libedit)
+CPPFLAGS += -DUSE_LIBEDIT
+LIBDEPS += -ledit
+endif
+ifeq ($(READLINE),libreadline)
+CPPFLAGS += -DUSE_LIBREADLINE
+LIBDEPS += -lreadline
+endif
 
 ifdef SYSTEMD
 	CFLAGS += -DUSE_SYSTEMD=$(SYSTEMD)
