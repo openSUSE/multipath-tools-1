@@ -4,14 +4,19 @@
 #include <sys/time.h>
 #include <errno.h>
 #include <pthread.h>
-#include <memory.h>
-#include <vector.h>
-#include <structs.h>
-#include <structs_vec.h>
-#include <parser.h>
-#include <util.h>
-#include <version.h>
+#include "memory.h"
+#include "vector.h"
+#include "structs.h"
+#include "structs_vec.h"
+#include "parser.h"
+#include "util.h"
+#include "version.h"
+#ifdef USE_LIBEDIT
+#include <editline/readline.h>
+#endif
+#ifdef USE_LIBREADLINE
 #include <readline/readline.h>
+#endif
 
 #include "cli.h"
 
