@@ -561,6 +561,30 @@ int update_multipath (struct vectors *vecs, char *mapname, int reset)
 	return 0;
 }
 
+static bool
+flush_map_nopaths(struct multipath *mpp, struct vectors *vecs) {
+	char alias[WWID_SIZE];
+
+	/*
+	 * flush_map will fail if the device is open
+	 */
+	strlcpy(alias, mpp->alias, WWID_SIZE);
+	if (mpp->flush_on_last_del == FLUSH_ENABLED) {
+		condlog(2, "%s Last path deleted, disabling queueing",
+			mpp->alias);
+		mpp->retry_tick = 0;
+		mpp->no_path_retry = NO_PATH_RETRY_FAIL;
+		mpp->disable_queueing = 1;
+		mpp->stat_map_failures++;
+		dm_queue_if_no_path(mpp->alias, 0);
+	}
+	if (!flush_map(mpp, vecs, 1)) {
+		condlog(2, "%s: removed map after removing all paths", alias);
+		return true;
+	}
+	return false;
+}
+
 static int
 update_map (struct multipath *mpp, struct vectors *vecs, int new_map)
 {
@@ -578,12 +602,16 @@ retry:
 		goto fail;
 	}
 	verify_paths(mpp);
+	if (VECTOR_SIZE(mpp->paths) == 0 &&
+	    flush_map_nopaths(mpp, vecs))
+		return 1;
+
 	mpp->action = ACT_RELOAD;
 
 	if (mpp->prflag) {
 		vector_foreach_slot(mpp->paths, pp, i) {
 			if ((pp->state == PATH_UP)  || (pp->state == PATH_GHOST)) {
-				/* persistent reseravtion check*/
+				/* persistent reservation check*/
 				mpath_pr_event_handle(pp);
 			}
 		}
@@ -734,10 +762,6 @@ flush_map(struct multipath * mpp, struct vectors * vecs, int nopaths)
 	 * the spurious uevent we may generate with the dm_flush_map call below
 	 */
 	if (r) {
-		/*
-		 * May not really be an error -- if the map was already flushed
-		 * from the device mapper by dmsetup(8) for instance.
-		 */
 		if (r == 1)
 			condlog(0, "%s: can't flush", mpp->alias);
 		else {
@@ -911,14 +935,22 @@ rescan_path(struct udev_device *ud)
 {
 	ud = udev_device_get_parent_with_subsystem_devtype(ud, "scsi",
 							   "scsi_device");
-	if (ud)
-		sysfs_attr_set_value(ud, "rescan", "1", strlen("1"));
+	if (ud) {
+		ssize_t ret =
+			sysfs_attr_set_value(ud, "rescan", "1", strlen("1"));
+		if (ret != strlen("1"))
+			log_sysfs_attr_set_value(1, ret,
+						 "%s: failed to trigger rescan",
+						 udev_device_get_syspath(ud));
+	}
 }
 
 void
 handle_path_wwid_change(struct path *pp, struct vectors *vecs)
 {
 	struct udev_device *udd;
+	static const char add[] = "add";
+	ssize_t ret;
 
 	if (!pp || !pp->udev)
 		return;
@@ -929,8 +961,12 @@ handle_path_wwid_change(struct path *pp, struct vectors *vecs)
 		dm_fail_path(pp->mpp->alias, pp->dev_t);
 	}
 	rescan_path(udd);
-	sysfs_attr_set_value(udd, "uevent", "add", strlen("add"));
+	ret = sysfs_attr_set_value(udd, "uevent", add, sizeof(add) - 1);
 	udev_device_unref(udd);
+	if (ret != sizeof(add) - 1)
+		log_sysfs_attr_set_value(1, ret,
+					 "%s: failed to trigger add event",
+					 pp->dev);
 }
 
 bool
@@ -1126,7 +1162,7 @@ sysfs_get_ro (struct path *pp)
 	if (!pp->udev)
 		return -1;
 
-	if (sysfs_attr_get_value(pp->udev, "ro", buff, sizeof(buff)) <= 0) {
+	if (!sysfs_attr_get_value_ok(pp->udev, "ro", buff, sizeof(buff))) {
 		condlog(3, "%s: Cannot read ro attribute in sysfs", pp->dev);
 		return -1;
 	}
@@ -1351,34 +1387,12 @@ ev_remove_path (struct path *pp, struct vectors * vecs, int need_do_map)
 			vector_del_slot(mpp->paths, i);
 
 		/*
-		 * remove the map IF removing the last path
+		 * remove the map IF removing the last path. If
+		 * flush_map_nopaths succeeds, the path has been removed.
 		 */
-		if (VECTOR_SIZE(mpp->paths) == 0) {
-			char alias[WWID_SIZE];
-
-			/*
-			 * flush_map will fail if the device is open
-			 */
-			strlcpy(alias, mpp->alias, WWID_SIZE);
-			if (mpp->flush_on_last_del == FLUSH_ENABLED) {
-				condlog(2, "%s Last path deleted, disabling queueing", mpp->alias);
-				mpp->retry_tick = 0;
-				mpp->no_path_retry = NO_PATH_RETRY_FAIL;
-				mpp->disable_queueing = 1;
-				mpp->stat_map_failures++;
-				dm_queue_if_no_path(mpp->alias, 0);
-			}
-			if (!flush_map(mpp, vecs, 1)) {
-				condlog(2, "%s: removed map after"
-					" removing all paths",
-					alias);
-				/* flush_map() has freed the path */
-				goto out;
-			}
-			/*
-			 * Not an error, continue
-			 */
-		}
+		if (VECTOR_SIZE(mpp->paths) == 0 &&
+		    flush_map_nopaths(mpp, vecs))
+			goto out;
 
 		if (setup_map(mpp, &params, vecs)) {
 			condlog(0, "%s: failed to setup map for"
@@ -1503,7 +1517,7 @@ uev_update_path (struct uevent *uev, struct vectors * vecs)
 		condlog(3, "%s: error in change_foreign", __func__);
 		break;
 	default:
-		condlog(1, "%s: return code %d of change_forein is unsupported",
+		condlog(1, "%s: return code %d of change_foreign is unsupported",
 			__func__, rc);
 		break;
 	}
@@ -1954,7 +1968,7 @@ ghost_delay_tick(struct vectors *vecs)
 }
 
 static void
-defered_failback_tick (vector mpvec)
+deferred_failback_tick (vector mpvec)
 {
 	struct multipath * mpp;
 	unsigned int i;
@@ -2003,9 +2017,14 @@ partial_retrigger_tick(vector pathvec)
 		    --pp->partial_retrigger_delay == 0) {
 			const char *msg = udev_device_get_is_initialized(pp->udev) ?
 					  "change" : "add";
+			ssize_t len = strlen(msg);
+			ssize_t ret = sysfs_attr_set_value(pp->udev, "uevent", msg,
+							   len);
 
-			sysfs_attr_set_value(pp->udev, "uevent", msg,
-					     strlen(msg));
+			if (len != ret)
+				log_sysfs_attr_set_value(2, ret,
+					"%s: failed to trigger %s event",
+					pp->dev, msg);
 		}
 	}
 }
@@ -2169,7 +2188,7 @@ static int check_path_reinstate_state(struct path * pp) {
 	get_monotonic_time(&curr_time);
 	/* when path failures has exceeded the san_path_err_threshold
 	 * place the path in delayed state till san_path_err_recovery_time
-	 * so that the cutomer can rectify the issue within this time. After
+	 * so that the customer can rectify the issue within this time. After
 	 * the completion of san_path_err_recovery_time it should
 	 * automatically reinstate the path
 	 * (note: we know that san_path_err_threshold > 0 here).
@@ -2245,12 +2264,19 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 
 	if (!pp->mpp && pp->initialized == INIT_MISSING_UDEV) {
 		if (pp->retriggers < retrigger_tries) {
+			static const char change[] = "change";
+			ssize_t ret;
+
 			condlog(2, "%s: triggering change event to reinitialize",
 				pp->dev);
 			pp->initialized = INIT_REQUESTED_UDEV;
 			pp->retriggers++;
-			sysfs_attr_set_value(pp->udev, "uevent", "change",
-					     strlen("change"));
+			ret = sysfs_attr_set_value(pp->udev, "uevent", change,
+						   sizeof(change) - 1);
+			if (ret != sizeof(change) - 1)
+				log_sysfs_attr_set_value(1, ret,
+							 "%s: failed to trigger change event",
+							 pp->dev);
 			return 0;
 		} else {
 			condlog(1, "%s: not initialized after %d udev retriggers",
@@ -2623,7 +2649,7 @@ checkerloop (void *ap)
 		pthread_cleanup_push(cleanup_lock, &vecs->lock);
 		lock(&vecs->lock);
 		pthread_testcancel();
-		defered_failback_tick(vecs->mpvec);
+		deferred_failback_tick(vecs->mpvec);
 		retry_count_tick(vecs->mpvec);
 		missing_uev_wait_tick(vecs);
 		ghost_delay_tick(vecs);
