@@ -15,10 +15,10 @@
 # Uncomment to disable libdmmp support
 # ENABLE_LIBDMMP = 0
 #
-# Readline library to use, libedit or libreadline
+# Readline library to use, libedit, libreadline, or empty
 # Caution: Using libreadline may make the multipathd binary undistributable,
 # see https://github.com/opensvc/multipath-tools/issues/36
-READLINE = libedit
+READLINE := 
 
 ifeq ($(TOPDIR),)
 	TOPDIR	= ..
