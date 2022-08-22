@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        os: ['leap15.2', 'leap15.4']
+        os: ['leap15.3', 'leap15.4']
         # We have -arm too (for armv7l)
         # But tests fail with qemu-user (readdir() returns -EOVERFLOW), see
         # https://gitlab.com/qemu-project/qemu/-/issues/263
@@ -22,12 +22,6 @@ jobs:
         # __wrap_lseek64()
 
         arch: ['', '-ppc64le', '-arm64', '-s390x']
-        include:
-          - os: 'leap15.3'
-            arch: '-s390x'
-        exclude:
-          - os: 'leap15.2'
-            arch: '-s390x'
     steps:
       - name: checkout
         uses: actions/checkout@v1
