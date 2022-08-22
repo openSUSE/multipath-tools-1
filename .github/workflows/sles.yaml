@@ -5,6 +5,7 @@ on:
       - sles*
       - factory
       - next
+      - edge
 
 jobs:
   build-and-test:
