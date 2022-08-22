@@ -2574,6 +2574,11 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 	}
 	return 1;
 }
+enum checker_state {
+	CHECKER_STARTING,
+	CHECKER_RUNNING,
+	CHECKER_FINISHED,
+};
 
 static void *
 checkerloop (void *ap)
@@ -2581,7 +2586,6 @@ checkerloop (void *ap)
 	struct vectors *vecs;
 	struct path *pp;
 	int count = 0;
-	unsigned int i;
 	struct timespec last_time;
 	struct config *conf;
 	int foreign_tick = 0;
@@ -2607,44 +2611,86 @@ checkerloop (void *ap)
 
 	while (1) {
 		struct timespec diff_time, start_time, end_time;
-		int num_paths = 0, strict_timing, rc = 0;
+		int num_paths = 0, strict_timing, rc = 0, i = 0;
 		unsigned int ticks = 0;
+		enum checker_state checker_state = CHECKER_STARTING;
 
 		if (set_config_state(DAEMON_RUNNING) != DAEMON_RUNNING)
 			/* daemon shutdown */
 			break;
 
 		get_monotonic_time(&start_time);
-		if (start_time.tv_sec && last_time.tv_sec) {
-			timespecsub(&start_time, &last_time, &diff_time);
-			condlog(4, "tick (%ld.%06lu secs)",
-				(long)diff_time.tv_sec, diff_time.tv_nsec / 1000);
-			last_time = start_time;
-			ticks = diff_time.tv_sec;
-		} else {
-			ticks = 1;
-			condlog(4, "tick (%d ticks)", ticks);
-		}
+		timespecsub(&start_time, &last_time, &diff_time);
+		condlog(4, "tick (%ld.%06lu secs)",
+			(long)diff_time.tv_sec, diff_time.tv_nsec / 1000);
+		last_time = start_time;
+		ticks = diff_time.tv_sec;
 #ifdef USE_SYSTEMD
 		if (use_watchdog)
 			sd_notify(0, "WATCHDOG=1");
 #endif
+		while (checker_state != CHECKER_FINISHED) {
+			unsigned int paths_checked = 0;
+			struct timespec chk_start_time;
 
-		pthread_cleanup_push(cleanup_lock, &vecs->lock);
-		lock(&vecs->lock);
-		pthread_testcancel();
-		vector_foreach_slot (vecs->pathvec, pp, i) {
-			rc = check_path(vecs, pp, ticks);
-			if (rc < 0) {
-				condlog(1, "%s: check_path() failed, removing",
-					pp->dev);
-				vector_del_slot(vecs->pathvec, i);
-				free_path(pp);
-				i--;
-			} else
-				num_paths += rc;
+			pthread_cleanup_push(cleanup_lock, &vecs->lock);
+			lock(&vecs->lock);
+			pthread_testcancel();
+			get_monotonic_time(&chk_start_time);
+			if (checker_state == CHECKER_STARTING) {
+				vector_foreach_slot(vecs->pathvec, pp, i)
+					pp->is_checked = false;
+				i = 0;
+				checker_state = CHECKER_RUNNING;
+			} else {
+				/*
+				 * Paths could have been removed since we
+				 * dropped the lock. Find the path to continue
+				 * checking at. Since paths can be removed from
+				 * anywhere in the vector, but can only be added
+				 * at the end, the last checked path must be
+				 * between its old location, and the start or
+				 * the vector.
+				 */
+				if (i >= VECTOR_SIZE(vecs->pathvec))
+					i = VECTOR_SIZE(vecs->pathvec) - 1;
+				while ((pp = VECTOR_SLOT(vecs->pathvec, i))) {
+					if (pp->is_checked == true)
+						break;
+					i--;
+				}
+				i++;
+			}
+			vector_foreach_slot_after (vecs->pathvec, pp, i) {
+				pp->is_checked = true;
+				rc = check_path(vecs, pp, ticks);
+				if (rc < 0) {
+					condlog(1, "%s: check_path() failed, removing",
+						pp->dev);
+					vector_del_slot(vecs->pathvec, i);
+					free_path(pp);
+					i--;
+				} else
+					num_paths += rc;
+				if (++paths_checked % 128 == 0 &&
+				    (lock_has_waiters(&vecs->lock) ||
+				     waiting_clients())) {
+					get_monotonic_time(&end_time);
+					timespecsub(&end_time, &chk_start_time,
+						    &diff_time);
+					if (diff_time.tv_sec > 0)
+						goto unlock;
+				}
+			}
+			checker_state = CHECKER_FINISHED;
+unlock:
+			lock_cleanup_pop(vecs->lock);
+			if (checker_state != CHECKER_FINISHED) {
+				/* Yield to waiters */
+				struct timespec wait = { .tv_nsec = 10000, };
+				nanosleep(&wait, NULL);
+			}
 		}
-		lock_cleanup_pop(vecs->lock);
 
 		pthread_cleanup_push(cleanup_lock, &vecs->lock);
 		lock(&vecs->lock);
@@ -2668,26 +2714,23 @@ checkerloop (void *ap)
 			lock_cleanup_pop(vecs->lock);
 		}
 
-		diff_time.tv_nsec = 0;
-		if (start_time.tv_sec) {
-			get_monotonic_time(&end_time);
-			timespecsub(&end_time, &start_time, &diff_time);
-			if (num_paths) {
-				unsigned int max_checkint;
+		get_monotonic_time(&end_time);
+		timespecsub(&end_time, &start_time, &diff_time);
+		if (num_paths) {
+			unsigned int max_checkint;
 
-				condlog(4, "checked %d path%s in %ld.%06lu secs",
-					num_paths, num_paths > 1 ? "s" : "",
-					(long)diff_time.tv_sec,
-					diff_time.tv_nsec / 1000);
-				conf = get_multipath_config();
-				max_checkint = conf->max_checkint;
-				put_multipath_config(conf);
-				if (diff_time.tv_sec > (time_t)max_checkint)
-					condlog(1, "path checkers took longer "
-						"than %ld seconds, consider "
-						"increasing max_polling_interval",
-						(long)diff_time.tv_sec);
-			}
+			condlog(4, "checked %d path%s in %ld.%06lu secs",
+				num_paths, num_paths > 1 ? "s" : "",
+				(long)diff_time.tv_sec,
+				diff_time.tv_nsec / 1000);
+			conf = get_multipath_config();
+			max_checkint = conf->max_checkint;
+			put_multipath_config(conf);
+			if (diff_time.tv_sec > (time_t)max_checkint)
+				condlog(1, "path checkers took longer "
+					"than %ld seconds, consider "
+					"increasing max_polling_interval",
+					(long)diff_time.tv_sec);
 		}
 
 		if (foreign_tick == 0) {
@@ -2705,12 +2748,10 @@ checkerloop (void *ap)
 		if (!strict_timing)
 			sleep(1);
 		else {
-			if (diff_time.tv_nsec) {
-				diff_time.tv_sec = 0;
-				diff_time.tv_nsec =
-				     1000UL * 1000 * 1000 - diff_time.tv_nsec;
-			} else
-				diff_time.tv_sec = 1;
+			diff_time.tv_sec = 0;
+			diff_time.tv_nsec =
+			     1000UL * 1000 * 1000 - diff_time.tv_nsec;
+			normalize_timespec(&diff_time);
 
 			condlog(3, "waiting for %ld.%06lu secs",
 				(long)diff_time.tv_sec,
@@ -2966,7 +3007,7 @@ init_vecs (void)
 	if (!vecs)
 		return NULL;
 
-	pthread_mutex_init(&vecs->lock.mutex, NULL);
+	init_lock(&vecs->lock);
 
 	return vecs;
 }
