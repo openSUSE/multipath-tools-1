@@ -12,24 +12,24 @@ I AM NOT A LAWYER.
 THIS IS A BEST-EFFORT ASSESSMENT MADE BY A DEVELOPER.
 THIS DOCUMENT IS NOT INTENDED AS LEGAL ADVICE.
 
-# Statistics
+# Licenses of multipath-tools Binaries
 
- * LGPLv2.0 ("default license", see below): 120
- * GPLv2.0+: 35
- * GPLv2.0: 23 (under libmultipath and kpartx)
- * GPLv3.0+: 12 (only libdmmp)
- * LGPLv2.0+: 2 (libmpathcmd, recently changed to LGPLv2.1)
- * LGPLv2.1: 1 (libmultipath/checkers/rbd.c)
- * GPL (any version): 7 (only in libmultipath/prioritizers)
- * zlib (BSD-like): 2 (valgrind)
+- libmpathcmd: LGPL-2.1-or-later
+- libmultipath: GPL-2.0-only
+- libmpathpersist: LGPL-2.0 (see below)
+- libdmmp: GPL-3.0-or-later
+- kpartx: GPL-2.0-only
+- multipath: GPL-2.0-only
+- multipathd: GPL-2.0-only
+- mpathpersist: GPL-2.0-only
 
-## License propagation for libraries and binaries
+## Explanation
 
 Because libmultipath contains code covered by GPLv2.0 code, it's effectively
 under GPLv2.0. The same holds for the multipath and multipathd executables,
-and also for mpathpersist, as they need to link with
-libmultipath. libmpathpersist itself is under LGPLv2.0, but as it needs to  
-be linked with libmultipath, all executables linking with it must be under
+and also for mpathpersist, as they need to link with libmultipath.
+libmpathpersist itself is under LGPLv2.0, but as it needs to be
+linked with libmultipath, all executables linking with it must be under
 GPLv2.0-compatible licenses.
 
 The "plugins" in the "checkers", "prioritizers", and "foreign" subdirectories
@@ -45,6 +45,25 @@ communicates with libmultipath only through the socket.
 
 libdmmp is under GPLv3.0+. That's no problem because it communicates with
 libmultipath only through the socket.
+
+# Licenses in source code, from fossology analysis (see below).
+
+The analysis was carried out in April 2018, for multipath-tools 0.7.6.
+
+ * LGPLv2.0 ("default license", see below): 120
+ * GPLv2.0-or-later: 35
+ * GPLv2.0-only: 5 files in libmultipath:
+   - uevent.c
+   - sysfs.c
+   - list.h
+   - prioritizers/ontap.c
+   - prioritizers/datacore.c
+   18 files under kpartx.
+ * GPLv3.0-or-later: 12 (only libdmmp)
+ * LGPLv2.0-or-later: 2 (libmpathcmd, recently changed to LGPLv2.1)
+ * LGPLv2.1: 1 (libmultipath/checkers/rbd.c)
+ * GPL (any version): 7 (only in libmultipath/prioritizers)
+ * zlib (BSD-like): 2 (valgrind)
 
 # Notes on the assessment
 
@@ -65,13 +84,48 @@ There are many more things I have not done, can't list them all.
 ## Default license
 
 The default license for source files without an explicit license header
-was assumed to be LGPL v2.0, which was the license in COPYING since May 1,
-2005. Some files contain hints like "copied from xyz" that make it
+was assumed to be LGPL v2.0, which was the license in COPYING since Nov 12,
+2003, preceding the git history. The file was added by Greg Kroah-Hartmann
+to the former [udev git repository](https://git.kernel.org/pub/scm/linux/hotplug/udev.git)
+with the message
+
+    commit 04a091d47e32d6480b99424e41db093b013dfaf5
+    Author: greg@kroah.com <greg@kroah.com>
+    Date:   Thu Nov 13 06:30:57 2003 -0800
+    
+        [PATCH] Add multipath "extra" program from Christophe Varoqui, <christophe.varoqui@free.fr>
+
+I couldn't find a mailing-list posting of this program pre-dating this commit.
+It has been the default license since then, and all contributions not
+explicitly stating otherwise can be assumed to be made under this license.
+
+### LGPL-2.0 vs. LGPL-2.1
+
+The main difference between the LGPL-2.0 and LGPL-2.1 (other than the
+substitution of the word "library" by "lesser") was the addition of §6b
+in section 6, which lists the prerequisites for "works using the library":
+
+> Use a suitable shared library mechanism for linking with the Library. A
+> suitable mechanism is one that (1) uses at run time a copy of the library
+> already present on the user's computer system, rather than copying library
+> functions into the executable, and (2) will operate properly with a modified
+> version of the library, if the user installs one, as long as the modified
+> version is interface-compatible with the version that the work was made with. 
+
+This paragraph mainly clarifies what "combine or link" in the initial
+paragraph of section 6 technically means. It forbids copying and static
+linking, and guarantees the user's freedom to modify the library and still
+retain a working "work using the library". The LGPL-2.0 doesn't contain
+similar requirements, at least not explicitly.
+
+## Other licenses
+
+Some files contain hints like "copied from xyz" that make it
 possible to infer other original licenses. Whether or not that original
 license still applies is a matter of discussion, but by nature of the GPL,
 I assume that a file that emerged from GPL'd code remains under
 GPL, even if the changes far outweigh the original import - unless the
-differntly licensed sections are clearly identified in the file (e.g.
+differently licensed sections are clearly identified in the file (e.g.
 libmultipath/util.c).
 
 ## "Irrelevant" files
@@ -94,7 +148,9 @@ license.
  * multipathd/uxclnt.c: header says some code was imported from Samba,
    which would mean GPL-2.0+. But it's highly unclear what actually came from
    samba.
- * libmultipath/list.h: copied from kernel => GPLv2.0
+ * libmultipath/uevent.c: copied from udev code, GPLv2.0-only
+ * libmultipath/sysfs.c: copied from udev code, GPLv2.0-only
+ * libmultipath/list.h: copied from kernel => GPLv2.0-only
  * libmultipath/sg_include.h: dito.
  * libmultipath/callout.[hc]: refers to udev, I couldn't identify the original
    (early udev) code, assuming GPLv2.0
