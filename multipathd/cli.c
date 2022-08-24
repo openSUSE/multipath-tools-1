@@ -20,6 +20,7 @@
 
 #include "mpath_cmd.h"
 #include "cli.h"
+#include "cli_handlers.h"
 #include "debug.h"
 #include "strbuf.h"
 
@@ -449,6 +450,7 @@ cli_init (void) {
 	if (alloc_handlers())
 		return 1;
 
+	init_handler_callbacks();
 	return 0;
 }
 
