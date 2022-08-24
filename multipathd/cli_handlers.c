@@ -318,7 +318,7 @@ static int
 cli_list_paths_fmt (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * fmt = get_keyparam(v, FMT);
+	char * fmt = get_keyparam(v, KEY_FMT);
 
 	condlog(3, "list paths (operator)");
 
@@ -329,7 +329,7 @@ static int
 cli_list_paths_raw (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * fmt = get_keyparam(v, FMT);
+	char * fmt = get_keyparam(v, KEY_FMT);
 
 	condlog(3, "list paths (operator)");
 
@@ -340,7 +340,7 @@ static int
 cli_list_path (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path *pp;
 
 	param = convert_dev(param, 1);
@@ -358,7 +358,7 @@ cli_list_map_topology (void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -387,7 +387,7 @@ cli_list_map_json (void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -552,7 +552,7 @@ static int
 cli_list_maps_fmt (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * fmt = get_keyparam(v, FMT);
+	char * fmt = get_keyparam(v, KEY_FMT);
 
 	condlog(3, "list maps (operator)");
 
@@ -563,7 +563,7 @@ static int
 cli_list_maps_raw (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * fmt = get_keyparam(v, FMT);
+	char * fmt = get_keyparam(v, KEY_FMT);
 
 	condlog(3, "list maps (operator)");
 
@@ -575,8 +575,8 @@ cli_list_map_fmt (void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
-	char * fmt = get_keyparam(v, FMT);
+	char * param = get_keyparam(v, KEY_MAP);
+	char * fmt = get_keyparam(v, KEY_FMT);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -658,7 +658,7 @@ cli_reset_map_stats (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
 	struct multipath * mpp;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	mpp = find_mp_by_str(vecs->mpvec, param);
@@ -675,7 +675,7 @@ static int
 cli_add_path (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path *pp;
 	int r;
 	struct config *conf;
@@ -791,7 +791,7 @@ static int
 cli_del_path (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path *pp;
 
 	param = convert_dev(param, 1);
@@ -808,7 +808,7 @@ static int
 cli_add_map (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 	int major = -1, minor = -1;
 	char dev_path[PATH_SIZE];
 	char *refwwid, *alias = NULL;
@@ -870,7 +870,7 @@ static int
 cli_del_map (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 	int major, minor;
 	char *alias;
 	int rc;
@@ -915,7 +915,7 @@ static int
 cli_reload(void *v, char **reply, int *len, void *data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * mapname = get_keyparam(v, MAP);
+	char * mapname = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 	int minor;
 
@@ -968,7 +968,7 @@ static int
 cli_resize(void *v, char **reply, int *len, void *data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * mapname = get_keyparam(v, MAP);
+	char * mapname = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 	int minor;
 	unsigned long long size;
@@ -1060,7 +1060,7 @@ static int
 cli_restore_queueing(void *v, char **reply, int *len, void *data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * mapname = get_keyparam(v, MAP);
+	char * mapname = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 	int minor;
 	struct config *conf;
@@ -1123,7 +1123,7 @@ static int
 cli_disable_queueing(void *v, char **reply, int *len, void *data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * mapname = get_keyparam(v, MAP);
+	char * mapname = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 	int minor;
 
@@ -1170,8 +1170,8 @@ cli_disable_all_queueing(void *v, char **reply, int *len, void *data)
 static int
 cli_switch_group(void * v, char ** reply, int * len, void * data)
 {
-	char * mapname = get_keyparam(v, MAP);
-	int groupnum = atoi(get_keyparam(v, GROUP));
+	char * mapname = get_keyparam(v, KEY_MAP);
+	int groupnum = atoi(get_keyparam(v, KEY_GROUP));
 
 	mapname = convert_dev(mapname, 0);
 	condlog(2, "%s: switch to path group #%i (operator)", mapname, groupnum);
@@ -1200,7 +1200,7 @@ static int
 cli_suspend(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 	int r;
 	struct multipath * mpp;
 
@@ -1230,7 +1230,7 @@ static int
 cli_resume(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 	int r;
 	struct multipath * mpp;
 	uint16_t udev_flags;
@@ -1262,7 +1262,7 @@ static int
 cli_reinstate(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path * pp;
 
 	param = convert_dev(param, 1);
@@ -1285,7 +1285,7 @@ static int
 cli_reassign (void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 
 	param = convert_dev(param, 0);
@@ -1309,7 +1309,7 @@ static int
 cli_fail(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path * pp;
 	int r;
 
@@ -1440,7 +1440,7 @@ cli_getprstatus (void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -1465,7 +1465,7 @@ cli_setprstatus(void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -1488,7 +1488,7 @@ cli_unsetprstatus(void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, MAP);
+	char * param = get_keyparam(v, KEY_MAP);
 
 	param = convert_dev(param, 0);
 	get_path_layout(vecs->pathvec, 0);
@@ -1510,7 +1510,7 @@ cli_getprkey(void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char *mapname = get_keyparam(v, MAP);
+	char *mapname = get_keyparam(v, KEY_MAP);
 	char *flagstr = "";
 
 	mapname = convert_dev(mapname, 0);
@@ -1543,7 +1543,7 @@ cli_unsetprkey(void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char *mapname = get_keyparam(v, MAP);
+	char *mapname = get_keyparam(v, KEY_MAP);
 	int ret;
 	struct config *conf;
 
@@ -1567,8 +1567,8 @@ cli_setprkey(void * v, char ** reply, int * len, void * data)
 {
 	struct multipath * mpp;
 	struct vectors * vecs = (struct vectors *)data;
-	char *mapname = get_keyparam(v, MAP);
-	char *keyparam = get_keyparam(v, KEY);
+	char *mapname = get_keyparam(v, KEY_MAP);
+	char *keyparam = get_keyparam(v, KEY_KEY);
 	uint64_t prkey;
 	uint8_t flags;
 	int ret;
@@ -1597,7 +1597,7 @@ cli_setprkey(void * v, char ** reply, int * len, void * data)
 static int cli_set_marginal(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path * pp;
 
 	param = convert_dev(param, 1);
@@ -1624,7 +1624,7 @@ static int cli_set_marginal(void * v, char ** reply, int * len, void * data)
 static int cli_unset_marginal(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * param = get_keyparam(v, PATH);
+	char * param = get_keyparam(v, KEY_PATH);
 	struct path * pp;
 
 	param = convert_dev(param, 1);
@@ -1651,7 +1651,7 @@ static int cli_unset_marginal(void * v, char ** reply, int * len, void * data)
 static int cli_unset_all_marginal(void * v, char ** reply, int * len, void * data)
 {
 	struct vectors * vecs = (struct vectors *)data;
-	char * mapname = get_keyparam(v, MAP);
+	char * mapname = get_keyparam(v, KEY_MAP);
 	struct multipath *mpp;
 	struct pathgroup * pgp;
 	struct path * pp;
