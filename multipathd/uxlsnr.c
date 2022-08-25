@@ -279,7 +279,7 @@ static int parse_cmd (char *cmd, char **reply, int *len, void *data,
 	vector cmdvec = NULL;
 	struct timespec tmo;
 
-	r = get_cmdvec(cmd, &cmdvec);
+	r = get_cmdvec(cmd, &cmdvec, false);
 
 	if (r) {
 		*reply = genhelp_handler(cmd, r);
