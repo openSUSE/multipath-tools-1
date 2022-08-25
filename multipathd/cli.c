@@ -126,8 +126,7 @@ __set_handler_callback (uint32_t fp, cli_handler *fn, bool locked)
 	return 0;
 }
 
-static void
-free_key (struct key * kw)
+void free_key (struct key * kw)
 {
 	if (kw->str)
 		free(kw->str);
@@ -258,15 +257,29 @@ find_key (const char * str)
 	return foundkw;
 }
 
+static void cleanup_strvec(vector *arg)
+{
+	free_strvec(*arg);
+}
+
+static void cleanup_keys(vector *arg)
+{
+	free_keys(*arg);
+}
+
 /*
- * get_cmdvec
+ * get_cmdvec() - parse input
+ *
+ * @cmd: a command string to be parsed
+ * @v: a vector of keywords with parameters
  *
  * returns:
  * ENOMEM: not enough memory to allocate command
- * ESRCH: command not found
+ * ESRCH: keyword not found at end of input
+ * ENOENT: keyword not found somewhere else
  * EINVAL: argument missing for command
  */
-int get_cmdvec (char *cmd, vector *v)
+int get_cmdvec (char *cmd, vector *v, bool allow_incomplete)
 {
 	int i;
 	int r = 0;
@@ -274,18 +287,11 @@ int get_cmdvec (char *cmd, vector *v)
 	char * buff;
 	struct key * kw = NULL;
 	struct key * cmdkw = NULL;
-	vector cmdvec, strvec;
+	vector cmdvec __attribute__((cleanup(cleanup_keys))) = vector_alloc();
+	vector strvec __attribute__((cleanup(cleanup_strvec))) = alloc_strvec(cmd);
 
-	strvec = alloc_strvec(cmd);
-	if (!strvec)
+	if (!strvec || !cmdvec)
 		return ENOMEM;
-
-	cmdvec = vector_alloc();
-
-	if (!cmdvec) {
-		free_strvec(strvec);
-		return ENOMEM;
-	}
 
 	vector_foreach_slot(strvec, buff, i) {
 		if (is_quote(buff))
@@ -297,18 +303,18 @@ int get_cmdvec (char *cmd, vector *v)
 		}
 		kw = find_key(buff);
 		if (!kw) {
-			r = ESRCH;
-			goto out;
+			r = i == VECTOR_SIZE(strvec) - 1 ? ESRCH : ENOENT;
+			break;
 		}
 		cmdkw = alloc_key();
 		if (!cmdkw) {
 			r = ENOMEM;
-			goto out;
+			break;
 		}
 		if (!vector_alloc_slot(cmdvec)) {
 			free(cmdkw);
 			r = ENOMEM;
-			goto out;
+			break;
 		}
 		vector_set_slot(cmdvec, cmdkw);
 		cmdkw->code = kw->code;
@@ -316,17 +322,14 @@ int get_cmdvec (char *cmd, vector *v)
 		if (kw->has_param)
 			get_param = 1;
 	}
-	if (get_param) {
+	if (get_param)
 		r = EINVAL;
-		goto out;
-	}
-	*v = cmdvec;
-	free_strvec(strvec);
-	return 0;
 
-out:
-	free_strvec(strvec);
-	free_keys(cmdvec);
+	if (r && !allow_incomplete)
+		return r;
+
+	*v = cmdvec;
+	cmdvec = NULL;
 	return r;
 }
 
@@ -476,42 +479,66 @@ void cli_exit(void)
 }
 
 #if defined(USE_LIBREADLINE) || defined(USE_LIBEDIT)
-static int
-key_match_fingerprint (struct key * kw, uint64_t fp)
-{
-	if (!fp)
-		return 0;
-
-	return ((fp & kw->code) == kw->code);
-}
-
 /*
  * This is the readline completion handler
  */
 char *
 key_generator (const char * str, int state)
 {
-	static int index, len, has_param;
-	static uint64_t rlfp;
-	struct key * kw;
-	int i;
-	struct handler *h;
-	vector v = NULL;
+	static vector completions;
+	static int index;
+	char *word;
 
 	if (!state) {
+		uint32_t rlfp = 0, mask = 0;
+		int len = strlen(str), vlen = 0, i, j;
+		struct key * kw;
+		struct handler *h;
+		vector v = NULL;
+		int r = get_cmdvec(rl_line_buffer, &v, true);
+
 		index = 0;
-		has_param = 0;
-		rlfp = 0;
-		len = strlen(str);
-		int r = get_cmdvec(rl_line_buffer, &v);
+		if (completions)
+			vector_free(completions);
+
+		completions = vector_alloc();
+
+		if (!completions || r == ENOMEM) {
+			if (v)
+				vector_free(v);
+			return NULL;
+		}
+
+		/*
+		 * Special case: get_cmdvec() ignores trailing whitespace,
+		 * readline doesn't. get_cmdvec() will return "[show]" and
+		 * ESRCH for both "show bogus\t" and "show bogus \t".
+		 * The former case will fail below. In the latter case,
+		 * We shouldn't offer completions.
+		 */
+		if (r == ESRCH && !len)
+			r = ENOENT;
+
 		/*
 		 * If a word completion is in progress, we don't want
 		 * to take an exact keyword match in the fingerprint.
 		 * For ex "show map[tab]" would validate "map" and discard
 		 * "maps" as a valid candidate.
 		 */
-		if (v && len)
-			vector_del_slot(v, VECTOR_SIZE(v) - 1);
+		if (r != ESRCH && VECTOR_SIZE(v) && len) {
+			kw = VECTOR_SLOT(v, VECTOR_SIZE(v) - 1);
+			/*
+			 * If kw->param is set, we were already parsing a
+			 * parameter, not the keyword. Don't delete it.
+			 */
+			if (!kw->param) {
+				free_key(kw);
+				vector_del_slot(v, VECTOR_SIZE(v) - 1);
+				if (r == EINVAL)
+					r = 0;
+			}
+		}
+
 		/*
 		 * Clean up the mess if we dropped the last slot of a 1-slot
 		 * vector
@@ -520,65 +547,85 @@ key_generator (const char * str, int state)
 			vector_free(v);
 			v = NULL;
 		}
-		/*
-		 * If last keyword takes a param, don't even try to guess
-		 */
-		if (r == EINVAL) {
-			has_param = 1;
-			return (strdup("(value)"));
-		}
+
 		/*
 		 * Compute a command fingerprint to find out possible completions.
 		 * Once done, the vector is useless. Free it.
 		 */
 		if (v) {
 			rlfp = fingerprint(v);
+			vlen = VECTOR_SIZE(v);
+			if (vlen >= 4)
+				mask = ~0;
+			else
+				mask = (uint32_t)(1U << (8 * vlen)) - 1;
 			free_keys(v);
 		}
-	}
-	/*
-	 * No more completions for parameter placeholder.
-	 * Brave souls might try to add parameter completion by walking paths and
-	 * multipaths vectors.
-	 */
-	if (has_param)
-		return ((char *)NULL);
-	/*
-	 * Loop through keywords for completion candidates
-	 */
-	vector_foreach_slot_after (keys, kw, index) {
-		if (!strncmp(kw->str, str, len)) {
-			/*
-			 * Discard keywords already in the command line
-			 */
-			if (key_match_fingerprint(kw, rlfp)) {
-				struct key * curkw = find_key(str);
-				if (!curkw || (curkw != kw))
+		condlog(4, "%s: line=\"%s\" str=\"%s\" r=%d fp=%08x mask=%08x",
+			__func__, rl_line_buffer, str, r, rlfp, mask);
+
+		/*
+		 * If last keyword takes a param, don't even try to guess
+		 * Brave souls might try to add parameter completion by walking
+		 * paths and multipaths vectors.
+		 */
+		if (r == EINVAL) {
+			if (len == 0 && vector_alloc_slot(completions))
+				vector_set_slot(completions,
+						strdup("VALUE"));
+
+			goto init_done;
+		}
+
+		if (r == ENOENT)
+			goto init_done;
+
+		vector_foreach_slot(handlers, h, i) {
+			uint8_t code;
+
+			if (rlfp != (h->fingerprint & mask))
+				continue;
+
+			if (vlen >= 4)
+				/*
+				 * => mask == ~0 => rlfp == h->fingerprint
+				 * Complete command. This must be the only match.
+				 */
+				goto init_done;
+			else if (rlfp == h->fingerprint && r != ESRCH &&
+				 !strcmp(str, "") &&
+				 vector_alloc_slot(completions))
+				/* just completed */
+				vector_set_slot(completions, strdup(""));
+			else {
+				/* vlen must be 1, 2, or 3 */
+				code = (h->fingerprint >> vlen * 8);
+
+				if (code == KEY_INVALID)
 					continue;
-			}
-			/*
-			 * Discard keywords making syntax errors.
-			 *
-			 * nfp is the candidate fingerprint we try to
-			 * validate against all known command fingerprints.
-			 */
-			uint64_t nfp = rlfp | kw->code;
-			vector_foreach_slot(handlers, h, i) {
-				if (!rlfp || ((h->fingerprint & nfp) == nfp)) {
-					/*
-					 * At least one full command is
-					 * possible with this keyword :
-					 * Consider it validated
-					 */
-					index++;
-					return (strdup(kw->str));
+
+				vector_foreach_slot(keys, kw, j) {
+					if (kw->code != code ||
+					    strncmp(kw->str, str, len))
+						continue;
+					if (vector_alloc_slot(completions))
+						vector_set_slot(completions,
+								strdup(kw->str));
 				}
 			}
+
 		}
+		vector_foreach_slot(completions, word, i)
+			condlog(4, "%s: %d -> \"%s\"", __func__, i, word);
+
 	}
-	/*
-	 * No more candidates
-	 */
-	return ((char *)NULL);
+
+init_done:
+	vector_foreach_slot_after(completions, word, index) {
+		index++;
+		return word;
+	}
+
+	return NULL;
 }
 #endif
