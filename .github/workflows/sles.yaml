@@ -31,4 +31,4 @@ jobs:
         with:
           params: --platform ${{ matrix.arch }}
           image: registry.opensuse.org/home/mwilck/containers/${{ matrix.os }}/containers/multipath-build
-          command: build
+          command: all
