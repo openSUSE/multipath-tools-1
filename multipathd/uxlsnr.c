@@ -249,21 +249,9 @@ void * uxsock_listen(uxsock_trigger_fn uxsock_trigger, long ux_sock,
 			continue;
 		}
 
-		/*
-		 * Client connection. We shouldn't answer while we're
-		 * configuring - nothing may be configured yet.
-		 * But we can't wait forever either, because this thread
-		 * must handle signals. So wait a short while only.
-		 */
-		if (wait_for_state_change_if(DAEMON_CONFIGURE, 10)
-		    == DAEMON_CONFIGURE) {
-			handle_signals(false);
-			continue;
-		}
-
 		/* see if a client wants to speak to us */
 		for (i = 1; i < num_clients + 1; i++) {
-			if (polls[i].revents & POLLIN) {
+			if (polls[i].revents & (POLLIN|POLLHUP|POLLERR)) {
 				struct timespec start_time;
 
 				c = NULL;
@@ -280,6 +268,12 @@ void * uxsock_listen(uxsock_trigger_fn uxsock_trigger, long ux_sock,
 						i, polls[i].fd);
 					continue;
 				}
+				if (polls[i].revents & (POLLHUP|POLLERR)) {
+					condlog(4, "cli[%d]: Disconnected",
+						c->fd);
+					dead_client(c);
+					continue;
+				}
 				get_monotonic_time(&start_time);
 				if (recv_packet_from_client(c->fd, &inbuf,
 							    uxsock_timeout)
@@ -293,7 +287,7 @@ void * uxsock_listen(uxsock_trigger_fn uxsock_trigger, long ux_sock,
 					continue;
 				}
 				condlog(4, "cli[%d]: Got request [%s]",
-					i, inbuf);
+					polls[i].fd, inbuf);
 				uxsock_trigger(inbuf, &reply, &rlen,
 					       _socket_client_is_root(c->fd),
 					       trigger_data);
@@ -304,7 +298,7 @@ void * uxsock_listen(uxsock_trigger_fn uxsock_trigger, long ux_sock,
 					} else {
 						condlog(4, "cli[%d]: "
 							"Reply [%d bytes]",
-							i, rlen);
+							polls[i].fd, rlen);
 					}
 					FREE(reply);
 					reply = NULL;

@@ -189,6 +189,7 @@ struct config {
 	int ghost_delay;
 	int find_multipaths_timeout;
 	unsigned int version[3];
+	int force_reconfigure;
 
 	char * multipath_dir;
 	char * selector;
