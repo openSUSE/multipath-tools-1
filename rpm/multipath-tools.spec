@@ -20,7 +20,6 @@ Name:           multipath-tools
 BuildRequires:  device-mapper-devel
 BuildRequires:  libaio-devel
 BuildRequires:  libudev-devel
-BuildRequires:  readline-devel
 BuildRequires:  udev
 BuildRequires:  pkgconfig(libsystemd)
 BuildRequires:  pkgconfig(systemd)
