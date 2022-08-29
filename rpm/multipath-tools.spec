@@ -47,7 +47,7 @@ Source1:        multipath.conf
 Source2:        multipath-tools.conf
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-Patch0:         %{name}-%{version}-sles12-sp1.diff.bz2
+Patch0:         %{name}-%{version}-sles12.diff.bz2
 %if %suse_version > 1220
 %define         _sysdir usr/lib
 %else
