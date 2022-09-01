@@ -8,6 +8,8 @@
 *.d
 kpartx/kpartx
 multipath/multipath
+multipath/multipath.rules
+multipath/tmpfiles.conf
 multipathd/multipathd
 mpathpersist/mpathpersist
 .nfs*
