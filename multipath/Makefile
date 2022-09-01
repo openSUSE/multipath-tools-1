@@ -12,7 +12,7 @@ EXEC = multipath
 
 OBJS = main.o
 
-all: $(EXEC)
+all: $(EXEC) multipath.rules tmpfiles.conf
 
 $(EXEC): $(OBJS) $(multipathdir)/libmultipath.so $(mpathcmddir)/libmpathcmd.so
 	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC) $(LDFLAGS) $(LIBDEPS)
@@ -24,7 +24,9 @@ install:
 	$(INSTALL_PROGRAM) -m 755 $(EXEC) $(DESTDIR)$(bindir)/
 	$(INSTALL_PROGRAM) -d $(DESTDIR)$(udevrulesdir)
 	$(INSTALL_PROGRAM) -m 644 11-dm-mpath.rules $(DESTDIR)$(udevrulesdir)
-	$(INSTALL_PROGRAM) -m 644 $(EXEC).rules $(DESTDIR)$(libudevdir)/rules.d/56-multipath.rules
+	$(INSTALL_PROGRAM) -m 644 multipath.rules $(DESTDIR)$(udevrulesdir)/56-multipath.rules
+	$(INSTALL_PROGRAM) -d $(DESTDIR)$(tmpfilesdir)
+	$(INSTALL_PROGRAM) -m 644 tmpfiles.conf $(DESTDIR)$(tmpfilesdir)/multipath.conf
 	$(INSTALL_PROGRAM) -d $(DESTDIR)$(man8dir)
 	$(INSTALL_PROGRAM) -m 644 $(EXEC).8.gz $(DESTDIR)$(man8dir)
 	$(INSTALL_PROGRAM) -d $(DESTDIR)$(man5dir)
@@ -38,9 +40,12 @@ uninstall:
 	$(RM) $(DESTDIR)$(man5dir)/$(EXEC).conf.5.gz
 
 clean: dep_clean
-	$(RM) core *.o $(EXEC) *.gz
+	$(RM) core *.o $(EXEC) multipath.rules tmpfiles.conf
 
 include $(wildcard $(OBJS:.o=.d))
 
 dep_clean:
 	$(RM) $(OBJS:.o=.d)
+
+%:	%.in
+	sed 's,@RUNTIME_DIR@,$(runtimedir),' $< >$@

@@ -65,6 +65,7 @@ exec_prefix	= $(prefix)
 usr_prefix	= $(prefix)
 bindir		= $(exec_prefix)/sbin
 libudevdir	= $(prefix)/$(SYSTEMDPATH)/udev
+tmpfilesdir	= $(prefix)/$(SYSTEMDPATH)/tmpfiles.d
 udevrulesdir	= $(libudevdir)/rules.d
 multipathdir	= $(TOPDIR)/libmultipath
 daemondir       = $(TOPDIR)/multipathd
@@ -82,6 +83,7 @@ libdmmpdir	= $(TOPDIR)/libdmmp
 nvmedir		= $(TOPDIR)/libmultipath/nvme
 includedir	= $(prefix)/usr/include
 pkgconfdir	= $(usrlibdir)/pkgconfig
+runtimedir      := /$(RUN)
 
 GZIP		= gzip -9 -c
 RM		= rm -f
@@ -111,7 +113,7 @@ WARNFLAGS	:= -Werror -Wall -Wextra -Wformat=2 -Werror=implicit-int \
 CPPFLAGS	:= -Wp,-D_FORTIFY_SOURCE=2 
 CFLAGS		:= --std=gnu99 $(CFLAGS) $(OPTFLAGS) $(WARNFLAGS) -pipe \
 		   -DBIN_DIR=\"$(bindir)\" -DLIB_STRING=\"${LIB}\" -DRUN_DIR=\"${RUN}\" \
-		   -MMD -MP
+		   -DRUNTIME_DIR=\"$(runtimedir)\" -MMD -MP
 BIN_CFLAGS	= -fPIE -DPIE
 LIB_CFLAGS	= -fPIC
 SHARED_FLAGS	= -shared
