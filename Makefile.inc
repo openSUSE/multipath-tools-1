@@ -67,6 +67,7 @@ bindir		= $(exec_prefix)/sbin
 libudevdir	= $(prefix)/$(SYSTEMDPATH)/udev
 udevrulesdir	= $(libudevdir)/rules.d
 multipathdir	= $(TOPDIR)/libmultipath
+daemondir       = $(TOPDIR)/multipathd
 man8dir		= $(prefix)/usr/share/man/man8
 man5dir		= $(prefix)/usr/share/man/man5
 man3dir		= $(prefix)/usr/share/man/man3

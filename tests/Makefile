@@ -8,12 +8,12 @@ TEST_MISSING_INITIALIZERS = $(shell \
 	|| echo -Wno-missing-field-initializers)
 W_MISSING_INITIALIZERS := $(call TEST_MISSING_INITIALIZERS)
 
-CFLAGS += $(BIN_CFLAGS) -I$(multipathdir) -I$(mpathcmddir) \
+CFLAGS += $(BIN_CFLAGS) -I$(multipathdir) -I$(mpathcmddir) -I$(daemondir) \
 	-Wno-unused-parameter $(W_MISSING_INITIALIZERS)
 LIBDEPS += -L$(multipathdir) -L$(mpathcmddir) -lmultipath -lmpathcmd -lcmocka
 
 TESTS := uevent parser util dmevents hwtable blacklist unaligned vpd pgpolicy \
-	 alias directio valid devt
+	 alias directio valid devt cli
 HELPERS := test-lib.o test-log.o
 
 .SILENT: $(TESTS:%=%.o)
@@ -59,6 +59,8 @@ devt-test_LIBDEPS := -ludev
 ifneq ($(DIO_TEST_DEV),)
 directio-test_LIBDEPS := -laio
 endif
+cli-test_OBJDEPS := $(daemondir)/cli.o
+cli-test_LIBDEPS := -lreadline
 
 %.o: %.c
 	$(CC) $(CFLAGS) $($*-test_FLAGS) -c -o $@ $<
