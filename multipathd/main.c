@@ -951,10 +951,12 @@ handle_path_wwid_change(struct path *pp, struct vectors *vecs)
 	struct udev_device *udd;
 	static const char add[] = "add";
 	ssize_t ret;
+	char dev[FILE_NAME_SIZE];
 
 	if (!pp || !pp->udev)
 		return;
 
+	strlcpy(dev, pp->dev, sizeof(dev));
 	udd = udev_device_ref(pp->udev);
 	if (!(ev_remove_path(pp, vecs, 1) & REMOVE_PATH_SUCCESS) && pp->mpp) {
 		pp->dmstate = PSTATE_FAILED;
@@ -965,8 +967,7 @@ handle_path_wwid_change(struct path *pp, struct vectors *vecs)
 	udev_device_unref(udd);
 	if (ret != sizeof(add) - 1)
 		log_sysfs_attr_set_value(1, ret,
-					 "%s: failed to trigger add event",
-					 pp->dev);
+					 "%s: failed to trigger add event", dev);
 }
 
 bool
@@ -1796,7 +1797,6 @@ uxlsnrloop (void * ap)
 	/* Tell main thread that thread has started */
 	post_config_state(DAEMON_CONFIGURE);
 
-	init_handler_callbacks();
 	umask(077);
 
 	/*
@@ -3616,7 +3616,7 @@ main (int argc, char *argv[])
 	extern char *optarg;
 	extern int optind;
 	int arg;
-	int err;
+	int err = 0;
 	int foreground = 0;
 	struct config *conf;
 	char *opt_k_arg = NULL;
@@ -3707,10 +3707,25 @@ main (int argc, char *argv[])
 					c += snprintf(c, s + CMDSIZE - c,
 						      "%s ", argv[optind]);
 				optind++;
+				if (c >= s + CMDSIZE) {
+					fprintf(stderr, "multipathd command too large\n");
+					exit(1);
+				}
 			}
 			c += snprintf(c, s + CMDSIZE - c, "\n");
 		}
-		err = uxclnt(s, uxsock_timeout + 100);
+		if (!s) {
+			char tmo_buf[16];
+
+			snprintf(tmo_buf, sizeof(tmo_buf), "%d",
+				 uxsock_timeout + 100);
+			if (execl(BINDIR "/multipathc", "multipathc",
+				  tmo_buf, NULL) == -1) {
+				condlog(0, "ERROR: failed to execute multipathc: %m");
+				err = 1;
+			}
+		} else
+			err = uxclnt(s, uxsock_timeout + 100);
 		free_config(conf);
 		return err;
 	}
