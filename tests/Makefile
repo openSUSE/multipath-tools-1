@@ -73,6 +73,7 @@ endif
 strbuf-test_OBJDEPS := ../libmultipath/strbuf.o
 strbuf-test_OBJDEPS := $(multipathdir)/strbuf.o
 cli-test_OBJDEPS := $(daemondir)/cli.o
+cli-test_LIBDEPS := -lreadline
 
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $($*-test_FLAGS) -c -o $@ $<

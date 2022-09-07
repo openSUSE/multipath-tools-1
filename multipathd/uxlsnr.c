@@ -403,6 +403,11 @@ static void set_client_state(struct client *c, int state)
 	case CLT_SEND:
 		/* reuse these fields for next data transfer */
 		c->len = c->cmd_len = 0;
+		/* cmdvec isn't needed any more */
+		if (c->cmdvec) {
+			free_keys(c->cmdvec);
+			c->cmdvec = NULL;
+		}
 		break;
 	default:
 		break;
@@ -496,8 +501,6 @@ static int client_state_machine(struct client *c, struct vectors *vecs,
 			c->error = execute_handler(c, vecs);
 			pthread_cleanup_pop(1);
 			condlog(4, "%s: cli[%d] grabbed lock", __func__, c->fd);
-			free_keys(c->cmdvec);
-			c->cmdvec = NULL;
 			set_client_state(c, CLT_SEND);
 			/* Wait for POLLOUT */
 			return STM_BREAK;
@@ -508,8 +511,6 @@ static int client_state_machine(struct client *c, struct vectors *vecs,
 
 	case CLT_WORK:
 		c->error = execute_handler(c, vecs);
-		free_keys(c->cmdvec);
-		c->cmdvec = NULL;
 		set_client_state(c, CLT_SEND);
 		/* Wait for POLLOUT */
 		return STM_BREAK;
