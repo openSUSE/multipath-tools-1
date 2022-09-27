@@ -336,9 +336,11 @@ fingerprint(vector vec)
 	if (!vec)
 		return 0;
 
-	vector_foreach_slot(vec, kw, i)
-		fp += kw->code;
-
+	vector_foreach_slot(vec, kw, i) {
+		if (fp & kw->code)
+			return (uint64_t)-1;
+		fp |= kw->code;
+	}
 	return fp;
 }
 
