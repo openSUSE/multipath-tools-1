@@ -683,7 +683,7 @@ static bool is_udev_ready(struct multipath *mpp)
 		rc = (env != NULL && !strcmp(env, "1"));
 		udev_device_unref(mpp_ud);
 		condlog(4, "%s: %s: \"%s\" -> %d\n", __func__,
-			mpp->alias, env, rc);
+			mpp->alias, env ? env : "", rc);
 	}
 	return rc;
 }
