@@ -60,7 +60,13 @@ ifneq ($(DIO_TEST_DEV),)
 directio-test_LIBDEPS := -laio
 endif
 cli-test_OBJDEPS := $(daemondir)/cli.o
+ifeq ($(READLINE),libedit)
+cli-test_LIBDEPS := -ledit
+endif
+ifeq ($(READLINE),libreadline)
 cli-test_LIBDEPS := -lreadline
+endif
+cli-test_LIBDEPS += -lpthread -ldl
 
 %.o: %.c
 	$(CC) $(CFLAGS) $($*-test_FLAGS) -c -o $@ $<
