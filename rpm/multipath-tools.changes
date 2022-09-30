@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 30 17:43:42 UTC 2022 - Martin Wilck <mwilck@suse.com>
+
+  * Fix multipathd authorization bypass (bsc#1202739)
+
+-------------------------------------------------------------------
 Mon Aug 29 16:40:15 UTC 2022 - Martin Wilck <mwilck@suse.com>
 
   * Avoid linking to libreadline to avoid licensing issue
