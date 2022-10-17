@@ -1168,6 +1168,7 @@ uxlsnrloop (void * ap)
 		return NULL;
 	}
 	pthread_cleanup_push(rcu_unregister, NULL);
+	rcu_register_thread();
 
 	/* Tell main thread that thread has started */
 	post_config_state(DAEMON_CONFIGURE);
