@@ -15,6 +15,7 @@ THIS DOCUMENT IS NOT INTENDED AS LEGAL ADVICE.
 # Licenses of multipath-tools Binaries
 
 - libmpathcmd: LGPL-2.1-or-later
+- libmpathutil: GPL-2.0-or-later
 - libmultipath: GPL-2.0-only
 - libmpathpersist: LGPL-2.0 (see below)
 - libdmmp: GPL-3.0-or-later
@@ -22,6 +23,7 @@ THIS DOCUMENT IS NOT INTENDED AS LEGAL ADVICE.
 - multipath: GPL-2.0-only
 - multipathd: GPL-2.0-only
 - mpathpersist: GPL-2.0-only
+- multipathc: GPL-3.0-or-later
 
 ## Explanation
 
@@ -45,6 +47,10 @@ communicates with libmultipath only through the socket.
 
 libdmmp is under GPLv3.0+. That's no problem because it communicates with
 libmultipath only through the socket.
+
+The recently created multipathc binary is under GPL-3.0. Thus it can be linked
+with libreadline without a licensing conflict. See
+[GitHub isse #36](https://github.com/opensvc/multipath-tools/issues/36).
 
 # Licenses in source code, from fossology analysis (see below).
 
