@@ -641,8 +641,12 @@ snprint_host_adapter (char * buff, size_t len, const struct path * pp)
 static int
 snprint_path_checker (char * buff, size_t len, const struct path * pp)
 {
-	const struct checker * c = &pp->checker;
-	return snprint_str(buff, len, checker_name(c));
+	const char * n = checker_name(&pp->checker);
+
+	if (n)
+		return snprint_str(buff, len, n);
+	else
+		return snprint_str(buff, len, "(null)");
 }
 
 static int
