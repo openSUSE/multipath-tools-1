@@ -53,14 +53,9 @@ Building multipath-tools
 ========================
 
 Prerequisites: development packages of for `libdevmapper`, `libaio`, `libudev`,
-`libjson-c`, `liburcu`, and `libsystemd`.
-
-To enable commandline history and TAB completion in the interactive mode *(which
-is entered with `multipathd -k` or `multipathc`)* you might also set `READLINE`
-make variable to `libedit` or `libreadline`, like `make READLINE=libreadline`.
-That requires a development package for the library you chose. Note that using
-libreadline may [make binary indistributable due to license
-incompatibility](https://github.com/opensvc/multipath-tools/issues/36).
+`libjson-c`, `liburcu`, and `libsystemd`. If commandline editing is enabled
+(see below), the development package for either `libedit` or `libreadline` is
+required as well.
 
 Then, build and install multipath-tools with:
 
@@ -71,8 +66,20 @@ To uninstall, type:
 
     make uninstall
 
+By default, the build will run quietly, just printing one-line messages
+about the files being built. To enable more verbose output, run `make V=1`.
+
 Customizing the build
 ---------------------
+
+**Note**: With very few exceptions, the build process does not read
+configuration from the environment. So using syntax like
+
+    SOME_VAR=some_value make
+
+will **not** have the intended effect. Use the following instead:
+
+    make SOME_VAR=some_value
 
 The following variables can be passed to the `make` command line:
 
@@ -82,6 +89,12 @@ The following variables can be passed to the `make` command line:
  * `configdir="/some/path"` : directory to search for configuration files.
     This used to be the run-time option `config_dir` in earlier versions.
 	The default is `/etc/multipath/conf.d`.
+ * `READLINE=libedit` or `READLINE=libreadline`: enable command line history
+    and TAB completion in the interactive mode *(which is entered with `multipathd -k` or `multipathc`)*.
+    The respective development package will be required for building.
+    By default, command line editing is disabled.
+    Note that using libreadline may
+    [make binary indistributable due to license incompatibility](https://github.com/opensvc/multipath-tools/issues/36).
  * `ENABLE_LIBDMMP=0`: disable building libdmmp
  * `ENABLE_DMEVENTS_POLL=0`: disable support for the device-mapper event
    polling API. For use with pre-5.0 kernels that don't support dmevent polling
@@ -93,15 +106,36 @@ The following variables can be passed to the `make` command line:
    early. This option causes a *modules-load.d(5)* configuration file to be
    created, thus it depends on functionality provided by *systemd*.
    This variable only matters for `make install`.
+   
+   **Note**: The usefulness of the preload list depends on the kernel configuration.
+   It's especially useful if `scsi_mod` is builtin but `scsi_dh_alua` and
+   other device handler modules are built as modules. If `scsi_mod` itself is compiled
+   as a module, it might make more sense to use a module softdep for the same
+   purpose.
 
-Note: The usefulness of the preload list depends on the kernel configuration.
-It's especially useful if `scsi_mod` is builtin but `scsi_dh_alua` and
-other device handler modules are built as modules. If `scsi_mod` itself is compiled
-as a module, it might make more sense to use a module softdep for the same
-purpose.
+### Installation Paths
 
-See `Makefile.inc` for additional variables to customize paths and compiler
-flags.
+ * `prefix`: The directory prefix for (almost) all files to be installed.
+   Distributions may want to set this to `/usr`.
+   **Note**: for multipath-tools, unlike many other packages, `prefix`
+   defaults to the empty string, which resolves to the root directory (`/`).
+ * `usr_prefix`: where to install those parts of the code that aren't necessary
+   for booting. You may want to set this to `/usr` if `prefix` is empty.
+ * `systemd_prefix`: Prefix for systemd-related files. It defaults to `/usr`.
+   Some systemd installations use separate `prefix` and `rootprefix`. On such
+   a distribution, set `prefix`, and override `unitdir` to use systemd's
+   `rootprefix`.
+ * `LIB`: the subdirectory under `prefix` where shared libraries will be
+   installed. By default, the makefile uses `/lib64` if this directory is
+   found on the build system, and `/lib` otherwise.
+   
+See also `configdir` and `plugindir` above. See `Makefile.inc` for more
+fine-grained control.
+
+### Compiler Options
+
+Use `OPTFLAGS` to change optimization-related compiler options;
+e.g. `OPTFLAGS="-g -O0"` to disable all optimizations.
 
 Special Makefile targets
 ------------------------
