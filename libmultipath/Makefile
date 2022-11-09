@@ -10,8 +10,7 @@ VERSION_SCRIPT := libmultipath.version
 
 CPPFLAGS += -I$(mpathcmddir) -I$(mpathpersistdir) -I$(nvmedir)
 CFLAGS += $(LIB_CFLAGS)
-
-LIBDEPS += -lpthread -ldl -ldevmapper -ludev -L$(mpathcmddir) -lmpathcmd -lurcu -laio
+LIBDEPS += -lpthread -ldl -ldevmapper -ludev -L$(mpathcmddir) -lmpathcmd -lmount -lurcu -laio
 
 ifdef SYSTEMD
 	CPPFLAGS += -DUSE_SYSTEMD=$(SYSTEMD)
