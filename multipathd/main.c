@@ -585,13 +585,26 @@ flush_map_nopaths(struct multipath *mpp, struct vectors *vecs) {
 	return false;
 }
 
+static void
+pr_register_active_paths(struct multipath *mpp)
+{
+	unsigned int i, j;
+	struct path *pp;
+	struct pathgroup *pgp;
+
+	vector_foreach_slot (mpp->pg, pgp, i) {
+		vector_foreach_slot (pgp->paths, pp, j) {
+			if ((pp->state == PATH_UP) || (pp->state == PATH_GHOST))
+				mpath_pr_event_handle(pp);
+		}
+	}
+}
+
 static int
 update_map (struct multipath *mpp, struct vectors *vecs, int new_map)
 {
 	int retries = 3;
 	char *params __attribute__((cleanup(cleanup_charp))) = NULL;
-	struct path *pp;
-	int i;
 
 retry:
 	condlog(4, "%s: updating new map", mpp->alias);
@@ -607,15 +620,6 @@ retry:
 		return 1;
 
 	mpp->action = ACT_RELOAD;
-
-	if (mpp->prflag) {
-		vector_foreach_slot(mpp->paths, pp, i) {
-			if ((pp->state == PATH_UP)  || (pp->state == PATH_GHOST)) {
-				/* persistent reseravtion check*/
-				mpath_pr_event_handle(pp);
-			}
-		}
-	}
 
 	if (setup_map(mpp, &params, vecs)) {
 		condlog(0, "%s: failed to setup new map in update", mpp->alias);
@@ -641,6 +645,11 @@ fail:
 		return 1;
 
 	sync_map_state(mpp);
+
+	if (!mpp->prflag)
+		update_map_pr(mpp);
+	if (mpp->prflag)
+		pr_register_active_paths(mpp);
 
 	if (retries < 0)
 		condlog(0, "%s: failed reload in new map update", mpp->alias);
@@ -1177,6 +1186,7 @@ ev_add_path (struct path * pp, struct vectors * vecs, int need_do_map)
 	int start_waiter = 0;
 	int ret;
 	int ro;
+	unsigned char prflag = 0;
 
 	/*
 	 * need path UID to go any further
@@ -1220,6 +1230,8 @@ rescan:
 
 		verify_paths(mpp);
 		mpp->action = ACT_RELOAD;
+		prflag = mpp->prflag;
+		mpath_pr_event_handle(pp);
 	} else {
 		if (!should_multipath(pp, vecs->pathvec, vecs->mpvec)) {
 			orphan_path(pp, "only one path");
@@ -1237,9 +1249,6 @@ rescan:
 		else
 			goto fail; /* leave path added to pathvec */
 	}
-
-	/* persistent reservation check*/
-	mpath_pr_event_handle(pp);
 
 	/* ro check - if new path is ro, force map to be ro as well */
 	ro = sysfs_get_ro(pp);
@@ -1305,6 +1314,10 @@ rescan:
 	sync_map_state(mpp);
 
 	if (retries >= 0) {
+		if (start_waiter)
+			update_map_pr(mpp);
+		if (mpp->prflag && !prflag)
+				pr_register_active_paths(mpp);
 		condlog(2, "%s [%s]: path added to devmap %s",
 			pp->dev, pp->dev_t, mpp->alias);
 		return 0;
@@ -2785,6 +2798,8 @@ configure (struct vectors * vecs, enum force_reload_types reload_type)
 		if (remember_wwid(mpp->wwid) == 1)
 			trigger_paths_udev_change(mpp, true);
 		update_map_pr(mpp);
+		if (mpp->prflag)
+			pr_register_active_paths(mpp);
 	}
 
 	/*
