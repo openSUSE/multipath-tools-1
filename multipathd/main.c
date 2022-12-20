@@ -646,9 +646,9 @@ fail:
 
 	sync_map_state(mpp);
 
-	if (!mpp->prflag)
+	if (mpp->prflag == PRFLAG_UNSET)
 		update_map_pr(mpp);
-	if (mpp->prflag)
+	if (mpp->prflag == PRFLAG_SET)
 		pr_register_active_paths(mpp);
 
 	if (retries < 0)
@@ -1186,7 +1186,7 @@ ev_add_path (struct path * pp, struct vectors * vecs, int need_do_map)
 	int start_waiter = 0;
 	int ret;
 	int ro;
-	unsigned char prflag = 0;
+	unsigned char prflag = PRFLAG_UNSET;
 
 	/*
 	 * need path UID to go any further
@@ -1316,7 +1316,7 @@ rescan:
 	if (retries >= 0) {
 		if (start_waiter)
 			update_map_pr(mpp);
-		if (mpp->prflag && !prflag)
+		if (mpp->prflag == PRFLAG_SET && prflag == PRFLAG_UNSET)
 				pr_register_active_paths(mpp);
 		condlog(2, "%s [%s]: path added to devmap %s",
 			pp->dev, pp->dev_t, mpp->alias);
@@ -2466,7 +2466,7 @@ check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
 		}
 
 		if (newstate == PATH_UP || newstate == PATH_GHOST) {
-			if (pp->mpp->prflag) {
+			if (pp->mpp->prflag == PRFLAG_SET) {
 				/*
 				 * Check Persistent Reservation.
 				 */
@@ -2798,7 +2798,7 @@ configure (struct vectors * vecs, enum force_reload_types reload_type)
 		if (remember_wwid(mpp->wwid) == 1)
 			trigger_paths_udev_change(mpp, true);
 		update_map_pr(mpp);
-		if (mpp->prflag)
+		if (mpp->prflag == PRFLAG_SET)
 			pr_register_active_paths(mpp);
 	}
 
@@ -3758,7 +3758,7 @@ void *  mpath_pr_event_handler_fn (void * pathp )
 	{
 		condlog(0,"%s: Reservation registration failed. Error: %d", pp->dev, ret);
 	}
-	mpp->prflag = 1;
+	mpp->prflag = PRFLAG_SET;
 
 	free(param);
 out:
