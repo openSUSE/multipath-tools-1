@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        os: ['tumbleweed', '15.3', '15.4']
+        os: ['tumbleweed', '15.3', '15.4', '15.5']
         # We have -arm too (for armv7l)
         # But tests fail with qemu-user (readdir() returns -EOVERFLOW), see
         # https://gitlab.com/qemu-project/qemu/-/issues/263
