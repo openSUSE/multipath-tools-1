@@ -11,6 +11,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         os: ['tumbleweed', '15.3', '15.4', '15.5']
         # We have -arm too (for armv7l)
