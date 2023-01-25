@@ -2,11 +2,28 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 TOPDIR := .
+CREATE_CONFIG := 1
 include $(TOPDIR)/Makefile.inc
+
+# "make" on some distros will fail on explicit '#' or '\#' in the program text below
+__HASH__ := \#
+
+# Check whether a given shell command succeeds
+check_cmd = $(shell \
+	if $1; then \
+		found=1; \
+		status="yes"; \
+	else \
+		found=0; \
+		status="no"; \
+	fi; \
+	echo 1>&2 "Checking $(if $3,$3,command \"$1\") ... $$status"; \
+	echo "$$found" \
+	)
 
 # Check whether a function with name $1 has been declared in header file $2.
 check_func = $(shell \
-	if grep -Eq "^[^[:blank:]]+[[:blank:]]+$1[[:blank:]]*(.*)*" "$2"; then \
+	if grep -Eq "^(extern[[:blank:]]+)?[^[:blank:]]+[[:blank:]]+$1[[:blank:]]*(.*)*" "$2"; then \
 		found=1; \
 		status="yes"; \
 	else \
@@ -50,6 +67,12 @@ TEST_MISSING_INITIALIZERS = $(shell \
 		$(CC) -c -Werror -Wmissing-field-initializers -o /dev/null -xc - >/dev/null 2>&1 \
 	|| echo -Wno-missing-field-initializers)
 
+# gcc 4.8.4 and certain versions of liburcu fail to compile this with -Werror=type-limits
+TEST_URCU_TYPE_LIMITS = $(shell \
+	echo -e '$(__HASH__)include <urcu/uatomic.h>\nint main() { int z=8; return uatomic_sub_return(&z, 1); }' | \
+		$(CC) -c -Werror=type-limits -o /dev/null -xc - 2>/dev/null  \
+	|| echo -Wno-type-limits )
+
 DEFINES :=
 
 ifneq ($(call check_func,dm_task_no_flush,$(devmapper_incdir)/libdevmapper.h),0)
@@ -81,9 +104,20 @@ ifneq ($(call check_var,ELS_DTAG_LNK_INTEGRITY,$(kernel_incdir)/scsi/fc/fc_els.h
 	FPIN_SUPPORT = 1
 endif
 
+libmount_h := $(shell $(PKGCONFIG) --variable=includedir mount)/libmount/libmount.h
+ifneq ($(call check_func,mnt_unref_cache,$(libmount_h)),0)
+	DEFINES += LIBMOUNT_HAS_MNT_UNREF_CACHE
+endif
+
+ifneq ($(call check_func,mnt_table_parse_swaps,$(libmount_h)),0)
+	DEFINES += LIBMOUNT_SUPPORTS_SWAP
+endif
+
 ifneq ($(call check_file,$(kernel_incdir)/linux/nvme_ioctl.h),0)
 	ANA_SUPPORT := 1
 endif
+
+ENABLE_LIBDMMP := $(call check_cmd,$(PKGCONFIG) --exists json-c)
 
 ifeq ($(ENABLE_DMEVENTS_POLL),0)
 	DEFINES += -DNO_DMEVENTS_POLL
@@ -105,23 +139,23 @@ TEST_CC_OPTION = $(shell \
 		echo "$(2)"; \
 	fi)
 
-# "make" on some distros will fail on explicit '#' or '\#' in the program text below
-__HASH__ := \#
 # Check if _DFORTIFY_SOURCE=3 is supported.
 # On some distros (e.g. Debian Buster) it will be falsely reported as supported
 # but it doesn't seem to make a difference wrt the compilation result.
 FORTIFY_OPT := $(shell \
 	if /bin/echo -e '$(__HASH__)include <string.h>\nint main(void) { return 0; }' | \
-		$(CC) -o /dev/null -c -O2 -Werror -D_FORTIFY_SOURCE=3 -xc - 2>/dev/null; \
+		$(CC) -o /dev/null $(OPTFLAGS) -c -Werror -D_FORTIFY_SOURCE=3 -xc - 2>/dev/null; \
 	then \
 		echo "-D_FORTIFY_SOURCE=3"; \
-	else \
+	elif /bin/echo -e '$(__HASH__)include <string.h>\nint main(void) { return 0; }' | \
+		$(CC) -o /dev/null $(OPTFLAGS) -c -Werror -D_FORTIFY_SOURCE=2 -xc - 2>/dev/null; \
+	then \
 		echo "-D_FORTIFY_SOURCE=2"; \
 	fi)
 
 STACKPROT :=
 
-all:	$(multipathdir)/autoconfig.h $(TOPDIR)/config.mk
+all:	$(TOPDIR)/config.mk
 
 $(multipathdir)/autoconfig.h:
 	@echo creating $@
@@ -130,7 +164,7 @@ $(multipathdir)/autoconfig.h:
 	@for x in $(DEFINES); do echo "#define $$x" >>$@; done
 	@echo '#endif' >>$@
 
-$(TOPDIR)/config.mk:
+$(TOPDIR)/config.mk:	$(multipathdir)/autoconfig.h
 	@echo creating $@
 	@echo "FPIN_SUPPORT := $(FPIN_SUPPORT)" >$@
 	@echo "FORTIFY_OPT := $(FORTIFY_OPT)" >>$@
@@ -141,3 +175,5 @@ $(TOPDIR)/config.mk:
 	@echo "WNOCLOBBERED := $(call TEST_CC_OPTION,-Wno-clobbered -Wno-error=clobbered,)" >>$@
 	@echo "WFORMATOVERFLOW := $(call TEST_CC_OPTION,-Wformat-overflow=2,)" >>$@
 	@echo "W_MISSING_INITIALIZERS := $(call TEST_MISSING_INITIALIZERS)" >>$@
+	@echo "W_URCU_TYPE_LIMITS := $(call TEST_URCU_TYPE_LIMITS)" >>$@
+	@echo "ENABLE_LIBDMMP := $(ENABLE_LIBDMMP)" >>$@

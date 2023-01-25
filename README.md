@@ -81,8 +81,10 @@ will **not** have the intended effect. Use the following instead:
 
     make SOME_VAR=some_value
 
+See "Passing standard compiler flags" below for an exception.
 The following variables can be passed to the `make` command line:
 
+ * `V=1`: enable verbose build.
  * `plugindir="/some/path"`: directory where libmultipath plugins (path
    checkers, prioritizers, and foreign multipath support) will be looked up.
    This used to be the run-time option `multipath_dir` in earlier versions.
@@ -137,6 +139,14 @@ fine-grained control.
 Use `OPTFLAGS` to change optimization-related compiler options;
 e.g. `OPTFLAGS="-g -O0"` to disable all optimizations.
 
+### Passing standard compiler flags
+
+Contrary to most other variables, the standard variables `CFLAGS`, 
+`CPPFLAGS`, and `LDFLAGS` **must** be passed to **make** via the environment
+if they need to be customized:
+
+    CPPFLAGS="-D_SECRET_=secret" make
+
 Special Makefile targets
 ------------------------
 
@@ -162,7 +172,7 @@ Mailing list
 ============
 
 (subscribers-only)
-To subscribe and archives: https://www.redhat.com/mailman/listinfo/dm-devel
+To subscribe and archives: https://listman.redhat.com/mailman/listinfo/dm-devel
 Searchable: https://marc.info/?l=dm-devel
 
 
@@ -209,7 +219,7 @@ To enable ALUA, the following options should be changed:
 - LSI/Engenio/NetApp RDAC class, as NetApp SANtricity E/EF Series and rebranded arrays:
    "Select operating system:" should be changed to "Linux DM-MP (Kernel 3.10 or later)".
 
-- NetApp ONTAP:
+- NetApp ONTAP FAS/AFF Series:
    To check ALUA state: "igroup show -v <igroup_name>", and to enable ALUA:
    "igroup set <igroup_name> alua yes".
 
