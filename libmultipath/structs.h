@@ -368,6 +368,7 @@ struct path {
 	int fast_io_fail;
 	unsigned int dev_loss;
 	int eh_deadline;
+	bool can_use_env_uid;
 	/* configlet pointers */
 	vector hwe;
 	struct gen_path generic_path;
