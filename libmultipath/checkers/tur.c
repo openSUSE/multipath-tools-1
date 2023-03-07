@@ -404,9 +404,11 @@ int libcheck_check(struct checker * c)
 				return PATH_UNCHECKED;
 			((struct tur_checker_context *)c->context)->nr_timeouts = ct->nr_timeouts;
 
-			if (!uatomic_sub_return(&ct->holders, 1))
+			if (!uatomic_sub_return(&ct->holders, 1)) {
 				/* It did terminate, eventually */
 				cleanup_context(ct);
+				((struct tur_checker_context *)c->context)->nr_timeouts = 0;
+			}
 
 			ct = c->context;
 		} else
