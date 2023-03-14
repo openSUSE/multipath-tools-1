@@ -31,14 +31,14 @@ jobs:
       - name: build and test (jessie)
         # On jessie, we use libreadline 5 (no licensing issue)
         if: ${{ matrix.os == 'jessie' }}
-        run: make READLINE=libreadline test
+        run: make -j -Orecurse READLINE=libreadline test
       - name: clean
         run: make clean
       - name: clang
         if: ${{ matrix.os != 'jessie' }}
         env:
           CC: clang
-        run: make test
+        run: make -j -Orecurse test
       - name: clang (jessie)
         if: ${{ matrix.os == 'jessie' }}
         env:
