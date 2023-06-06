@@ -20,7 +20,7 @@ SCSI_DH_MODULES_PRELOAD :=
 
 EXTRAVERSION := $(shell rev=$$(git rev-parse --short=7 HEAD 2>/dev/null); echo $${rev:+-g$$rev})
 
-PKGCONFIG	?= pkg-config
+PKG_CONFIG	?= pkg-config
 
 ifeq ($(TOPDIR),)
 	TOPDIR	= ..
@@ -43,8 +43,8 @@ ifndef RUN
 endif
 
 ifndef SYSTEMD
-	ifeq ($(shell $(PKGCONFIG) --modversion libsystemd >/dev/null 2>&1 && echo 1), 1)
-		SYSTEMD = $(shell $(PKGCONFIG) --modversion libsystemd | awk '{print $$1}')
+	ifeq ($(shell $(PKG_CONFIG) --modversion libsystemd >/dev/null 2>&1 && echo 1), 1)
+		SYSTEMD = $(shell $(PKG_CONFIG) --modversion libsystemd | awk '{print $$1}')
 	else
 		ifeq ($(shell systemctl --version >/dev/null 2>&1 && echo 1), 1)
 			SYSTEMD = $(shell systemctl --version 2> /dev/null | \
@@ -58,16 +58,16 @@ ifndef SYSTEMDPATH
 endif
 
 ifndef DEVMAPPER_INCDIR
-	ifeq ($(shell $(PKGCONFIG) --modversion devmapper >/dev/null 2>&1 && echo 1), 1)
-		DEVMAPPER_INCDIR = $(shell $(PKGCONFIG) --variable=includedir devmapper)
+	ifeq ($(shell $(PKG_CONFIG) --modversion devmapper >/dev/null 2>&1 && echo 1), 1)
+		DEVMAPPER_INCDIR = $(shell $(PKG_CONFIG) --variable=includedir devmapper)
 	else
 		DEVMAPPER_INCDIR = /usr/include
 	endif
 endif
 
 ifndef LIBUDEV_INCDIR
-	ifeq ($(shell $(PKGCONFIG) --modversion libudev >/dev/null 2>&1 && echo 1), 1)
-		LIBUDEV_INCDIR = $(shell $(PKGCONFIG) --variable=includedir libudev)
+	ifeq ($(shell $(PKG_CONFIG) --modversion libudev >/dev/null 2>&1 && echo 1), 1)
+		LIBUDEV_INCDIR = $(shell $(PKG_CONFIG) --variable=includedir libudev)
 	else
 		LIBUDEV_INCDIR = /usr/include
 	endif
