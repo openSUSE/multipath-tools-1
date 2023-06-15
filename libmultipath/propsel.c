@@ -35,7 +35,8 @@ pgpolicyfn *pgpolicies[] = {
 	one_group,
 	group_by_serial,
 	group_by_prio,
-	group_by_node_name
+	group_by_node_name,
+	group_by_tpg,
 };
 
 #define do_set(var, src, dest, msg)					\
@@ -249,14 +250,68 @@ out:
 	return 0;
 }
 
+static bool
+verify_alua_prio(struct multipath *mp)
+{
+	int i;
+	struct path *pp;
+
+	vector_foreach_slot(mp->paths, pp, i) {
+		const char *name = prio_name(&pp->prio);
+		if (strncmp(name, PRIO_ALUA, PRIO_NAME_LEN) &&
+		    strncmp(name, PRIO_SYSFS, PRIO_NAME_LEN))
+			 return false;
+	}
+	return true;
+}
+
+int select_detect_pgpolicy(struct config *conf, struct multipath *mp)
+{
+	const char *origin;
+
+	mp_set_ovr(detect_pgpolicy);
+	mp_set_hwe(detect_pgpolicy);
+	mp_set_conf(detect_pgpolicy);
+	mp_set_default(detect_pgpolicy, DEFAULT_DETECT_PGPOLICY);
+out:
+	condlog(3, "%s: detect_pgpolicy = %s %s", mp->alias,
+		(mp->detect_pgpolicy == DETECT_PGPOLICY_ON)? "yes" : "no",
+		 origin);
+	return 0;
+}
+
+int select_detect_pgpolicy_use_tpg(struct config *conf, struct multipath *mp)
+{
+	const char *origin;
+
+	mp_set_ovr(detect_pgpolicy_use_tpg);
+	mp_set_hwe(detect_pgpolicy_use_tpg);
+	mp_set_conf(detect_pgpolicy_use_tpg);
+	mp_set_default(detect_pgpolicy_use_tpg,
+		       DEFAULT_DETECT_PGPOLICY_USE_TPG);
+out:
+	condlog(3, "%s: detect_pgpolicy_use_tpg = %s %s", mp->alias,
+		(mp->detect_pgpolicy_use_tpg == DETECT_PGPOLICY_USE_TPG_ON)?
+		"yes" : "no", origin);
+	return 0;
+}
+
 int select_pgpolicy(struct config *conf, struct multipath * mp)
 {
 	const char *origin;
-	char buff[POLICY_NAME_SIZE];
+	int log_prio = 3;
 
 	if (conf->pgpolicy_flag > 0) {
 		mp->pgpolicy = conf->pgpolicy_flag;
 		origin = cmdline_origin;
+		goto out;
+	}
+	if (mp->detect_pgpolicy == DETECT_PGPOLICY_ON && verify_alua_prio(mp)) {
+		if (mp->detect_pgpolicy_use_tpg == DETECT_PGPOLICY_USE_TPG_ON)
+			mp->pgpolicy = GROUP_BY_TPG;
+		else
+			mp->pgpolicy = GROUP_BY_PRIO;
+		origin = autodetect_origin;
 		goto out;
 	}
 	mp_set_mpe(pgpolicy);
@@ -265,9 +320,15 @@ int select_pgpolicy(struct config *conf, struct multipath * mp)
 	mp_set_conf(pgpolicy);
 	mp_set_default(pgpolicy, DEFAULT_PGPOLICY);
 out:
+	if (mp->pgpolicy == GROUP_BY_TPG && origin != autodetect_origin &&
+	    !verify_alua_prio(mp)) {
+		mp->pgpolicy = DEFAULT_PGPOLICY;
+		origin = "(setting: emergency fallback - not all paths use alua prio)";
+		log_prio = 1;
+	}
 	mp->pgpolicyfn = pgpolicies[mp->pgpolicy];
-	get_pgpolicy_name(buff, POLICY_NAME_SIZE, mp->pgpolicy);
-	condlog(3, "%s: path_grouping_policy = %s %s", mp->alias, buff, origin);
+	condlog(log_prio, "%s: path_grouping_policy = %s %s", mp->alias,
+		get_pgpolicy_name(mp->pgpolicy), origin);
 	return 0;
 }
 
