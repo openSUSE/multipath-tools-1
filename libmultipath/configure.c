@@ -1261,13 +1261,13 @@ int coalesce_paths (struct vectors * vecs, vector newmp, char * refwwid,
 		verify_paths(mpp);
 
 		params[0] = '\0';
+		if (cmd == CMD_DRY_RUN && mpp->action == ACT_UNDEF)
+			mpp->action = ACT_DRY_RUN;
 		if (setup_map(mpp, params, PARAMS_SIZE, vecs)) {
 			remove_map(mpp, vecs->pathvec, vecs->mpvec, KEEP_VEC);
 			continue;
 		}
 
-		if (cmd == CMD_DRY_RUN)
-			mpp->action = ACT_DRY_RUN;
 		if (mpp->action == ACT_UNDEF)
 			select_action(mpp, curmp,
 				      force_reload == FORCE_RELOAD_YES ? 1 : 0);

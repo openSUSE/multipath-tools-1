@@ -841,6 +841,9 @@ sysfs_set_scsi_tmo (struct multipath *mpp, unsigned int checkint)
 	unsigned int dev_loss_tmo = mpp->dev_loss;
 	struct path *err_path = NULL;
 
+	if (mpp->action == ACT_DRY_RUN || mpp->action == ACT_REJECT)
+		return 0;
+
 	if (mpp->no_path_retry > 0) {
 		uint64_t no_path_retry_tmo =
 			(uint64_t)mpp->no_path_retry * checkint;
