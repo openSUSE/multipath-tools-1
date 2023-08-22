@@ -9,6 +9,7 @@
 #include <string.h>
 #include <limits.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "debug.h"
 #include "util.h"
@@ -120,27 +121,31 @@ scan_devname(const char *alias, const char *prefix)
 	return n;
 }
 
-static int
-id_already_taken(int id, const char *prefix, const char *map_wwid)
+static bool alias_already_taken(const char *alias, const char *map_wwid)
 {
-	char alias[LINE_MAX];
-
-	if (format_devname(alias, id, LINE_MAX, prefix) < 0)
-		return 0;
-
 	if (dm_map_present(alias)) {
 		char wwid[WWID_SIZE];
 
 		/* If both the name and the wwid match, then it's fine.*/
 		if (dm_get_uuid(alias, wwid, sizeof(wwid)) == 0 &&
 		    strncmp(map_wwid, wwid, sizeof(wwid)) == 0)
-			return 0;
-		condlog(3, "%s: alias '%s' already taken, but not in bindings file. reselecting alias", map_wwid, alias);
-		return 1;
+			return false;
+		condlog(3, "%s: alias '%s' already taken, but not in bindings file. reselecting alias",
+			map_wwid, alias);
+		return true;
 	}
-	return 0;
+	return false;
 }
 
+static bool id_already_taken(int id, const char *prefix, const char *map_wwid)
+{
+	char alias[LINE_MAX];
+
+	if (format_devname(alias, id, LINE_MAX, prefix) < 0)
+		return false;
+
+	return alias_already_taken(alias, map_wwid);
+}
 
 /*
  * Returns: 0   if matching entry in WWIDs file found
