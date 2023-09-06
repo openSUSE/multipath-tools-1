@@ -1,12 +1,12 @@
 .\" ----------------------------------------------------------------------------
 .\" Make sure there are no errors with:
 .\" groff -z -wall -b -e -t multipath/multipath.conf.5
-.\" man --warnings -E UTF-8 -l -Tutf8 -Z multipath/multipath.conf.5 >/dev/null
+.\" man --warnings -E UTF-8 -l -Tutf8 -Z multipath/multipath.conf.5 > /dev/null
 .\"
 .\" Update the date below if you make any significant change.
 .\" ----------------------------------------------------------------------------
 .
-.TH MULTIPATH.CONF 5 2022-10-01 Linux
+.TH MULTIPATH.CONF 5 2023-06-15 Linux
 .
 .
 .\" ----------------------------------------------------------------------------
@@ -243,26 +243,26 @@ The default is: \fBfailover\fR
 .
 .TP
 .B detect_pgpolicy
-If set to \fIyes\fR and all path devcices are configured with either the
+If set to \fIyes\fR and all path devices are configured with either the
 \fIalua\fR or \fIsysfs\fR prioritizer, the multipath device will automatically
 use the \fIgroup_by_prio\fR path_grouping_policy. If set to \fIno\fR, the
 path_grouping_policy will be selected as usual.
 .RS
 .TP
-The default is: \fIyes\fR
+The default is: \fByes\fR
 .RE
 .
 .
 .TP
 .B detect_pgpolicy_use_tpg
 If both this and \fIdetect_pgpolicy\fR are set to \fIyes\fR and all path
-devcices are configured with either the \fIalua\fR or \fIsysfs\fR prioritizer,
+devices are configured with either the \fIalua\fR or \fIsysfs\fR prioritizer,
 the multipath device will automatically use the \fIgroup_by_tpg\fR
 path_grouping_policy. If set to \fIno\fR, the path_grouping_policy will be
 selected by the method described for \fIdetect_pgpolicy\fR above.
 .RS
 .TP
-The default is: \fIno\fR
+The default is: \fBno\fR
 .RE
 .
 .
@@ -1998,6 +1998,7 @@ specified the order of precedence is \fIno_path_retry, queue_if_no_path, dev_los
 .BR udev (8),
 .BR dmsetup (8),
 .BR multipath (8),
+.BR multipathc (8),
 .BR multipathd (8).
 .
 .
