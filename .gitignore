@@ -33,9 +33,9 @@ libdmmp/test/libdmmp_test
 libdmmp/test/libdmmp_speed_test
 tests/*-test
 tests/*.out
+!reference-abi/*.abi
 tests/*.vgr
 libmultipath/nvme-ioctl.c
 libmultipath/nvme-ioctl.h
 libmultipath/autoconfig.h
 */*-nv.version
-reference-abi

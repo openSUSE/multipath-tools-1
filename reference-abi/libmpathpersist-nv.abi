@@ -1,0 +1,1383 @@
+<abi-corpus path='libmpathpersist-nv.so' architecture='elf-amd-x86_64' soname='libmpathpersist-nv.so'>
+  <elf-needed>
+    <dependency name='libmultipath.so.0'/>
+    <dependency name='libmpathutil.so.0'/>
+    <dependency name='libmpathcmd.so.0'/>
+    <dependency name='libdevmapper.so.1.02.1'/>
+    <dependency name='libpthread.so.0'/>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='__mpath_persistent_reserve_in' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='__mpath_persistent_reserve_out' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dumpHex' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='libmpathpersist_exit' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='libmpathpersist_init' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_alloc_prin_response' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_lib_exit' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_lib_init' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_persistent_reserve_free_vecs' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_persistent_reserve_in' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_persistent_reserve_init_vecs' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_persistent_reserve_out' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='prin_do_scsi_ioctl' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='prout_do_scsi_ioctl' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='update_map_pr' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <elf-variable-symbols>
+    <elf-symbol name='mpath_mx_alloc_len' size='4' version='NOVERSION' is-default-version='yes' type='object-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-variable-symbols>
+  <abi-instr version='1.0' address-size='64' path='mpath_persist.c' comp-dir-path='/build/libmpathpersist' language='LANG_C99'>
+    <type-decl name='int' size-in-bits='32' id='type-id-1'/>
+    <type-decl name='unsigned int' size-in-bits='32' id='type-id-2'/>
+    <class-decl name='prout_param_descriptor' size-in-bits='65792' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='159' column='1' id='type-id-3'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='key' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='160' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='sa_key' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='161' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='_obsolete' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='162' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='160'>
+        <var-decl name='sa_flags' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='163' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='168'>
+        <var-decl name='_reserved' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='164' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='176'>
+        <var-decl name='_obsolete1' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='165' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='private_buffer' type-id='type-id-8' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='166' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='65728'>
+        <var-decl name='num_transportid' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='167' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='65792'>
+        <var-decl name='trnptid_list' type-id='type-id-9' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='168' column='1'/>
+      </data-member>
+    </class-decl>
+    <type-decl name='unsigned char' size-in-bits='8' id='type-id-10'/>
+    <typedef-decl name='__uint8_t' type-id='type-id-10' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='38' column='1' id='type-id-11'/>
+    <typedef-decl name='uint8_t' type-id='type-id-11' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h' line='24' column='1' id='type-id-6'/>
+    <type-decl name='unsigned long int' size-in-bits='64' id='type-id-12'/>
+
+    <array-type-def dimensions='1' type-id='type-id-6' size-in-bits='64' id='type-id-4'>
+      <subrange length='8' type-id='type-id-12' id='type-id-13'/>
+
+    </array-type-def>
+    <typedef-decl name='__uint32_t' type-id='type-id-2' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='42' column='1' id='type-id-14'/>
+    <typedef-decl name='uint32_t' type-id='type-id-14' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h' line='26' column='1' id='type-id-5'/>
+    <type-decl name='unsigned short int' size-in-bits='16' id='type-id-15'/>
+    <typedef-decl name='__uint16_t' type-id='type-id-15' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='40' column='1' id='type-id-16'/>
+    <typedef-decl name='uint16_t' type-id='type-id-16' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h' line='25' column='1' id='type-id-7'/>
+
+    <array-type-def dimensions='1' type-id='type-id-6' size-in-bits='65536' id='type-id-8'>
+      <subrange length='8192' type-id='type-id-12' id='type-id-17'/>
+
+    </array-type-def>
+    <class-decl name='transportid' size-in-bits='2064' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='119' column='1' id='type-id-18'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='format_code' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='121' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='8'>
+        <var-decl name='protocol_id' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='122' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='16'>
+        <var-decl name='' type-id='type-id-19' visibility='default'/>
+      </data-member>
+    </class-decl>
+    <union-decl name='__anonymous_union__' size-in-bits='2048' is-anonymous='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='123' column='1' id='type-id-19'>
+      <data-member access='private'>
+        <var-decl name='n_port_name' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='124' column='1'/>
+      </data-member>
+      <data-member access='private'>
+        <var-decl name='sas_address' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='125' column='1'/>
+      </data-member>
+      <data-member access='private'>
+        <var-decl name='iscsi_name' type-id='type-id-20' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='126' column='1'/>
+      </data-member>
+    </union-decl>
+
+    <array-type-def dimensions='1' type-id='type-id-6' size-in-bits='2048' id='type-id-20'>
+      <subrange length='256' type-id='type-id-12' id='type-id-21'/>
+
+    </array-type-def>
+    <pointer-type-def type-id='type-id-18' size-in-bits='64' id='type-id-22'/>
+
+    <array-type-def dimensions='1' type-id='type-id-22' size-in-bits='infinite' id='type-id-9'>
+      <subrange length='infinite' type-id='type-id-12' id='type-id-23'/>
+
+    </array-type-def>
+    <pointer-type-def type-id='type-id-3' size-in-bits='64' id='type-id-24'/>
+    <function-decl name='mpath_persistent_reserve_out' mangled-name='mpath_persistent_reserve_out' filepath='/build/libmpathpersist/mpath_persist.c' line='154' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_persistent_reserve_out@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathpersist/mpath_persist.c' line='154' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_persist.c' line='154' column='1'/>
+      <parameter type-id='type-id-1' name='rq_scope' filepath='/build/libmpathpersist/mpath_persist.c' line='154' column='1'/>
+      <parameter type-id='type-id-2' name='rq_type' filepath='/build/libmpathpersist/mpath_persist.c' line='155' column='1'/>
+      <parameter type-id='type-id-24' name='paramp' filepath='/build/libmpathpersist/mpath_persist.c' line='155' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_persist.c' line='155' column='1'/>
+      <parameter type-id='type-id-1' name='verbose' filepath='/build/libmpathpersist/mpath_persist.c' line='155' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <class-decl name='prin_resp' size-in-bits='65600' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='148' column='1' id='type-id-25'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='prin_descriptor' type-id='type-id-26' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='156' column='1'/>
+      </data-member>
+    </class-decl>
+    <union-decl name='__anonymous_union__' size-in-bits='65600' is-anonymous='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='150' column='1' id='type-id-26'>
+      <data-member access='private'>
+        <var-decl name='prin_readkeys' type-id='type-id-27' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='152' column='1'/>
+      </data-member>
+      <data-member access='private'>
+        <var-decl name='prin_readresv' type-id='type-id-28' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='153' column='1'/>
+      </data-member>
+      <data-member access='private'>
+        <var-decl name='prin_readcap' type-id='type-id-29' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='154' column='1'/>
+      </data-member>
+      <data-member access='private'>
+        <var-decl name='prin_readfd' type-id='type-id-30' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='155' column='1'/>
+      </data-member>
+    </union-decl>
+    <class-decl name='prin_readdescr' size-in-bits='65600' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='90' column='1' id='type-id-27'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='prgeneration' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='92' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='additional_length' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='93' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='key_list' type-id='type-id-8' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='95' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='prin_resvdescr' size-in-bits='192' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='98' column='1' id='type-id-28'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='prgeneration' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='100' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='additional_length' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='101' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='key' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='104' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='_obsolete' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='105' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='160'>
+        <var-decl name='_reserved' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='106' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='168'>
+        <var-decl name='scope_type' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='107' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='176'>
+        <var-decl name='_obsolete1' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='108' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='prin_capdescr' size-in-bits='64' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='111' column='1' id='type-id-29'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='length' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='113' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='16'>
+        <var-decl name='flags' type-id='type-id-31' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='114' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='pr_type_mask' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='115' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='48'>
+        <var-decl name='_reserved' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='116' column='1'/>
+      </data-member>
+    </class-decl>
+
+    <array-type-def dimensions='1' type-id='type-id-6' size-in-bits='16' id='type-id-31'>
+      <subrange length='2' type-id='type-id-12' id='type-id-32'/>
+
+    </array-type-def>
+    <class-decl name='print_fulldescr_list' size-in-bits='65600' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='140' column='1' id='type-id-30'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='prgeneration' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='142' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='number_of_descriptor' type-id='type-id-5' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='143' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='private_buffer' type-id='type-id-8' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='144' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='65600'>
+        <var-decl name='descriptors' type-id='type-id-33' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='145' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='prin_fulldescr' size-in-bits='2160' is-struct='yes' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='130' column='1' id='type-id-34'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='key' type-id='type-id-4' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='132' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='flag' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='133' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='72'>
+        <var-decl name='scope_type' type-id='type-id-6' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='134' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='80'>
+        <var-decl name='rtpi' type-id='type-id-7' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='136' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='96'>
+        <var-decl name='trnptid' type-id='type-id-18' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='137' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-34' size-in-bits='64' id='type-id-35'/>
+
+    <array-type-def dimensions='1' type-id='type-id-35' size-in-bits='infinite' id='type-id-33'>
+      <subrange length='infinite' type-id='type-id-12' id='type-id-23'/>
+
+    </array-type-def>
+    <pointer-type-def type-id='type-id-25' size-in-bits='64' id='type-id-36'/>
+    <function-decl name='mpath_persistent_reserve_in' mangled-name='mpath_persistent_reserve_in' filepath='/build/libmpathpersist/mpath_persist.c' line='139' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_persistent_reserve_in@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathpersist/mpath_persist.c' line='139' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_persist.c' line='139' column='1'/>
+      <parameter type-id='type-id-36' name='resp' filepath='/build/libmpathpersist/mpath_persist.c' line='140' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_persist.c' line='140' column='1'/>
+      <parameter type-id='type-id-1' name='verbose' filepath='/build/libmpathpersist/mpath_persist.c' line='140' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__mpath_persistent_reserve_out' mangled-name='__mpath_persistent_reserve_out' filepath='/build/libmpathpersist/mpath_persist.c' line='131' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__mpath_persistent_reserve_out@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathpersist/mpath_persist.c' line='131' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_persist.c' line='131' column='1'/>
+      <parameter type-id='type-id-1' name='rq_scope' filepath='/build/libmpathpersist/mpath_persist.c' line='131' column='1'/>
+      <parameter type-id='type-id-2' name='rq_type' filepath='/build/libmpathpersist/mpath_persist.c' line='132' column='1'/>
+      <parameter type-id='type-id-24' name='paramp' filepath='/build/libmpathpersist/mpath_persist.c' line='132' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_persist.c' line='132' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__mpath_persistent_reserve_in' mangled-name='__mpath_persistent_reserve_in' filepath='/build/libmpathpersist/mpath_persist.c' line='123' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__mpath_persistent_reserve_in@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathpersist/mpath_persist.c' line='123' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_persist.c' line='123' column='1'/>
+      <parameter type-id='type-id-36' name='resp' filepath='/build/libmpathpersist/mpath_persist.c' line='124' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_persist.c' line='124' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_persistent_reserve_init_vecs' mangled-name='mpath_persistent_reserve_init_vecs' filepath='/build/libmpathpersist/mpath_persist.c' line='118' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_persistent_reserve_init_vecs@@NOVERSION'>
+      <parameter type-id='type-id-1' name='verbose' filepath='/build/libmpathpersist/mpath_persist.c' line='118' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <type-decl name='void' id='type-id-37'/>
+    <function-decl name='mpath_persistent_reserve_free_vecs' mangled-name='mpath_persistent_reserve_free_vecs' filepath='/build/libmpathpersist/mpath_persist.c' line='83' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_persistent_reserve_free_vecs@@NOVERSION'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='libmpathpersist_exit' mangled-name='libmpathpersist_exit' filepath='/build/libmpathpersist/mpath_persist.c' line='67' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='libmpathpersist_exit@@NOVERSION'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <class-decl name='config' size-in-bits='4096' is-struct='yes' visibility='default' filepath='../libmultipath/config.h' line='139' column='1' id='type-id-38'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='rcu' type-id='type-id-39' visibility='default' filepath='../libmultipath/config.h' line='140' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='verbosity' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='141' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='160'>
+        <var-decl name='pgpolicy_flag' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='142' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='pgpolicy' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='143' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='224'>
+        <var-decl name='minio' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='144' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='minio_rq' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='145' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='288'>
+        <var-decl name='checkint' type-id='type-id-2' visibility='default' filepath='../libmultipath/config.h' line='146' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='max_checkint' type-id='type-id-2' visibility='default' filepath='../libmultipath/config.h' line='147' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='352'>
+        <var-decl name='use_watchdog' type-id='type-id-40' visibility='default' filepath='../libmultipath/config.h' line='148' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='pgfailback' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='149' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='416'>
+        <var-decl name='rr_weight' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='150' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='no_path_retry' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='151' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='480'>
+        <var-decl name='user_friendly_names' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='152' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='bindings_read_only' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='153' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='544'>
+        <var-decl name='max_fds' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='154' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='force_reload' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='155' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='608'>
+        <var-decl name='queue_without_daemon' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='156' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='checker_timeout' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='157' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='672'>
+        <var-decl name='flush_on_last_del' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='158' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='attribute_flags' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='159' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='736'>
+        <var-decl name='fast_io_fail' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='160' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='dev_loss' type-id='type-id-2' visibility='default' filepath='../libmultipath/config.h' line='161' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='800'>
+        <var-decl name='eh_deadline' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='162' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='log_checker_err' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='163' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='864'>
+        <var-decl name='allow_queueing' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='164' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='allow_usb_devices' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='165' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='928'>
+        <var-decl name='find_multipaths' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='166' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='uid' type-id='type-id-41' visibility='default' filepath='../libmultipath/config.h' line='167' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='992'>
+        <var-decl name='gid' type-id='type-id-42' visibility='default' filepath='../libmultipath/config.h' line='168' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='mode' type-id='type-id-43' visibility='default' filepath='../libmultipath/config.h' line='169' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1056'>
+        <var-decl name='reassign_maps' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='170' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1088'>
+        <var-decl name='retain_hwhandler' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='171' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1120'>
+        <var-decl name='detect_prio' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='172' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1152'>
+        <var-decl name='detect_checker' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='173' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1184'>
+        <var-decl name='force_sync' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='174' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1216'>
+        <var-decl name='deferred_remove' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='175' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1248'>
+        <var-decl name='processed_main_config' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='176' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1280'>
+        <var-decl name='delay_watch_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='177' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1312'>
+        <var-decl name='delay_wait_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='178' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1344'>
+        <var-decl name='san_path_err_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='179' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1376'>
+        <var-decl name='san_path_err_forget_rate' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='180' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1408'>
+        <var-decl name='san_path_err_recovery_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='181' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1440'>
+        <var-decl name='marginal_path_err_sample_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='182' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1472'>
+        <var-decl name='marginal_path_err_rate_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='183' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1504'>
+        <var-decl name='marginal_path_err_recheck_gap_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='184' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1536'>
+        <var-decl name='marginal_path_double_failed_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='185' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1568'>
+        <var-decl name='uxsock_timeout' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='186' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1600'>
+        <var-decl name='strict_timing' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='187' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1632'>
+        <var-decl name='retrigger_tries' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='188' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1664'>
+        <var-decl name='retrigger_delay' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='189' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1696'>
+        <var-decl name='uev_wait_timeout' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='190' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1728'>
+        <var-decl name='skip_kpartx' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='191' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1760'>
+        <var-decl name='remove_retries' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='192' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1792'>
+        <var-decl name='max_sectors_kb' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='193' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1824'>
+        <var-decl name='ghost_delay' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='194' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1856'>
+        <var-decl name='find_multipaths_timeout' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='195' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1888'>
+        <var-decl name='marginal_pathgroups' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='196' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1920'>
+        <var-decl name='skip_delegate' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='197' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1952'>
+        <var-decl name='sequence_nr' type-id='type-id-2' visibility='default' filepath='../libmultipath/config.h' line='198' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1984'>
+        <var-decl name='recheck_wwid' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='199' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2048'>
+        <var-decl name='selector' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='201' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2112'>
+        <var-decl name='uid_attrs' type-id='type-id-45' visibility='default' filepath='../libmultipath/config.h' line='202' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2240'>
+        <var-decl name='uid_attribute' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='203' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2304'>
+        <var-decl name='features' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='204' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2368'>
+        <var-decl name='hwhandler' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='205' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2432'>
+        <var-decl name='bindings_file' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='206' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2496'>
+        <var-decl name='wwids_file' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='207' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2560'>
+        <var-decl name='prkeys_file' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='208' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2624'>
+        <var-decl name='prio_name' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='209' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2688'>
+        <var-decl name='prio_args' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='210' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2752'>
+        <var-decl name='checker_name' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='211' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2816'>
+        <var-decl name='alias_prefix' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='212' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2880'>
+        <var-decl name='partition_delim' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='213' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2944'>
+        <var-decl name='prkey_source' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='214' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2976'>
+        <var-decl name='all_tg_pt' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='215' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3008'>
+        <var-decl name='reservation_key' type-id='type-id-46' visibility='default' filepath='../libmultipath/config.h' line='216' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3072'>
+        <var-decl name='sa_flags' type-id='type-id-6' visibility='default' filepath='../libmultipath/config.h' line='217' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3136'>
+        <var-decl name='keywords' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='219' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3200'>
+        <var-decl name='mptable' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='220' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3264'>
+        <var-decl name='hwtable' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='221' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3328'>
+        <var-decl name='overrides' type-id='type-id-48' visibility='default' filepath='../libmultipath/config.h' line='222' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3392'>
+        <var-decl name='blist_devnode' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='224' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3456'>
+        <var-decl name='blist_wwid' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='225' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3520'>
+        <var-decl name='blist_device' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='226' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3584'>
+        <var-decl name='blist_property' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='227' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3648'>
+        <var-decl name='blist_protocol' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='228' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3712'>
+        <var-decl name='elist_devnode' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='229' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3776'>
+        <var-decl name='elist_wwid' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='230' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3840'>
+        <var-decl name='elist_device' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='231' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3904'>
+        <var-decl name='elist_property' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='232' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3968'>
+        <var-decl name='elist_protocol' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='233' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4032'>
+        <var-decl name='enable_foreign' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='234' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='rcu_head' size-in-bits='128' is-struct='yes' visibility='default' filepath='/usr/include/x86_64-linux-gnu/urcu/call-rcu.h' line='57' column='1' id='type-id-39'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='next' type-id='type-id-49' visibility='default' filepath='/usr/include/x86_64-linux-gnu/urcu/call-rcu.h' line='58' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='func' type-id='type-id-50' visibility='default' filepath='/usr/include/x86_64-linux-gnu/urcu/call-rcu.h' line='59' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='cds_wfcq_node' size-in-bits='64' is-struct='yes' visibility='default' filepath='/usr/include/x86_64-linux-gnu/urcu/wfcqueue.h' line='59' column='1' id='type-id-49'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='next' type-id='type-id-51' visibility='default' filepath='/usr/include/x86_64-linux-gnu/urcu/wfcqueue.h' line='60' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-49' size-in-bits='64' id='type-id-51'/>
+    <pointer-type-def type-id='type-id-39' size-in-bits='64' id='type-id-52'/>
+    <pointer-type-def type-id='type-id-53' size-in-bits='64' id='type-id-50'/>
+    <type-decl name='bool' size-in-bits='8' id='type-id-40'/>
+    <typedef-decl name='__uid_t' type-id='type-id-2' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='146' column='1' id='type-id-54'/>
+    <typedef-decl name='uid_t' type-id='type-id-54' filepath='/usr/include/x86_64-linux-gnu/sys/types.h' line='79' column='1' id='type-id-41'/>
+    <typedef-decl name='__gid_t' type-id='type-id-2' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='147' column='1' id='type-id-55'/>
+    <typedef-decl name='gid_t' type-id='type-id-55' filepath='/usr/include/x86_64-linux-gnu/sys/types.h' line='64' column='1' id='type-id-42'/>
+    <typedef-decl name='__mode_t' type-id='type-id-2' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='150' column='1' id='type-id-56'/>
+    <typedef-decl name='mode_t' type-id='type-id-56' filepath='/usr/include/x86_64-linux-gnu/sys/types.h' line='69' column='1' id='type-id-43'/>
+    <type-decl name='char' size-in-bits='8' id='type-id-57'/>
+    <pointer-type-def type-id='type-id-57' size-in-bits='64' id='type-id-44'/>
+    <class-decl name='_vector' size-in-bits='128' is-struct='yes' visibility='default' filepath='../libmpathutil/vector.h' line='29' column='1' id='type-id-45'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='allocated' type-id='type-id-1' visibility='default' filepath='../libmpathutil/vector.h' line='30' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='slot' type-id='type-id-58' visibility='default' filepath='../libmpathutil/vector.h' line='31' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-37' size-in-bits='64' id='type-id-59'/>
+    <pointer-type-def type-id='type-id-59' size-in-bits='64' id='type-id-58'/>
+    <class-decl name='be64' size-in-bits='64' is-struct='yes' visibility='default' filepath='../libmultipath/byteorder.h' line='36' column='1' id='type-id-46'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='_v' type-id='type-id-60' visibility='default' filepath='../libmultipath/byteorder.h' line='37' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='__uint64_t' type-id='type-id-12' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='45' column='1' id='type-id-61'/>
+    <typedef-decl name='uint64_t' type-id='type-id-61' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h' line='27' column='1' id='type-id-60'/>
+    <pointer-type-def type-id='type-id-45' size-in-bits='64' id='type-id-62'/>
+    <typedef-decl name='vector' type-id='type-id-62' filepath='../libmpathutil/vector.h' line='33' column='1' id='type-id-47'/>
+    <class-decl name='hwentry' size-in-bits='1792' is-struct='yes' visibility='default' filepath='../libmultipath/config.h' line='52' column='1' id='type-id-63'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='vendor' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='53' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='product' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='54' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='revision' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='55' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='uid_attribute' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='56' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='features' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='57' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='hwhandler' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='58' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='selector' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='59' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='checker_name' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='60' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='prio_name' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='61' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='prio_args' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='62' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='alias_prefix' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='63' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='pgpolicy' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='65' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='736'>
+        <var-decl name='pgfailback' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='66' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='rr_weight' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='67' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='800'>
+        <var-decl name='no_path_retry' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='68' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='minio' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='69' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='864'>
+        <var-decl name='minio_rq' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='70' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='flush_on_last_del' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='71' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='928'>
+        <var-decl name='fast_io_fail' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='72' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='dev_loss' type-id='type-id-2' visibility='default' filepath='../libmultipath/config.h' line='73' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='992'>
+        <var-decl name='eh_deadline' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='74' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='user_friendly_names' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='75' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1056'>
+        <var-decl name='retain_hwhandler' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='76' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1088'>
+        <var-decl name='detect_prio' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='77' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1120'>
+        <var-decl name='detect_checker' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='78' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1152'>
+        <var-decl name='deferred_remove' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='79' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1184'>
+        <var-decl name='delay_watch_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='80' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1216'>
+        <var-decl name='delay_wait_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='81' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1248'>
+        <var-decl name='san_path_err_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='82' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1280'>
+        <var-decl name='san_path_err_forget_rate' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='83' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1312'>
+        <var-decl name='san_path_err_recovery_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='84' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1344'>
+        <var-decl name='marginal_path_err_sample_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='85' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1376'>
+        <var-decl name='marginal_path_err_rate_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='86' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1408'>
+        <var-decl name='marginal_path_err_recheck_gap_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='87' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1440'>
+        <var-decl name='marginal_path_double_failed_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='88' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1472'>
+        <var-decl name='skip_kpartx' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='89' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1504'>
+        <var-decl name='max_sectors_kb' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='90' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1536'>
+        <var-decl name='ghost_delay' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='91' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1568'>
+        <var-decl name='all_tg_pt' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='92' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1600'>
+        <var-decl name='vpd_vendor_id' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='93' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1632'>
+        <var-decl name='recheck_wwid' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='94' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1664'>
+        <var-decl name='bl_product' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='95' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1728'>
+        <var-decl name='pctable' type-id='type-id-47' visibility='default' filepath='../libmultipath/config.h' line='97' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-63' size-in-bits='64' id='type-id-48'/>
+    <pointer-type-def type-id='type-id-38' size-in-bits='64' id='type-id-64'/>
+    <function-decl name='mpath_lib_exit' mangled-name='mpath_lib_exit' filepath='/build/libmpathpersist/mpath_persist.c' line='60' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_lib_exit@@NOVERSION'>
+      <parameter type-id='type-id-64' name='conf' filepath='/build/libmpathpersist/mpath_persist.c' line='60' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_lib_init' mangled-name='mpath_lib_init' filepath='/build/libmpathpersist/mpath_persist.c' line='40' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_lib_init@@NOVERSION'>
+      <return type-id='type-id-64'/>
+    </function-decl>
+    <function-decl name='libmpathpersist_init' mangled-name='libmpathpersist_init' filepath='/build/libmpathpersist/mpath_persist.c' line='20' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='libmpathpersist_init@@NOVERSION'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='free_multipathvec' mangled-name='free_multipathvec' filepath='../libmultipath/structs.h' line='518' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='free_pathvec' mangled-name='free_pathvec' filepath='../libmultipath/structs.h' line='512' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='do_mpath_persistent_reserve_out' mangled-name='do_mpath_persistent_reserve_out' filepath='/build/libmpathpersist/mpath_persist_int.h' line='14' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__stack_chk_fail' mangled-name='__stack_chk_fail' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='do_mpath_persistent_reserve_in' mangled-name='do_mpath_persistent_reserve_in' filepath='/build/libmpathpersist/mpath_persist_int.h' line='10' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dlog' mangled-name='dlog' filepath='../libmpathutil/debug.h' line='3' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='libmultipath_exit' mangled-name='libmultipath_exit' filepath='../libmultipath/config.h' line='283' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dm_lib_exit' mangled-name='dm_lib_exit' filepath='/usr/include/libdevmapper.h' line='1566' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='uninit_config' mangled-name='uninit_config' filepath='../libmultipath/config.h' line='305' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='free_config' mangled-name='free_config' filepath='../libmultipath/config.h' line='303' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='set_max_fds' mangled-name='set_max_fds' filepath='../libmpathutil/util.h' line='27' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='load_config' mangled-name='load_config' filepath='../libmultipath/config.h' line='302' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='libmultipath_init' mangled-name='libmultipath_init' filepath='../libmultipath/config.h' line='268' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='init_config' mangled-name='init_config' filepath='../libmultipath/config.h' line='304' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='libmp_get_multipath_config' mangled-name='libmp_get_multipath_config' filepath='../libmultipath/config.h' line='307' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='libmp_put_multipath_config' mangled-name='libmp_put_multipath_config' filepath='../libmultipath/config.h' line='308' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='vector_alloc' mangled-name='vector_alloc' filepath='../libmpathutil/vector.h' line='77' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dm_get_maps' mangled-name='dm_get_maps' filepath='../libmultipath/devmapper.h' line='65' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-type size-in-bits='64' id='type-id-53'>
+      <parameter type-id='type-id-52'/>
+      <return type-id='type-id-37'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='mpath_updatepr.c' comp-dir-path='/build/libmpathpersist' language='LANG_C99'>
+    <function-decl name='__builtin___sprintf_chk' mangled-name='__sprintf_chk' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__errno_location' mangled-name='__errno_location' filepath='/usr/include/errno.h' line='37' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__builtin___snprintf_chk' mangled-name='__snprintf_chk' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='get_multipath_config' mangled-name='get_multipath_config' filepath='../libmpathutil/globals.h' line='18' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='put_multipath_config' mangled-name='put_multipath_config' filepath='../libmpathutil/globals.h' line='17' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='mpath_connect' mangled-name='mpath_connect' filepath='../libmpathcmd/mpath_cmd.h' line='62' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='send_packet' mangled-name='send_packet' filepath='../libmpathutil/uxsock.h' line='3' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='recv_packet' mangled-name='recv_packet' filepath='../libmpathutil/uxsock.h' line='4' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='free' mangled-name='free' filepath='/usr/include/stdlib.h' line='565' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='mpath_disconnect' mangled-name='mpath_disconnect' filepath='../libmpathcmd/mpath_cmd.h' line='73' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='mpath_pr_ioctl.c' comp-dir-path='/build/libmpathpersist' language='LANG_C99'>
+    <var-decl name='mpath_mx_alloc_len' type-id='type-id-2' mangled-name='mpath_mx_alloc_len' visibility='default' filepath='/build/libmpathpersist/mpath_persist.h' line='86' column='1' elf-symbol-id='mpath_mx_alloc_len@@NOVERSION'/>
+    <function-decl name='prin_do_scsi_ioctl' mangled-name='prin_do_scsi_ioctl' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='329' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='prin_do_scsi_ioctl@@NOVERSION'>
+      <parameter type-id='type-id-44' name='dev' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='329' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='329' column='1'/>
+      <parameter type-id='type-id-36' name='resp' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='329' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='329' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='prout_do_scsi_ioctl' mangled-name='prout_do_scsi_ioctl' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='39' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='prout_do_scsi_ioctl@@NOVERSION'>
+      <parameter type-id='type-id-44' name='dev' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='39' column='1'/>
+      <parameter type-id='type-id-1' name='rq_servact' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='39' column='1'/>
+      <parameter type-id='type-id-1' name='rq_scope' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='39' column='1'/>
+      <parameter type-id='type-id-2' name='rq_type' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='40' column='1'/>
+      <parameter type-id='type-id-24' name='paramp' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='40' column='1'/>
+      <parameter type-id='type-id-1' name='noisy' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='40' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <qualified-type-def type-id='type-id-57' const='yes' id='type-id-65'/>
+    <pointer-type-def type-id='type-id-65' size-in-bits='64' id='type-id-66'/>
+    <function-decl name='dumpHex' mangled-name='dumpHex' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='514' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dumpHex@@NOVERSION'>
+      <parameter type-id='type-id-66' name='str' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='514' column='1'/>
+      <parameter type-id='type-id-1' name='len' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='514' column='1'/>
+      <parameter type-id='type-id-1' name='log' filepath='/build/libmpathpersist/mpath_pr_ioctl.c' line='514' column='1'/>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__open_alias' mangled-name='open' filepath='/usr/include/x86_64-linux-gnu/bits/fcntl2.h' line='27' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='ioctl' mangled-name='ioctl' filepath='/usr/include/x86_64-linux-gnu/sys/ioctl.h' line='41' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='usleep' mangled-name='usleep' filepath='/usr/include/unistd.h' line='460' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='close' mangled-name='close' filepath='/usr/include/unistd.h' line='353' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__printf_chk' mangled-name='__printf_chk' filepath='/usr/include/x86_64-linux-gnu/bits/stdio2.h' line='90' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__builtin_puts' mangled-name='puts' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='mpath_persist_int.c' comp-dir-path='/build/libmpathpersist' language='LANG_C99'>
+    <class-decl name='multipath' size-in-bits='5056' is-struct='yes' visibility='default' filepath='../libmultipath/structs.h' line='386' column='1' id='type-id-67'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='wwid' type-id='type-id-68' visibility='default' filepath='../libmultipath/structs.h' line='387' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='alias_old' type-id='type-id-68' visibility='default' filepath='../libmultipath/structs.h' line='388' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2048'>
+        <var-decl name='pgpolicy' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='389' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2112'>
+        <var-decl name='pgpolicyfn' type-id='type-id-69' visibility='default' filepath='../libmultipath/structs.h' line='390' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2176'>
+        <var-decl name='nextpg' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='391' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2208'>
+        <var-decl name='bestpg' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='392' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2240'>
+        <var-decl name='queuedio' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='393' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2272'>
+        <var-decl name='action' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='394' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2304'>
+        <var-decl name='wait_for_udev' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='395' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2336'>
+        <var-decl name='uev_wait_tick' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='396' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2368'>
+        <var-decl name='pgfailback' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='397' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2400'>
+        <var-decl name='failback_tick' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='398' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2432'>
+        <var-decl name='rr_weight' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='399' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2464'>
+        <var-decl name='no_path_retry' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='400' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2496'>
+        <var-decl name='retry_tick' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='401' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2528'>
+        <var-decl name='disable_queueing' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='402' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2560'>
+        <var-decl name='minio' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='403' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2592'>
+        <var-decl name='flush_on_last_del' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='404' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2624'>
+        <var-decl name='attribute_flags' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='405' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2656'>
+        <var-decl name='retain_hwhandler' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='406' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2688'>
+        <var-decl name='deferred_remove' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='407' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2720'>
+        <var-decl name='in_recovery' type-id='type-id-40' visibility='default' filepath='../libmultipath/structs.h' line='408' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2728'>
+        <var-decl name='need_reload' type-id='type-id-40' visibility='default' filepath='../libmultipath/structs.h' line='409' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2752'>
+        <var-decl name='san_path_err_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='410' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2784'>
+        <var-decl name='san_path_err_forget_rate' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='411' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2816'>
+        <var-decl name='san_path_err_recovery_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='412' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2848'>
+        <var-decl name='marginal_path_err_sample_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='413' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2880'>
+        <var-decl name='marginal_path_err_rate_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='414' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2912'>
+        <var-decl name='marginal_path_err_recheck_gap_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='415' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2944'>
+        <var-decl name='marginal_path_double_failed_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='416' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='2976'>
+        <var-decl name='skip_kpartx' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='417' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3008'>
+        <var-decl name='max_sectors_kb' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='418' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3040'>
+        <var-decl name='force_readonly' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='419' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3072'>
+        <var-decl name='force_udev_reload' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='420' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3104'>
+        <var-decl name='needs_paths_uevent' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='421' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3136'>
+        <var-decl name='ghost_delay' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='422' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3168'>
+        <var-decl name='ghost_delay_tick' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='423' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3200'>
+        <var-decl name='queue_mode' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='424' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3232'>
+        <var-decl name='uid' type-id='type-id-41' visibility='default' filepath='../libmultipath/structs.h' line='425' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3264'>
+        <var-decl name='gid' type-id='type-id-42' visibility='default' filepath='../libmultipath/structs.h' line='426' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3296'>
+        <var-decl name='mode' type-id='type-id-43' visibility='default' filepath='../libmultipath/structs.h' line='427' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3328'>
+        <var-decl name='size' type-id='type-id-70' visibility='default' filepath='../libmultipath/structs.h' line='428' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3392'>
+        <var-decl name='paths' type-id='type-id-47' visibility='default' filepath='../libmultipath/structs.h' line='429' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3456'>
+        <var-decl name='pg' type-id='type-id-47' visibility='default' filepath='../libmultipath/structs.h' line='430' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3520'>
+        <var-decl name='dmi' type-id='type-id-71' visibility='default' filepath='../libmultipath/structs.h' line='431' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3904'>
+        <var-decl name='alias' type-id='type-id-44' visibility='default' filepath='../libmultipath/structs.h' line='434' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='3968'>
+        <var-decl name='alias_prefix' type-id='type-id-44' visibility='default' filepath='../libmultipath/structs.h' line='435' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4032'>
+        <var-decl name='selector' type-id='type-id-44' visibility='default' filepath='../libmultipath/structs.h' line='436' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4096'>
+        <var-decl name='features' type-id='type-id-44' visibility='default' filepath='../libmultipath/structs.h' line='437' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4160'>
+        <var-decl name='hwhandler' type-id='type-id-44' visibility='default' filepath='../libmultipath/structs.h' line='438' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4224'>
+        <var-decl name='mpe' type-id='type-id-72' visibility='default' filepath='../libmultipath/structs.h' line='439' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4288'>
+        <var-decl name='hwe' type-id='type-id-47' visibility='default' filepath='../libmultipath/structs.h' line='440' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4352'>
+        <var-decl name='waiter' type-id='type-id-73' visibility='default' filepath='../libmultipath/structs.h' line='443' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4416'>
+        <var-decl name='stat_switchgroup' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='446' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4448'>
+        <var-decl name='stat_path_failures' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='447' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4480'>
+        <var-decl name='stat_map_loads' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='448' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4512'>
+        <var-decl name='stat_total_queueing_time' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='449' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4544'>
+        <var-decl name='stat_queueing_timeouts' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='450' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4576'>
+        <var-decl name='stat_map_failures' type-id='type-id-2' visibility='default' filepath='../libmultipath/structs.h' line='451' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4608'>
+        <var-decl name='mpcontext' type-id='type-id-59' visibility='default' filepath='../libmultipath/structs.h' line='454' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4672'>
+        <var-decl name='prkey_source' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='457' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4736'>
+        <var-decl name='reservation_key' type-id='type-id-46' visibility='default' filepath='../libmultipath/structs.h' line='458' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4800'>
+        <var-decl name='sa_flags' type-id='type-id-6' visibility='default' filepath='../libmultipath/structs.h' line='459' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4832'>
+        <var-decl name='prflag' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='460' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4864'>
+        <var-decl name='all_tg_pt' type-id='type-id-1' visibility='default' filepath='../libmultipath/structs.h' line='461' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4928'>
+        <var-decl name='generic_mp' type-id='type-id-74' visibility='default' filepath='../libmultipath/structs.h' line='462' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='4992'>
+        <var-decl name='fpin_must_reload' type-id='type-id-40' visibility='default' filepath='../libmultipath/structs.h' line='463' column='1'/>
+      </data-member>
+    </class-decl>
+
+    <array-type-def dimensions='1' type-id='type-id-57' size-in-bits='1024' id='type-id-68'>
+      <subrange length='128' type-id='type-id-12' id='type-id-75'/>
+
+    </array-type-def>
+    <pointer-type-def type-id='type-id-67' size-in-bits='64' id='type-id-76'/>
+    <typedef-decl name='pgpolicyfn' type-id='type-id-77' filepath='../libmultipath/structs.h' line='377' column='1' id='type-id-78'/>
+    <pointer-type-def type-id='type-id-78' size-in-bits='64' id='type-id-69'/>
+    <type-decl name='long long unsigned int' size-in-bits='64' id='type-id-70'/>
+    <class-decl name='dm_info' size-in-bits='384' is-struct='yes' visibility='default' filepath='/usr/include/libdevmapper.h' line='147' column='1' id='type-id-71'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='exists' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='148' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='suspended' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='149' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='live_table' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='150' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='96'>
+        <var-decl name='inactive_table' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='151' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='open_count' type-id='type-id-79' visibility='default' filepath='/usr/include/libdevmapper.h' line='152' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='160'>
+        <var-decl name='event_nr' type-id='type-id-5' visibility='default' filepath='/usr/include/libdevmapper.h' line='153' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='major' type-id='type-id-5' visibility='default' filepath='/usr/include/libdevmapper.h' line='154' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='224'>
+        <var-decl name='minor' type-id='type-id-5' visibility='default' filepath='/usr/include/libdevmapper.h' line='155' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='read_only' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='156' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='288'>
+        <var-decl name='target_count' type-id='type-id-79' visibility='default' filepath='/usr/include/libdevmapper.h' line='158' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='deferred_remove' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='160' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='352'>
+        <var-decl name='internal_suspend' type-id='type-id-1' visibility='default' filepath='/usr/include/libdevmapper.h' line='161' column='1'/>
+      </data-member>
+    </class-decl>
+    <typedef-decl name='__int32_t' type-id='type-id-1' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='41' column='1' id='type-id-80'/>
+    <typedef-decl name='int32_t' type-id='type-id-80' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-intn.h' line='26' column='1' id='type-id-79'/>
+    <class-decl name='mpentry' size-in-bits='1408' is-struct='yes' visibility='default' filepath='../libmultipath/config.h' line='100' column='1' id='type-id-81'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='wwid' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='101' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='alias' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='102' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='uid_attribute' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='103' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='selector' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='104' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='features' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='105' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='320'>
+        <var-decl name='prio_name' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='107' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='384'>
+        <var-decl name='prio_args' type-id='type-id-44' visibility='default' filepath='../libmultipath/config.h' line='108' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='448'>
+        <var-decl name='prkey_source' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='109' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='512'>
+        <var-decl name='reservation_key' type-id='type-id-46' visibility='default' filepath='../libmultipath/config.h' line='110' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='576'>
+        <var-decl name='sa_flags' type-id='type-id-6' visibility='default' filepath='../libmultipath/config.h' line='111' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='608'>
+        <var-decl name='pgpolicy' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='112' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='640'>
+        <var-decl name='pgfailback' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='113' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='672'>
+        <var-decl name='rr_weight' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='114' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='704'>
+        <var-decl name='no_path_retry' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='115' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='736'>
+        <var-decl name='minio' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='116' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='768'>
+        <var-decl name='minio_rq' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='117' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='800'>
+        <var-decl name='flush_on_last_del' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='118' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='832'>
+        <var-decl name='attribute_flags' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='119' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='864'>
+        <var-decl name='user_friendly_names' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='120' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='896'>
+        <var-decl name='deferred_remove' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='121' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='928'>
+        <var-decl name='delay_watch_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='122' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='960'>
+        <var-decl name='delay_wait_checks' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='123' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='992'>
+        <var-decl name='san_path_err_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='124' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1024'>
+        <var-decl name='san_path_err_forget_rate' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='125' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1056'>
+        <var-decl name='san_path_err_recovery_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='126' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1088'>
+        <var-decl name='marginal_path_err_sample_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='127' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1120'>
+        <var-decl name='marginal_path_err_rate_threshold' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='128' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1152'>
+        <var-decl name='marginal_path_err_recheck_gap_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='129' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1184'>
+        <var-decl name='marginal_path_double_failed_time' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='130' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1216'>
+        <var-decl name='skip_kpartx' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='131' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1248'>
+        <var-decl name='max_sectors_kb' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='132' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1280'>
+        <var-decl name='ghost_delay' type-id='type-id-1' visibility='default' filepath='../libmultipath/config.h' line='133' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1312'>
+        <var-decl name='uid' type-id='type-id-41' visibility='default' filepath='../libmultipath/config.h' line='134' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1344'>
+        <var-decl name='gid' type-id='type-id-42' visibility='default' filepath='../libmultipath/config.h' line='135' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='1376'>
+        <var-decl name='mode' type-id='type-id-43' visibility='default' filepath='../libmultipath/config.h' line='136' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-81' size-in-bits='64' id='type-id-72'/>
+    <typedef-decl name='pthread_t' type-id='type-id-12' filepath='/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h' line='27' column='1' id='type-id-73'/>
+    <class-decl name='gen_multipath' size-in-bits='64' is-struct='yes' visibility='default' filepath='../libmultipath/generic.h' line='117' column='1' id='type-id-74'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='ops' type-id='type-id-82' visibility='default' filepath='../libmultipath/generic.h' line='118' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='gen_multipath_ops' size-in-bits='256' is-struct='yes' visibility='default' filepath='../libmultipath/generic.h' line='37' column='1' id='type-id-83'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='get_pathgroups' type-id='type-id-84' visibility='default' filepath='../libmultipath/generic.h' line='46' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='rel_pathgroups' type-id='type-id-85' visibility='default' filepath='../libmultipath/generic.h' line='53' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='snprint' type-id='type-id-86' visibility='default' filepath='../libmultipath/generic.h' line='66' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='style' type-id='type-id-87' visibility='default' filepath='../libmultipath/generic.h' line='78' column='1'/>
+      </data-member>
+    </class-decl>
+    <qualified-type-def type-id='type-id-45' const='yes' id='type-id-88'/>
+    <pointer-type-def type-id='type-id-88' size-in-bits='64' id='type-id-89'/>
+    <qualified-type-def type-id='type-id-74' const='yes' id='type-id-90'/>
+    <pointer-type-def type-id='type-id-90' size-in-bits='64' id='type-id-91'/>
+    <pointer-type-def type-id='type-id-92' size-in-bits='64' id='type-id-84'/>
+    <pointer-type-def type-id='type-id-93' size-in-bits='64' id='type-id-85'/>
+    <class-decl name='strbuf' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-94'/>
+    <pointer-type-def type-id='type-id-94' size-in-bits='64' id='type-id-95'/>
+    <pointer-type-def type-id='type-id-96' size-in-bits='64' id='type-id-86'/>
+    <pointer-type-def type-id='type-id-97' size-in-bits='64' id='type-id-87'/>
+    <qualified-type-def type-id='type-id-83' const='yes' id='type-id-98'/>
+    <pointer-type-def type-id='type-id-98' size-in-bits='64' id='type-id-82'/>
+    <function-decl name='update_map_pr' mangled-name='update_map_pr' filepath='/build/libmpathpersist/mpath_persist_int.c' line='731' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='update_map_pr@@NOVERSION'>
+      <parameter type-id='type-id-76' name='mpp' filepath='/build/libmpathpersist/mpath_persist_int.c' line='731' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_alloc_prin_response' mangled-name='mpath_alloc_prin_response' filepath='/build/libmpathpersist/mpath_persist_int.c' line='98' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_alloc_prin_response@@NOVERSION'>
+      <parameter type-id='type-id-1' name='prin_sa' filepath='/build/libmpathpersist/mpath_persist_int.c' line='98' column='1'/>
+      <return type-id='type-id-59'/>
+    </function-decl>
+    <function-decl name='count_active_paths' mangled-name='count_active_paths' filepath='../libmultipath/structs.h' line='542' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dumpHex' mangled-name='dumpHex' filepath='/build/libmpathpersist/mpath_persist_int.h' line='22' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='select_reservation_key' mangled-name='select_reservation_key' filepath='../libmultipath/propsel.h' line='22' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='select_all_tg_pt' mangled-name='select_all_tg_pt' filepath='../libmultipath/propsel.h' line='41' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='update_prflag' mangled-name='update_prflag' filepath='/build/libmpathpersist/mpathpr.h' line='9' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='update_prkey_flags' mangled-name='update_prkey_flags' filepath='/build/libmpathpersist/mpathpr.h' line='10' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__builtin_memset' mangled-name='memset' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_attr_init' mangled-name='pthread_attr_init' filepath='/usr/include/pthread.h' line='263' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_attr_setdetachstate' mangled-name='pthread_attr_setdetachstate' filepath='/usr/include/pthread.h' line='275' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='strlcpy' mangled-name='strlcpy' filepath='../libmpathutil/util.h' line='19' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_create' mangled-name='pthread_create' filepath='/usr/include/pthread.h' line='198' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_attr_destroy' mangled-name='pthread_attr_destroy' filepath='/usr/include/pthread.h' line='266' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_join' mangled-name='pthread_join' filepath='/usr/include/pthread.h' line='215' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__builtin_calloc' mangled-name='calloc' filepath='/usr/include/stdlib.h' line='542' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='malloc' mangled-name='malloc' filepath='/usr/include/stdlib.h' line='539' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='prout_do_scsi_ioctl' mangled-name='prout_do_scsi_ioctl' filepath='/build/libmpathpersist/mpath_persist_int.h' line='20' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='pthread_exit' mangled-name='pthread_exit' filepath='/usr/include/pthread.h' line='207' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='__fxstat' mangled-name='__fxstat' filepath='/usr/include/x86_64-linux-gnu/sys/stat.h' line='395' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='strncmp' mangled-name='strncmp' filepath='/usr/include/string.h' line='140' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='update_multipath_table' mangled-name='update_multipath_table' filepath='../libmultipath/structs_vec.h' line='34' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='remove_map' mangled-name='remove_map' filepath='../libmultipath/structs_vec.h' line='25' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='update_mpp_paths' mangled-name='update_mpp_paths' filepath='../libmultipath/structs_vec.h' line='21' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='extract_hwe_from_path' mangled-name='extract_hwe_from_path' filepath='../libmultipath/structs_vec.h' line='23' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dm_mapname' mangled-name='dm_mapname' filepath='../libmultipath/devmapper.h' line='69' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dm_map_present' mangled-name='dm_map_present' filepath='../libmultipath/devmapper.h' line='45' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='dm_is_mpath' mangled-name='dm_is_mpath' filepath='../libmultipath/devmapper.h' line='50' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='find_mp_by_alias' mangled-name='find_mp_by_alias' filepath='../libmultipath/structs.h' line='531' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-decl name='prin_do_scsi_ioctl' mangled-name='prin_do_scsi_ioctl' filepath='/build/libmpathpersist/mpath_persist_int.h' line='19' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-37'/>
+    </function-decl>
+    <function-type size-in-bits='64' id='type-id-92'>
+      <parameter type-id='type-id-91'/>
+      <return type-id='type-id-89'/>
+    </function-type>
+    <function-type size-in-bits='64' id='type-id-96'>
+      <parameter type-id='type-id-91'/>
+      <parameter type-id='type-id-95'/>
+      <parameter type-id='type-id-57'/>
+      <return type-id='type-id-1'/>
+    </function-type>
+    <function-type size-in-bits='64' id='type-id-97'>
+      <parameter type-id='type-id-91'/>
+      <parameter type-id='type-id-95'/>
+      <parameter type-id='type-id-1'/>
+      <return type-id='type-id-1'/>
+    </function-type>
+    <function-type size-in-bits='64' id='type-id-77'>
+      <parameter type-id='type-id-76'/>
+      <parameter type-id='type-id-47'/>
+      <return type-id='type-id-1'/>
+    </function-type>
+    <function-type size-in-bits='64' id='type-id-93'>
+      <parameter type-id='type-id-91'/>
+      <parameter type-id='type-id-89'/>
+      <return type-id='type-id-37'/>
+    </function-type>
+  </abi-instr>
+</abi-corpus>

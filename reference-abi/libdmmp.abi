@@ -1,0 +1,429 @@
+<abi-corpus path='libdmmp.so' architecture='elf-amd-x86_64' soname='libdmmp.so.0.2.0'>
+  <elf-needed>
+    <dependency name='libjson-c.so.4'/>
+    <dependency name='libmpathcmd.so.0'/>
+    <dependency name='libpthread.so.0'/>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='dmmp_context_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_log_func_set' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_log_priority_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_log_priority_set' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_new' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_timeout_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_timeout_set' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_userdata_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_context_userdata_set' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_flush_mpath' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_last_error_msg' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_log_priority_str' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_mpath_array_free' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_mpath_array_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_mpath_kdev_name_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_mpath_name_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_mpath_wwid_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_array_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_blk_name_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_array_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_id_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_priority_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_selector_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_status_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_group_status_str' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_status_get' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_path_status_str' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_reconfig' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='dmmp_strerror' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <abi-instr version='1.0' address-size='64' path='libdmmp.c' comp-dir-path='/build/libdmmp' language='LANG_C99'>
+    <type-decl name='int' size-in-bits='32' id='type-id-1'/>
+    <class-decl name='dmmp_context' size-in-bits='8448' is-struct='yes' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='52' column='1' id='type-id-2'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='log_func' type-id='type-id-3' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='53' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='log_priority' type-id='type-id-1' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='56' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='userdata' type-id='type-id-4' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='57' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='tmo' type-id='type-id-5' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='58' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='224'>
+        <var-decl name='last_err_msg' type-id='type-id-6' visibility='default' filepath='/build/libdmmp/libdmmp.c' line='59' column='1'/>
+      </data-member>
+    </class-decl>
+    <type-decl name='void' id='type-id-7'/>
+    <pointer-type-def type-id='type-id-2' size-in-bits='64' id='type-id-8'/>
+    <type-decl name='char' size-in-bits='8' id='type-id-9'/>
+    <qualified-type-def type-id='type-id-9' const='yes' id='type-id-10'/>
+    <pointer-type-def type-id='type-id-10' size-in-bits='64' id='type-id-11'/>
+    <class-decl name='__va_list_tag' size-in-bits='192' is-struct='yes' visibility='default' id='type-id-12'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='gp_offset' type-id='type-id-5' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='fp_offset' type-id='type-id-5' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='overflow_arg_area' type-id='type-id-4' visibility='default'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='reg_save_area' type-id='type-id-4' visibility='default'/>
+      </data-member>
+    </class-decl>
+    <type-decl name='unsigned int' size-in-bits='32' id='type-id-5'/>
+    <pointer-type-def type-id='type-id-7' size-in-bits='64' id='type-id-4'/>
+    <pointer-type-def type-id='type-id-12' size-in-bits='64' id='type-id-13'/>
+    <pointer-type-def type-id='type-id-14' size-in-bits='64' id='type-id-3'/>
+    <type-decl name='unsigned long int' size-in-bits='64' id='type-id-15'/>
+
+    <array-type-def dimensions='1' type-id='type-id-9' size-in-bits='8192' id='type-id-6'>
+      <subrange length='1024' type-id='type-id-15' id='type-id-16'/>
+
+    </array-type-def>
+    <function-decl name='dmmp_reconfig' mangled-name='dmmp_reconfig' filepath='/build/libdmmp/libdmmp.c' line='472' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_reconfig'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='472' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='dmmp_flush_mpath' mangled-name='dmmp_flush_mpath' filepath='/build/libdmmp/libdmmp.c' line='411' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_flush_mpath'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='411' column='1'/>
+      <parameter type-id='type-id-11' name='mpath_name' filepath='/build/libdmmp/libdmmp.c' line='411' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <class-decl name='dmmp_mpath' size-in-bits='320' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-17'/>
+    <pointer-type-def type-id='type-id-17' size-in-bits='64' id='type-id-18'/>
+    <pointer-type-def type-id='type-id-18' size-in-bits='64' id='type-id-19'/>
+    <pointer-type-def type-id='type-id-19' size-in-bits='64' id='type-id-20'/>
+    <typedef-decl name='__uint32_t' type-id='type-id-5' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='42' column='1' id='type-id-21'/>
+    <typedef-decl name='uint32_t' type-id='type-id-21' filepath='/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h' line='26' column='1' id='type-id-22'/>
+    <pointer-type-def type-id='type-id-22' size-in-bits='64' id='type-id-23'/>
+    <function-decl name='dmmp_mpath_array_get' mangled-name='dmmp_mpath_array_get' filepath='/build/libdmmp/libdmmp.c' line='158' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_mpath_array_get'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='158' column='1'/>
+      <parameter type-id='type-id-20' name='dmmp_mps' filepath='/build/libdmmp/libdmmp.c' line='159' column='1'/>
+      <parameter type-id='type-id-23' name='dmmp_mp_count' filepath='/build/libdmmp/libdmmp.c' line='159' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='dmmp_context_userdata_set' mangled-name='dmmp_context_userdata_set' filepath='/build/libdmmp/libdmmp.c' line='152' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_userdata_set'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='152' column='1'/>
+      <parameter type-id='type-id-4' name='userdata' filepath='/build/libdmmp/libdmmp.c' line='152' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_log_func_set' mangled-name='dmmp_context_log_func_set' filepath='/build/libdmmp/libdmmp.c' line='142' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_log_func_set'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='143' column='1'/>
+      <parameter type-id='type-id-3' name='log_func' filepath='/build/libdmmp/libdmmp.c' line='144' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_timeout_set' mangled-name='dmmp_context_timeout_set' filepath='/build/libdmmp/libdmmp.c' line='136' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_timeout_set'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='136' column='1'/>
+      <parameter type-id='type-id-5' name='tmo' filepath='/build/libdmmp/libdmmp.c' line='136' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_log_priority_set' mangled-name='dmmp_context_log_priority_set' filepath='/build/libdmmp/libdmmp.c' line='130' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_log_priority_set'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='130' column='1'/>
+      <parameter type-id='type-id-1' name='priority' filepath='/build/libdmmp/libdmmp.c' line='130' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_free' mangled-name='dmmp_context_free' filepath='/build/libdmmp/libdmmp.c' line='125' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_free'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='125' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_new' mangled-name='dmmp_context_new' filepath='/build/libdmmp/libdmmp.c' line='107' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_new'>
+      <return type-id='type-id-8'/>
+    </function-decl>
+    <function-decl name='dmmp_last_error_msg' mangled-name='dmmp_last_error_msg' filepath='/build/libdmmp/libdmmp.c' line='85' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_last_error_msg'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='85' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_context_timeout_get' mangled-name='dmmp_context_timeout_get' filepath='/build/libdmmp/libdmmp.c' line='82' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_timeout_get'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='82' column='1'/>
+      <return type-id='type-id-5'/>
+    </function-decl>
+    <function-decl name='dmmp_context_userdata_get' mangled-name='dmmp_context_userdata_get' filepath='/build/libdmmp/libdmmp.c' line='79' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_userdata_get'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='79' column='1'/>
+      <return type-id='type-id-4'/>
+    </function-decl>
+    <function-decl name='dmmp_context_log_priority_get' mangled-name='dmmp_context_log_priority_get' filepath='/build/libdmmp/libdmmp.c' line='75' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_context_log_priority_get'>
+      <parameter type-id='type-id-8' name='ctx' filepath='/build/libdmmp/libdmmp.c' line='75' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='dmmp_mpath_array_free' mangled-name='dmmp_mpath_array_free' filepath='/build/libdmmp/libdmmp.c' line='88' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_mpath_array_free'>
+      <parameter type-id='type-id-19' name='ptr_array' filepath='/build/libdmmp/libdmmp.c' line='88' column='1'/>
+      <parameter type-id='type-id-22' name='ptr_count' filepath='/build/libdmmp/libdmmp.c' line='88' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='mpath_disconnect' mangled-name='mpath_disconnect' filepath='../libmpathcmd/mpath_cmd.h' line='73' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='free' mangled-name='free' filepath='/usr/include/stdlib.h' line='565' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__stack_chk_fail' mangled-name='__stack_chk_fail' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__builtin___snprintf_chk' mangled-name='__snprintf_chk' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_mpath_name_get' mangled-name='dmmp_mpath_name_get' filepath='libdmmp/libdmmp.h' line='386' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='strcmp' mangled-name='strcmp' filepath='/usr/include/string.h' line='137' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__assert_fail' mangled-name='__assert_fail' filepath='/usr/include/assert.h' line='69' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='clock_gettime' mangled-name='clock_gettime' filepath='/usr/include/time.h' line='213' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='mpath_process_cmd' mangled-name='mpath_process_cmd' filepath='../libmpathcmd/mpath_cmd.h' line='87' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__errno_location' mangled-name='__errno_location' filepath='/usr/include/errno.h' line='37' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='strerror_r' mangled-name='__xpg_strerror_r' filepath='/usr/include/string.h' line='410' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_object_get_ex' mangled-name='json_object_object_get_ex' filepath='/usr/include/json-c/json_object.h' line='488' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_get_type' mangled-name='json_object_get_type' filepath='/usr/include/json-c/json_object.h' line='236' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_get_int' mangled-name='json_object_get_int' filepath='/usr/include/json-c/json_object.h' line='721' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_type_to_name' mangled-name='json_type_to_name' filepath='/usr/include/json-c/json_util.h' line='100' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_get_array' mangled-name='json_object_get_array' filepath='/usr/include/json-c/json_object.h' line='566' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_tokener_new' mangled-name='json_tokener_new' filepath='/usr/include/json-c/json_tokener.h' line='129' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='strlen' mangled-name='strlen' filepath='/usr/include/string.h' line='385' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_tokener_parse_ex' mangled-name='json_tokener_parse_ex' filepath='/usr/include/json-c/json_tokener.h' line='209' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_tokener_free' mangled-name='json_tokener_free' filepath='/usr/include/json-c/json_tokener.h' line='131' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_put' mangled-name='json_object_put' filepath='/usr/include/json-c/json_object.h' line='206' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_tokener_get_error' mangled-name='json_tokener_get_error' filepath='/usr/include/json-c/json_tokener.h' line='127' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_tokener_error_desc' mangled-name='json_tokener_error_desc' filepath='/usr/include/json-c/json_tokener.h' line='116' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='array_list_length' mangled-name='array_list_length' filepath='/usr/include/json-c/arraylist.h' line='54' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='malloc' mangled-name='malloc' filepath='/usr/include/stdlib.h' line='539' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_mpath_new' mangled-name='_dmmp_mpath_new' filepath='/build/libdmmp/libdmmp_private.h' line='113' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_mpath_update' mangled-name='_dmmp_mpath_update' filepath='/build/libdmmp/libdmmp_private.h' line='117' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='array_list_get_idx' mangled-name='array_list_get_idx' filepath='/usr/include/json-c/arraylist.h' line='45' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_strerror' mangled-name='dmmp_strerror' filepath='libdmmp/libdmmp.h' line='137' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__builtin___vsnprintf_chk' mangled-name='__vsnprintf_chk' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_mpath_free' mangled-name='_dmmp_mpath_free' filepath='/build/libdmmp/libdmmp_private.h' line='127' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='mpath_connect' mangled-name='mpath_connect' filepath='../libmpathcmd/mpath_cmd.h' line='62' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-type size-in-bits='64' id='type-id-14'>
+      <parameter type-id='type-id-8'/>
+      <parameter type-id='type-id-1'/>
+      <parameter type-id='type-id-11'/>
+      <parameter type-id='type-id-1'/>
+      <parameter type-id='type-id-11'/>
+      <parameter type-id='type-id-11'/>
+      <parameter type-id='type-id-13'/>
+      <return type-id='type-id-7'/>
+    </function-type>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='libdmmp_mp.c' comp-dir-path='/build/libdmmp' language='LANG_C99'>
+    <class-decl name='dmmp_mpath' size-in-bits='320' is-struct='yes' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='32' column='1' id='type-id-17'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='wwid' type-id='type-id-24' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='33' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='alias' type-id='type-id-24' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='34' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='dmmp_pg_count' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='35' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='dmmp_pgs' type-id='type-id-25' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='36' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='kdev_name' type-id='type-id-24' visibility='default' filepath='/build/libdmmp/libdmmp_mp.c' line='37' column='1'/>
+      </data-member>
+    </class-decl>
+    <pointer-type-def type-id='type-id-9' size-in-bits='64' id='type-id-24'/>
+    <class-decl name='dmmp_path_group' size-in-bits='320' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-26'/>
+    <pointer-type-def type-id='type-id-26' size-in-bits='64' id='type-id-27'/>
+    <pointer-type-def type-id='type-id-27' size-in-bits='64' id='type-id-25'/>
+    <pointer-type-def type-id='type-id-25' size-in-bits='64' id='type-id-28'/>
+    <function-decl name='dmmp_path_group_array_get' mangled-name='dmmp_path_group_array_get' filepath='/build/libdmmp/libdmmp_mp.c' line='149' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_array_get'>
+      <parameter type-id='type-id-18' name='dmmp_mp' filepath='/build/libdmmp/libdmmp_mp.c' line='149' column='1'/>
+      <parameter type-id='type-id-28' name='dmmp_pgs' filepath='/build/libdmmp/libdmmp_mp.c' line='150' column='1'/>
+      <parameter type-id='type-id-23' name='dmmp_pg_count' filepath='/build/libdmmp/libdmmp_mp.c' line='151' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_mpath_kdev_name_get' mangled-name='dmmp_mpath_kdev_name_get' filepath='/build/libdmmp/libdmmp_mp.c' line='44' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_mpath_kdev_name_get'>
+      <parameter type-id='type-id-18' name='dmmp_mp' filepath='/build/libdmmp/libdmmp_mp.c' line='44' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_mpath_wwid_get' mangled-name='dmmp_mpath_wwid_get' filepath='/build/libdmmp/libdmmp_mp.c' line='42' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_mpath_wwid_get'>
+      <parameter type-id='type-id-18' name='dmmp_mp' filepath='/build/libdmmp/libdmmp_mp.c' line='44' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_mpath_name_get' mangled-name='dmmp_mpath_name_get' filepath='/build/libdmmp/libdmmp_mp.c' line='40' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_mpath_name_get'>
+      <parameter type-id='type-id-18' name='dmmp_mp' filepath='/build/libdmmp/libdmmp_mp.c' line='44' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_context_log_priority_get' mangled-name='dmmp_context_log_priority_get' filepath='libdmmp/libdmmp.h' line='249' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='json_object_get_string' mangled-name='json_object_get_string' filepath='/usr/include/json-c/json_object.h' line='928' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_log' mangled-name='_dmmp_log' filepath='/build/libdmmp/libdmmp_private.h' line='132' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='strdup' mangled-name='strdup' filepath='/usr/include/string.h' line='167' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_group_update' mangled-name='_dmmp_path_group_update' filepath='/build/libdmmp/libdmmp_private.h' line='120' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_group_new' mangled-name='_dmmp_path_group_new' filepath='/build/libdmmp/libdmmp_private.h' line='114' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_group_array_free' mangled-name='_dmmp_path_group_array_free' filepath='/build/libdmmp/libdmmp_private.h' line='129' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='libdmmp_pg.c' comp-dir-path='/build/libdmmp' language='LANG_C99'>
+    <class-decl name='dmmp_path_group' size-in-bits='320' is-struct='yes' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='38' column='1' id='type-id-26'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='id' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='39' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='32'>
+        <var-decl name='status' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='41' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='priority' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='42' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='128'>
+        <var-decl name='selector' type-id='type-id-24' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='43' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='192'>
+        <var-decl name='dmmp_p_count' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='44' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='256'>
+        <var-decl name='dmmp_ps' type-id='type-id-29' visibility='default' filepath='/build/libdmmp/libdmmp_pg.c' line='45' column='1'/>
+      </data-member>
+    </class-decl>
+    <class-decl name='dmmp_path' size-in-bits='128' is-struct='yes' visibility='default' is-declaration-only='yes' id='type-id-30'/>
+    <pointer-type-def type-id='type-id-30' size-in-bits='64' id='type-id-31'/>
+    <pointer-type-def type-id='type-id-31' size-in-bits='64' id='type-id-29'/>
+    <pointer-type-def type-id='type-id-29' size-in-bits='64' id='type-id-32'/>
+    <function-decl name='dmmp_path_array_get' mangled-name='dmmp_path_array_get' filepath='/build/libdmmp/libdmmp_pg.c' line='198' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_array_get'>
+      <parameter type-id='type-id-27' name='mp_pg' filepath='/build/libdmmp/libdmmp_pg.c' line='198' column='1'/>
+      <parameter type-id='type-id-32' name='mp_paths' filepath='/build/libdmmp/libdmmp_pg.c' line='199' column='1'/>
+      <parameter type-id='type-id-23' name='dmmp_p_count' filepath='/build/libdmmp/libdmmp_pg.c' line='200' column='1'/>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_path_group_selector_get' mangled-name='dmmp_path_group_selector_get' filepath='/build/libdmmp/libdmmp_pg.c' line='67' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_selector_get'>
+      <parameter type-id='type-id-27' name='dmmp_pg' filepath='/build/libdmmp/libdmmp_pg.c' line='67' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_path_group_priority_get' mangled-name='dmmp_path_group_priority_get' filepath='/build/libdmmp/libdmmp_pg.c' line='65' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_priority_get'>
+      <parameter type-id='type-id-27' name='dmmp_pg' filepath='/build/libdmmp/libdmmp_pg.c' line='65' column='1'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+    <function-decl name='dmmp_path_group_status_get' mangled-name='dmmp_path_group_status_get' filepath='/build/libdmmp/libdmmp_pg.c' line='63' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_status_get'>
+      <parameter type-id='type-id-27' name='dmmp_pg' filepath='/build/libdmmp/libdmmp_pg.c' line='65' column='1'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+    <function-decl name='dmmp_path_group_id_get' mangled-name='dmmp_path_group_id_get' filepath='/build/libdmmp/libdmmp_pg.c' line='61' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_id_get'>
+      <parameter type-id='type-id-27' name='dmmp_pg' filepath='/build/libdmmp/libdmmp_pg.c' line='65' column='1'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+    <function-decl name='dmmp_path_group_status_str' mangled-name='dmmp_path_group_status_str' filepath='/build/libdmmp/libdmmp_pg.c' line='55' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_group_status_str'>
+      <parameter type-id='type-id-22' name='pg_status' filepath='/build/libdmmp/libdmmp_pg.c' line='55' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_update' mangled-name='_dmmp_path_update' filepath='/build/libdmmp/libdmmp_private.h' line='123' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_new' mangled-name='_dmmp_path_new' filepath='/build/libdmmp/libdmmp_private.h' line='115' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='_dmmp_path_free' mangled-name='_dmmp_path_free' filepath='/build/libdmmp/libdmmp_private.h' line='131' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='libdmmp_path.c' comp-dir-path='/build/libdmmp' language='LANG_C99'>
+    <class-decl name='dmmp_path' size-in-bits='128' is-struct='yes' visibility='default' filepath='/build/libdmmp/libdmmp_path.c' line='35' column='1' id='type-id-30'>
+      <data-member access='public' layout-offset-in-bits='0'>
+        <var-decl name='blk_name' type-id='type-id-24' visibility='default' filepath='/build/libdmmp/libdmmp_path.c' line='36' column='1'/>
+      </data-member>
+      <data-member access='public' layout-offset-in-bits='64'>
+        <var-decl name='status' type-id='type-id-22' visibility='default' filepath='/build/libdmmp/libdmmp_path.c' line='37' column='1'/>
+      </data-member>
+    </class-decl>
+    <function-decl name='dmmp_path_status_get' mangled-name='dmmp_path_status_get' filepath='/build/libdmmp/libdmmp_path.c' line='59' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_status_get'>
+      <parameter type-id='type-id-31' name='dmmp_p' filepath='/build/libdmmp/libdmmp_path.c' line='59' column='1'/>
+      <return type-id='type-id-22'/>
+    </function-decl>
+    <function-decl name='dmmp_path_blk_name_get' mangled-name='dmmp_path_blk_name_get' filepath='/build/libdmmp/libdmmp_path.c' line='57' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_blk_name_get'>
+      <parameter type-id='type-id-31' name='dmmp_p' filepath='/build/libdmmp/libdmmp_path.c' line='57' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_path_status_str' mangled-name='dmmp_path_status_str' filepath='/build/libdmmp/libdmmp_path.c' line='51' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_path_status_str'>
+      <parameter type-id='type-id-22' name='pg_status' filepath='/build/libdmmp/libdmmp_pg.c' line='55' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+  </abi-instr>
+  <abi-instr version='1.0' address-size='64' path='libdmmp_misc.c' comp-dir-path='/build/libdmmp' language='LANG_C99'>
+    <function-decl name='dmmp_log_priority_str' mangled-name='dmmp_log_priority_str' filepath='/build/libdmmp/libdmmp_misc.c' line='63' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_log_priority_str'>
+      <parameter type-id='type-id-1' name='priority' filepath='/build/libdmmp/libdmmp_misc.c' line='63' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='dmmp_strerror' mangled-name='dmmp_strerror' filepath='/build/libdmmp/libdmmp_misc.c' line='55' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='dmmp_strerror'>
+      <parameter type-id='type-id-1' name='priority' filepath='/build/libdmmp/libdmmp_misc.c' line='63' column='1'/>
+      <return type-id='type-id-11'/>
+    </function-decl>
+    <function-decl name='__fprintf_chk' mangled-name='__fprintf_chk' filepath='/usr/include/x86_64-linux-gnu/bits/stdio2.h' line='88' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='__vfprintf_chk' mangled-name='__vfprintf_chk' filepath='/usr/include/x86_64-linux-gnu/bits/stdio2.h' line='91' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+    <function-decl name='dmmp_context_userdata_get' mangled-name='dmmp_context_userdata_get' filepath='libdmmp/libdmmp.h' line='304' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-7'/>
+    </function-decl>
+  </abi-instr>
+</abi-corpus>
