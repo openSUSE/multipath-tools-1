@@ -1,0 +1,94 @@
+<abi-corpus path='libmpathvalid-nv.so' architecture='elf-amd-x86_64' soname='libmpathvalid-nv.so'>
+  <elf-needed>
+    <dependency name='libmultipath.so.0'/>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='mpathvalid_exit' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpathvalid_get_mode' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpathvalid_init' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpathvalid_is_path' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpathvalid_reload_config' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <abi-instr version='1.0' address-size='64' path='mpath_valid.c' comp-dir-path='/build/libmpathvalid' language='LANG_C99'>
+    <type-decl name='int' size-in-bits='32' id='type-id-1'/>
+    <type-decl name='char' size-in-bits='8' id='type-id-2'/>
+    <qualified-type-def type-id='type-id-2' const='yes' id='type-id-3'/>
+    <pointer-type-def type-id='type-id-3' size-in-bits='64' id='type-id-4'/>
+    <type-decl name='unsigned int' size-in-bits='32' id='type-id-5'/>
+    <pointer-type-def type-id='type-id-2' size-in-bits='64' id='type-id-6'/>
+    <pointer-type-def type-id='type-id-6' size-in-bits='64' id='type-id-7'/>
+    <pointer-type-def type-id='type-id-4' size-in-bits='64' id='type-id-8'/>
+    <function-decl name='mpathvalid_is_path' mangled-name='mpathvalid_is_path' filepath='/build/libmpathvalid/mpath_valid.c' line='144' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpathvalid_is_path@@NOVERSION'>
+      <parameter type-id='type-id-4' name='name' filepath='/build/libmpathvalid/mpath_valid.c' line='144' column='1'/>
+      <parameter type-id='type-id-5' name='mode' filepath='/build/libmpathvalid/mpath_valid.c' line='144' column='1'/>
+      <parameter type-id='type-id-7' name='wwid' filepath='/build/libmpathvalid/mpath_valid.c' line='144' column='1'/>
+      <parameter type-id='type-id-8' name='path_wwids' filepath='/build/libmpathvalid/mpath_valid.c' line='145' column='1'/>
+      <parameter type-id='type-id-5' name='nr_paths' filepath='/build/libmpathvalid/mpath_valid.c' line='145' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpathvalid_exit' mangled-name='mpathvalid_exit' filepath='/build/libmpathvalid/mpath_valid.c' line='129' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpathvalid_exit@@NOVERSION'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpathvalid_reload_config' mangled-name='mpathvalid_reload_config' filepath='/build/libmpathvalid/mpath_valid.c' line='122' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpathvalid_reload_config@@NOVERSION'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpathvalid_init' mangled-name='mpathvalid_init' filepath='/build/libmpathvalid/mpath_valid.c' line='97' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpathvalid_init@@NOVERSION'>
+      <parameter type-id='type-id-1' name='verbosity' filepath='/build/libmpathvalid/mpath_valid.c' line='97' column='1'/>
+      <parameter type-id='type-id-1' name='log_style' filepath='/build/libmpathvalid/mpath_valid.c' line='97' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpathvalid_get_mode' mangled-name='mpathvalid_get_mode' filepath='/build/libmpathvalid/mpath_valid.c' line='42' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpathvalid_get_mode@@NOVERSION'>
+      <return type-id='type-id-5'/>
+    </function-decl>
+    <type-decl name='void' id='type-id-9'/>
+    <function-decl name='alloc_path' mangled-name='alloc_path' filepath='../libmultipath/structs.h' line='506' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='malloc' mangled-name='malloc' filepath='/usr/include/stdlib.h' line='539' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='get_multipath_config' mangled-name='get_multipath_config' filepath='../libmultipath/config.h' line='318' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='is_path_valid' mangled-name='is_path_valid' filepath='../libmultipath/valid.h' line='39' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='put_multipath_config' mangled-name='put_multipath_config' filepath='../libmultipath/config.h' line='320' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='strncmp' mangled-name='strncmp' filepath='/usr/include/string.h' line='140' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='strlcpy' mangled-name='strlcpy' filepath='../libmultipath/util.h' line='19' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='free' mangled-name='free' filepath='/usr/include/stdlib.h' line='565' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='free_path' mangled-name='free_path' filepath='../libmultipath/structs.h' line='511' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='uninit_config' mangled-name='uninit_config' filepath='../libmultipath/config.h' line='304' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='libmultipath_exit' mangled-name='libmultipath_exit' filepath='../libmultipath/config.h' line='282' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='init_config' mangled-name='init_config' filepath='../libmultipath/config.h' line='303' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='libmultipath_init' mangled-name='libmultipath_init' filepath='../libmultipath/config.h' line='267' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='skip_libmp_dm_init' mangled-name='skip_libmp_dm_init' filepath='../libmultipath/devmapper.h' line='37' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='dm_prereq' mangled-name='dm_prereq' filepath='../libmultipath/devmapper.h' line='36' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+    <function-decl name='__stack_chk_fail' mangled-name='__stack_chk_fail' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-9'/>
+    </function-decl>
+  </abi-instr>
+</abi-corpus>

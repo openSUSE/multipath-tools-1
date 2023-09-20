@@ -1,0 +1,107 @@
+<abi-corpus path='libmpathcmd-nv.so' architecture='elf-amd-x86_64' soname='libmpathcmd-nv.so'>
+  <elf-needed>
+    <dependency name='libc.so.6'/>
+  </elf-needed>
+  <elf-function-symbols>
+    <elf-symbol name='__mpath_connect' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_connect' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_disconnect' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_process_cmd' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_recv_reply' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_recv_reply_data' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_recv_reply_len' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+    <elf-symbol name='mpath_send_cmd' version='NOVERSION' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
+  </elf-function-symbols>
+  <abi-instr version='1.0' address-size='64' path='mpath_cmd.c' comp-dir-path='/build/libmpathcmd' language='LANG_C99'>
+    <type-decl name='int' size-in-bits='32' id='type-id-1'/>
+    <type-decl name='char' size-in-bits='8' id='type-id-2'/>
+    <qualified-type-def type-id='type-id-2' const='yes' id='type-id-3'/>
+    <pointer-type-def type-id='type-id-3' size-in-bits='64' id='type-id-4'/>
+    <pointer-type-def type-id='type-id-2' size-in-bits='64' id='type-id-5'/>
+    <pointer-type-def type-id='type-id-5' size-in-bits='64' id='type-id-6'/>
+    <type-decl name='unsigned int' size-in-bits='32' id='type-id-7'/>
+    <function-decl name='mpath_process_cmd' mangled-name='mpath_process_cmd' filepath='/build/libmpathcmd/mpath_cmd.c' line='220' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_process_cmd@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='220' column='1'/>
+      <parameter type-id='type-id-4' name='cmd' filepath='/build/libmpathcmd/mpath_cmd.c' line='220' column='1'/>
+      <parameter type-id='type-id-6' name='reply' filepath='/build/libmpathcmd/mpath_cmd.c' line='220' column='1'/>
+      <parameter type-id='type-id-7' name='timeout' filepath='/build/libmpathcmd/mpath_cmd.c' line='221' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_send_cmd' mangled-name='mpath_send_cmd' filepath='/build/libmpathcmd/mpath_cmd.c' line='205' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_send_cmd@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='205' column='1'/>
+      <parameter type-id='type-id-4' name='cmd' filepath='/build/libmpathcmd/mpath_cmd.c' line='205' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_disconnect' mangled-name='mpath_disconnect' filepath='/build/libmpathcmd/mpath_cmd.c' line='144' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_disconnect@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='144' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_connect' mangled-name='mpath_connect' filepath='/build/libmpathcmd/mpath_cmd.c' line='139' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_connect@@NOVERSION'>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='__mpath_connect' mangled-name='__mpath_connect' filepath='/build/libmpathcmd/mpath_cmd.c' line='97' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='__mpath_connect@@NOVERSION'>
+      <parameter type-id='type-id-1' name='nonblocking' filepath='/build/libmpathcmd/mpath_cmd.c' line='97' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <type-decl name='long int' size-in-bits='64' id='type-id-8'/>
+    <typedef-decl name='__ssize_t' type-id='type-id-8' filepath='/usr/include/x86_64-linux-gnu/bits/types.h' line='193' column='1' id='type-id-9'/>
+    <typedef-decl name='ssize_t' type-id='type-id-9' filepath='/usr/include/x86_64-linux-gnu/sys/types.h' line='108' column='1' id='type-id-10'/>
+    <function-decl name='mpath_recv_reply_len' mangled-name='mpath_recv_reply_len' filepath='/build/libmpathcmd/mpath_cmd.c' line='149' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_recv_reply_len@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='149' column='1'/>
+      <parameter type-id='type-id-7' name='timeout' filepath='/build/libmpathcmd/mpath_cmd.c' line='149' column='1'/>
+      <return type-id='type-id-10'/>
+    </function-decl>
+    <type-decl name='unsigned long int' size-in-bits='64' id='type-id-11'/>
+    <typedef-decl name='size_t' type-id='type-id-11' filepath='/usr/lib/gcc/x86_64-linux-gnu/9/include/stddef.h' line='209' column='1' id='type-id-12'/>
+    <function-decl name='mpath_recv_reply_data' mangled-name='mpath_recv_reply_data' filepath='/build/libmpathcmd/mpath_cmd.c' line='168' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_recv_reply_data@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='168' column='1'/>
+      <parameter type-id='type-id-5' name='reply' filepath='/build/libmpathcmd/mpath_cmd.c' line='168' column='1'/>
+      <parameter type-id='type-id-12' name='len' filepath='/build/libmpathcmd/mpath_cmd.c' line='168' column='1'/>
+      <parameter type-id='type-id-7' name='timeout' filepath='/build/libmpathcmd/mpath_cmd.c' line='169' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <function-decl name='mpath_recv_reply' mangled-name='mpath_recv_reply' filepath='/build/libmpathcmd/mpath_cmd.c' line='184' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='mpath_recv_reply@@NOVERSION'>
+      <parameter type-id='type-id-1' name='fd' filepath='/build/libmpathcmd/mpath_cmd.c' line='184' column='1'/>
+      <parameter type-id='type-id-6' name='reply' filepath='/build/libmpathcmd/mpath_cmd.c' line='184' column='1'/>
+      <parameter type-id='type-id-7' name='timeout' filepath='/build/libmpathcmd/mpath_cmd.c' line='184' column='1'/>
+      <return type-id='type-id-1'/>
+    </function-decl>
+    <type-decl name='void' id='type-id-13'/>
+    <function-decl name='strlen' mangled-name='strlen' filepath='/usr/include/string.h' line='385' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='__stack_chk_fail' mangled-name='__stack_chk_fail' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='close' mangled-name='close' filepath='/usr/include/unistd.h' line='353' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='__errno_location' mangled-name='__errno_location' filepath='/usr/include/errno.h' line='37' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='socket' mangled-name='socket' filepath='/usr/include/x86_64-linux-gnu/sys/socket.h' line='102' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='connect' mangled-name='connect' filepath='/usr/include/x86_64-linux-gnu/sys/socket.h' line='126' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='fcntl' mangled-name='fcntl' filepath='/usr/include/fcntl.h' line='148' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='send' mangled-name='send' filepath='/usr/include/x86_64-linux-gnu/sys/socket.h' line='138' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='__poll_alias' mangled-name='poll' filepath='/usr/include/x86_64-linux-gnu/bits/poll2.h' line='26' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='__recv_alias' mangled-name='recv' filepath='/usr/include/x86_64-linux-gnu/bits/socket2.h' line='25' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='free' mangled-name='free' filepath='/usr/include/stdlib.h' line='565' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+    <function-decl name='malloc' mangled-name='malloc' filepath='/usr/include/stdlib.h' line='539' column='1' visibility='default' binding='global' size-in-bits='64'>
+      <return type-id='type-id-13'/>
+    </function-decl>
+  </abi-instr>
+</abi-corpus>
