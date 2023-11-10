@@ -789,10 +789,24 @@ Specify the maximum number of seconds the SCSI layer will spend doing error
 handling when scsi devices fail. After this timeout the scsi layer will perform
 a full HBA reset. Setting this may be necessary in cases where the rport is
 never lost, so \fIfast_io_fail_tmo\fR and \fIdev_loss_tmo\fR will never
-trigger, but (frequently do to load) scsi commands still hang. \fBNote:\fR when
+trigger, but (frequently due to load) scsi commands still hang. \fBNote:\fR when
 the scsi error handler performs the HBA reset, all target paths on that HBA
 will be affected. eh_deadline should only be set in cases where all targets on
 the affected HBAs are multipathed.
+.RS
+.TP
+The default is: \fB<unset>\fR
+.RE
+.
+.
+.TP
+.B max_retries
+Specify the maximum number of times the SCSI layer will retry IO commands for
+some types of SCSI errors before returning failure. Setting this can be helpful
+for cases where IO commands hang and timeout. By default, the SCSI layer will
+retry IOs 5 times. Reducing this value will allow multipath to retry the IO
+down another path sooner. Valid values are
+\fB0\fR through \fB5\fR.
 .RS
 .TP
 The default is: \fB<unset>\fR
@@ -1320,6 +1334,21 @@ makes multipath immediately mark a device with only ghost paths as ready.
 .RS
 .TP
 The default is: \fBno\fR
+.RE
+.
+.
+.TP
+.B auto_resize
+Controls when multipathd will automatically resize a multipath device.  If set
+to \fInever\fR, multipath devices must always be manually resized by either
+running \fBmultipathd resize map <name>\fR.  If set to \fIgrow_only\fR, when
+multipathd detects that all of a multipath device's paths have increased in
+size, it will automatically grow the multipath device to the new size. If set
+to \fIgrow_shrink\fR, multipathd will also automatically shrink the device
+once it detects all of its paths have decreased in size.
+.RS
+.TP
+The default is: \fBnever\fR
 .RE
 .
 .

@@ -42,14 +42,6 @@ Go to: https://github.com/opensvc/multipath-tools/tags
 Select a release-tag and then click on "zip" or "tar.gz".
 
 
-Devel code
-==========
-
-To get latest devel code:
-
-    git clone -b queue https://github.com/openSUSE/multipath-tools
-
-
 Building multipath-tools
 ========================
 
@@ -111,6 +103,13 @@ The following variables can be passed to the `make` command line:
    polling API. For use with pre-5.0 kernels that don't support dmevent polling
    (but even if you don't use this option, multipath-tools will work with
    these kernels).
+ * `SYSTEMD`: The version number of systemd (e.g. "244") to compile the code for.
+   The default is autodetected, assuming that the systemd version in the build
+   environment is the same as on the target system. Override the value to
+   build for a different systemd version, or set it to `""` to build for a
+   system without systemd.
+   **Caution:** multipathd without systemd has been largely untested by the
+   upstream maintainers since at least 2020.
  * `SCSI_DH_MODULES_PRELOAD="(list)"`: specify a space-separated list of SCSI
    device handler kernel modules to load early during boot. Some
    multipath-tools functionality depends on these modules being loaded
@@ -122,7 +121,9 @@ The following variables can be passed to the `make` command line:
    It's especially useful if `scsi_mod` is builtin but `scsi_dh_alua` and
    other device handler modules are built as modules. If `scsi_mod` itself is compiled
    as a module, it might make more sense to use a module softdep for the same
-   purpose.
+   purpose by creating a `modprobe.d` file like this:
+       
+        softdep scsi_mod post: scsi_dh_alua scsi_dh_rdac
 
 ### Installation Paths
 
@@ -133,9 +134,9 @@ The following variables can be passed to the `make` command line:
    for booting. Non-usr-merged distributions[^systemd] may want to set this to
    `/usr`. The default is `$(prefix)`.
  * `systemd_prefix`: Prefix for systemd-related files[^systemd]. The default is `/usr`.
- * `etc_prefix`: The prefix for configuration files. "Usr-merged"
+ * `etc_prefix`: The prefix for configuration files. "usr-merged"
    distributions with immutable `/usr`[^systemd] may want to set this to
-   `/etc`. The default is `$(prefix)`.
+   `""`. The default is `$(prefix)`.
  * `LIB`: the subdirectory under `prefix` where shared libraries will be
    installed. By default, the makefile uses `/lib64` if this directory is
    found on the build system, and `/lib` otherwise.
@@ -144,10 +145,12 @@ The options `configdir`, `plugindir`, `configfile`, and `statedir` above can
 be used for setting individual paths where the `prefix` variables don't provide
 sufficient control. See `Makefile.inc` for even more fine-grained control.
 
-[^systemd]: Some systemd installations use separate `prefix` and `rootprefix`. 
-	On such a distribution, set `prefix`, and override `unitdir` to use systemd's
-   `rootprefix`. Recent systemd releases generally require everything to be
-	installed under `/usr` (so-called "usr-merged" distribution). On "usr-
+[^systemd]: systemd installations up to v254 which have been built with
+    `split-usr=true` may use separate `prefixdir` and `rootprefixdir`
+    directories, where `prefixdir` is a subdirectory of `rootprefixdir`.
+	multipath-tools' `systemd_prefix` corresponds to systemd's `prefixdir`.
+	On such distributions, override `unitdir` and `libudevdir` to use systemd's
+   `rootprefix`: `make libudevdir=/lib/udev unitdir=/lib/systemd/system`
 
 ### Compiler Options
 
@@ -177,32 +180,58 @@ The following targets are intended for developers only.
  * `make compile-commands.json` to create input for [clangd](https://clangd.llvm.org/).
 
 
-Add storage devices
-===================
-
-Follow the instructions in the `libmultipath/hwtable.c` header.
-
-
-Mailing list
+Contributing
 ============
 
-(subscribers-only)
-To subscribe and archives: https://listman.redhat.com/mailman/listinfo/dm-devel
-Searchable: https://marc.info/?l=dm-devel
+Please send patches or contributions for general discussion about
+multipath tools to the mailing list (see below). You can also create
+issues or pull requests on
+[GitHub](https://github.com/opensvc/multipath-tools).
+You will be asked to send your patches to the mailing list
+unless your patch is trivial.
 
+Mailing list
+------------
+
+The mailing list for multipath-tools is `dm-devel@lists.linux.dev`.
+To subscribe, send an email to `dm-devel+subscribe@lists.linux.dev`.
+Mailing list archives are available on
+[lore.kernel.org](https://lore.kernel.org/dm-devel/) and
+[marc.info](https://marc.info/?l=dm-devel). See also the
+[lists.linux.dev home page](https://subspace.kernel.org/lists.linux.dev.html).
+
+When sending patches to the mailing list, please add a `Signed-off-by:`
+tag, and add Benjamin Marzinski <bmarzins@redhat.com> and 
+Martin Wilck <mwilck@suse.com> to the Cc list.
+
+Staging area
+------------
+
+Between releases, the latest reviewed code can be obtained from
+[the queue branch](https://github.com/openSUSE/multipath-tools/tree/queue)
+in the openSUSE/multipath-tools repository on GitHub. From there,
+pull requests for new releases in the master repository are
+created roughly every 3 months.
+
+Adding new storage devices
+--------------------------
+
+If you want to add special settings for a storage device which is
+new on the market, follow the instructions at the top of the
+file `libmultipath/hwtable.c`.
 
 Changelog
 =========
 
-pre-0.4.5: https://web.archive.org/web/20070309224034/http://christophe.varoqui.free.fr/wiki/wakka.php?wiki=ChangeLog
-post-0.4.5: https://github.com/opensvc/multipath-tools/commits/master
+* pre-0.4.5: https://web.archive.org/web/20070309224034/http://christophe.varoqui.free.fr/wiki/wakka.php?wiki=ChangeLog
+* post-0.4.5: https://github.com/opensvc/multipath-tools/commits/master
 
 
 Maintainer
 ==========
 
 Christophe Varoqui <christophe.varoqui@opensvc.com>
-Device-mapper development mailing list <dm-devel@redhat.com>
+Device-mapper development mailing list <dm-devel@lists.linux.dev>
 
 
 Licence
@@ -244,15 +273,25 @@ To enable ALUA, the following options should be changed:
 
 NVMe
 ====
-To use Device Mapper/multipath-tools with NVMe devices,
-if the Native NVMe Multipath subsystem is enabled
-( "Y" in `/sys/module/nvme_core/parameters/multipath` ),
-it has to be disabled:
 
-`echo "options nvme_core multipath=N" > /etc/modprobe.d/01-nvme_core-mp.conf`,
-regenerate the initramfs (`dracut -f` or `update-initramfs`) and reboot.
+Using dm-multipath with NVMe
+----------------------------
 
-Check that it is disabled(N) with:
-`cat /sys/module/nvme_core/parameters/multipath`
-or
-`systool -m nvme_core -A multipath`
+NVMe multipath is natively supported by the Linux kernel. If for some reason
+you prefer using device mapper multipath with NVMe devices,
+you need to disable native multipathing first:
+
+    echo "options nvme_core multipath=N" > /etc/modprobe.d/01-nvme_core-mp.conf
+
+Afterwards, regenerate the initramfs (`dracut -f` or `update-initramfs`) and reboot.
+
+Using multipath-tools with native NVMe multipath
+------------------------------------------------
+
+If native NVMe multipathing is enabled, you can still use multipath-tools
+for displaying the topology and some other information about native NVMe
+multipath setups. This feature is disabled by default. To enable it, set
+`enable_foreign nvme` in the `defaults` section of `multipath.conf`.
+Commands like `multipath -ll` will then display information about NVMe
+native multipath. This support is read-only; modifying the native multipath
+configuration is not supported.

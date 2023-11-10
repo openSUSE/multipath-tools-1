@@ -40,8 +40,10 @@ usr_prefix	:= $(prefix)
 # Prefix for configfuration files (multipath.conf)
 etc_prefix	:= $(prefix)
 # Where to install systemd-related files. systemd is usually installed under /usr
-# Note: some systemd installations use separate "prefix" and "rootprefix".
-# In this case, override only unitdir to use systemd's "rootprefix" instead of $(systemd_prefix)
+# Note: systemd installations with "split-usr=true" use separate "prefixdir" and
+# "rootprefixdir". Our systemd_prefix corresponds to "prefixdir".
+# In this case, override only unitdir and libudevdir below to use
+# systemd's "rootprefixdir" instead of $(systemd_prefix)
 systemd_prefix  := /usr
 
 # Make sure all prefix variables end in "/"
@@ -90,6 +92,8 @@ ORIG_LDFLAGS     := $(LDFLAGS)
 
 SYSTEMD_CPPFLAGS := $(if $(SYSTEMD),-DUSE_SYSTEMD=$(SYSTEMD))
 SYSTEMD_LIBDEPS := $(if $(SYSTEMD),$(if $(shell test $(SYSTEMD) -gt 209 && echo 1),-lsystemd,-lsystemd-daemon))
+MODPROBE_UNIT := $(shell test "0$(SYSTEMD)" -lt 245 2>/dev/null || \
+			echo "modprobe@dm_multipath.service")
 
 OPTFLAGS	:= -O2 -g $(STACKPROT) --param=ssp-buffer-size=4
 WARNFLAGS	:= -Werror -Wall -Wextra -Wformat=2 $(WFORMATOVERFLOW) -Werror=implicit-int \
@@ -144,4 +148,4 @@ NV_VERSION_SCRIPT = $(DEVLIB:%.so=%-nv.version)
 
 %:	%.in
 	@echo creating $@
-	$(Q)sed 's:@CONFIGFILE@:'$(configfile)':g;s:@CONFIGDIR@:'$(configdir)':g;s:@STATE_DIR@:'$(statedir)':g;s:@RUNTIME_DIR@:'$(runtimedir)':g' $< >$@
+	$(Q)sed 's:@CONFIGFILE@:'$(configfile)':g;s:@CONFIGDIR@:'$(configdir)':g;s:@STATE_DIR@:'$(statedir)':g;s:@RUNTIME_DIR@:'$(runtimedir)':g;s/@MODPROBE_UNIT@/'$(MODPROBE_UNIT)'/g' $< >$@
