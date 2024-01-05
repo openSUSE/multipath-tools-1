@@ -76,7 +76,7 @@ static int
 show_map_topology (struct strbuf *reply, struct multipath *mpp,
 		   struct vectors *vecs, const fieldwidth_t *width)
 {
-	if (update_multipath(vecs, mpp->alias, 0))
+	if (refresh_multipath(vecs, mpp))
 		return 1;
 
 	if (snprint_multipath_topology(reply, mpp, 2, width) < 0)
@@ -98,7 +98,7 @@ show_maps_topology (struct strbuf *reply, struct vectors * vecs)
 	foreign_path_layout(p_width);
 
 	vector_foreach_slot(vecs->mpvec, mpp, i) {
-		if (update_multipath(vecs, mpp->alias, 0)) {
+		if (refresh_multipath(vecs, mpp)) {
 			i--;
 			continue;
 		}
@@ -118,7 +118,7 @@ show_maps_json (struct strbuf *reply, struct vectors * vecs)
 	struct multipath * mpp;
 
 	vector_foreach_slot(vecs->mpvec, mpp, i) {
-		if (update_multipath(vecs, mpp->alias, 0)) {
+		if (refresh_multipath(vecs, mpp)) {
 			return 1;
 		}
 	}
@@ -133,7 +133,7 @@ static int
 show_map_json (struct strbuf *reply, struct multipath * mpp,
 	       struct vectors * vecs)
 {
-	if (update_multipath(vecs, mpp->alias, 0))
+	if (refresh_multipath(vecs, mpp))
 		return 1;
 
 	if (snprint_multipath_map_json(reply, mpp) < 0)
@@ -365,7 +365,7 @@ show_maps (struct strbuf *reply, struct vectors *vecs, char *style,
 		return 1;
 
 	vector_foreach_slot(vecs->mpvec, mpp, i) {
-		if (update_multipath(vecs, mpp->alias, 0)) {
+		if (refresh_multipath(vecs, mpp)) {
 			i--;
 			continue;
 		}
@@ -928,22 +928,15 @@ cli_restore_queueing(void *v, struct strbuf *reply, void *data)
 		return 1;
 	}
 
-	mpp->disable_queueing = 0;
-	conf = get_multipath_config();
-	pthread_cleanup_push(put_multipath_config, conf);
-	select_no_path_retry(conf, mpp);
-	pthread_cleanup_pop(1);
-
-	/*
-	 * Don't call set_no_path_retry() for the NO_PATH_RETRY_FAIL case.
-	 * That would disable queueing when "restorequeueing" is called,
-	 * and the code never behaved that way. Users might not expect it.
-	 * In almost all cases, queueing will be disabled anyway when we
-	 * are here.
-	 */
-	if (mpp->no_path_retry != NO_PATH_RETRY_UNDEF &&
-	    mpp->no_path_retry != NO_PATH_RETRY_FAIL)
+	if (mpp->disable_queueing) {
+		mpp->disable_queueing = 0;
+		conf = get_multipath_config();
+		pthread_cleanup_push(put_multipath_config, conf);
+		select_no_path_retry(conf, mpp);
+		pthread_cleanup_pop(1);
 		set_no_path_retry(mpp);
+	} else
+		condlog(2, "%s: queueing not disabled. Nothing to do", mapname);
 
 	return 0;
 }
@@ -957,15 +950,16 @@ cli_restore_all_queueing(void *v, struct strbuf *reply, void *data)
 
 	condlog(2, "restore queueing (operator)");
 	vector_foreach_slot(vecs->mpvec, mpp, i) {
-		mpp->disable_queueing = 0;
-		struct config *conf = get_multipath_config();
-		pthread_cleanup_push(put_multipath_config, conf);
-		select_no_path_retry(conf, mpp);
-		pthread_cleanup_pop(1);
-		/* See comment in cli_restore_queueing() */
-		if (mpp->no_path_retry != NO_PATH_RETRY_UNDEF &&
-		    mpp->no_path_retry != NO_PATH_RETRY_FAIL)
+		if (mpp->disable_queueing) {
+			mpp->disable_queueing = 0;
+			struct config *conf = get_multipath_config();
+			pthread_cleanup_push(put_multipath_config, conf);
+			select_no_path_retry(conf, mpp);
+			pthread_cleanup_pop(1);
 			set_no_path_retry(mpp);
+		} else
+			condlog(2, "%s: queueing not disabled. Nothing to do",
+				mpp->alias);
 	}
 	return 0;
 }

@@ -96,7 +96,7 @@ not mandatory.
 .B Note on regular expressions:
 The \fI@CONFIGFILE@\fR syntax allows many attribute values to be specified as POSIX
 Extended Regular Expressions (see \fBregex\fR(7)). These regular expressions
-are \fBcase sensitive\fR and \fBnot anchored\fR, thus the expression "bar" matches "barbie",
+are \fBcase-sensitive\fR and \fBnot anchored\fR, thus the expression "bar" matches "barbie",
 "rhabarber", and "wunderbar", but not "Barbie". To avoid unwanted substring
 matches, standard regular expression syntax using the special characters "^" and "$" can be used.
 .
@@ -187,7 +187,7 @@ The default is: \fBno\fR
 .
 .TP
 .B multipath_dir
-(Deprecated) This option is not supported any more, and the value is ignored.
+(Deprecated) This option is not supported anymore, and the value is ignored.
 .
 .
 .TP
@@ -277,7 +277,7 @@ The default is: \fBno\fR
 .
 .TP
 .B pg_timeout
-(Deprecated) This option is not supported any more, and the value is ignored.
+(Deprecated) This option is not supported anymore, and the value is ignored.
 .
 .
 .TP
@@ -308,7 +308,7 @@ The default is: \fB<unset>\fR. To enable uevent merging, set it e.g. to
 .B uid_attribute
 The udev attribute providing a unique path identifier (WWID). If
 \fIuid_attribute\fR is set to the empty string, WWID determination is done
-using the \fIsysfs\fR method rather then using udev (not recommended in
+using the \fIsysfs\fR method rather than using udev (not recommended in
 production; see \fBWWID generation\fR below).
 .RS
 .TP
@@ -322,7 +322,7 @@ The default is: \fBID_WWN\fR, for NVMe devices
 .
 .TP
 .B getuid_callout
-(Deprecated) This option is not supported any more, and the value is ignored.
+(Deprecated) This option is not supported anymore, and the value is ignored.
 .
 .
 .TP
@@ -815,7 +815,7 @@ The default is: \fB<unset>\fR
 .
 .TP
 .B bindings_file
-(Deprecated) This option is not supported any more, and will be ignored.
+(Deprecated) This option is not supported anymore, and will be ignored.
 .RS
 .TP
 The compiled-in value is: \fB@STATE_DIR@/bindings\fR
@@ -824,7 +824,7 @@ The compiled-in value is: \fB@STATE_DIR@/bindings\fR
 .
 .TP
 .B wwids_file
-(Deprecated) This option is not supported any more, and will be ignored.
+(Deprecated) This option is not supported anymore, and will be ignored.
 .RS
 .TP
 The compiled-in value is: \fB@STATE_DIR@/wwids\fR
@@ -833,7 +833,7 @@ The compiled-in value is: \fB@STATE_DIR@/wwids\fR
 .
 .TP
 .B prkeys_file
-(Deprecated) This option is not supported any more, and will be ignored.
+(Deprecated) This option is not supported anymore, and will be ignored.
 .RS
 .TP
 The compiled-in value is: \fB@STATE_DIR@/prkeys\fR
@@ -1002,7 +1002,7 @@ The default is: \fB<unset>\fR
 .
 .TP
 .B config_dir
-(Deprecated) This option is not supported any more, and the value is ignored.
+(Deprecated) This option is not supported anymore, and the value is ignored.
 .RS
 .TP
 The compiled-in value is: \fB@CONFIGDIR@\fR
@@ -1300,7 +1300,7 @@ The default is: \fBno\fR
 .
 .TP
 .B disable_changed_wwids
-(Deprecated) This option is not supported any more, and the value is ignored.
+(Deprecated) This option is not supported anymore, and the value is ignored.
 .RE
 .
 .
@@ -1474,7 +1474,7 @@ The protocol that a path is using can be viewed by running
 For every device, these 5 blacklist criteria are evaluated in the order
 "property, dev\%node, device, protocol, wwid". If a device turns out to be
 blacklisted by any criterion, it's excluded from handling by multipathd, and
-the later criteria aren't evaluated any more. For each
+the later criteria aren't evaluated anymore. For each
 criterion, the whitelist takes precedence over the blacklist if a device
 matches both.
 .LP

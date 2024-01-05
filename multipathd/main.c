@@ -500,8 +500,7 @@ remove_maps_and_stop_waiters(struct vectors *vecs)
 	remove_maps(vecs);
 }
 
-int __setup_multipath(struct vectors *vecs, struct multipath *mpp,
-		      int reset)
+int refresh_multipath(struct vectors *vecs, struct multipath *mpp)
 {
 	if (dm_get_info(mpp->alias, &mpp->dmi)) {
 		/* Error accessing table */
@@ -513,20 +512,24 @@ int __setup_multipath(struct vectors *vecs, struct multipath *mpp,
 		condlog(0, "%s: failed to setup multipath", mpp->alias);
 		goto out;
 	}
-
-	if (reset) {
-		set_no_path_retry(mpp);
-		if (VECTOR_SIZE(mpp->paths) != 0)
-			dm_cancel_deferred_remove(mpp);
-	}
-
 	return 0;
 out:
 	remove_map_and_stop_waiter(mpp, vecs);
 	return 1;
 }
 
-int update_multipath (struct vectors *vecs, char *mapname, int reset)
+int setup_multipath(struct vectors *vecs, struct multipath *mpp)
+{
+	if (refresh_multipath(vecs, mpp) != 0)
+		return 1;
+
+	set_no_path_retry(mpp);
+	if (VECTOR_SIZE(mpp->paths) != 0)
+		dm_cancel_deferred_remove(mpp);
+	return 0;
+}
+
+int update_multipath (struct vectors *vecs, char *mapname)
 {
 	struct multipath *mpp;
 	struct pathgroup  *pgp;
@@ -540,7 +543,7 @@ int update_multipath (struct vectors *vecs, char *mapname, int reset)
 		return 2;
 	}
 
-	if (__setup_multipath(vecs, mpp, reset))
+	if (setup_multipath(vecs, mpp))
 		return 1; /* mpp freed in setup_multipath */
 
 	/*
@@ -593,7 +596,7 @@ flush_map_nopaths(struct multipath *mpp, struct vectors *vecs) {
 		mpp->no_path_retry = NO_PATH_RETRY_FAIL;
 		mpp->disable_queueing = 1;
 		mpp->stat_map_failures++;
-		dm_queue_if_no_path(mpp->alias, 0);
+		dm_queue_if_no_path(mpp, 0);
 	}
 	if (!flush_map(mpp, vecs, 1)) {
 		condlog(2, "%s: removed map after removing all paths", alias);
@@ -927,7 +930,7 @@ uev_remove_map (struct uevent * uev, struct vectors * vecs)
 		goto out;
 	}
 
-	dm_queue_if_no_path(alias, 0);
+	dm_queue_if_no_path(mpp, 0);
 	remove_map_and_stop_waiter(mpp, vecs);
 out:
 	lock_cleanup_pop(vecs->lock);
@@ -1113,7 +1116,7 @@ uev_add_path (struct uevent *uev, struct vectors * vecs, int need_do_map)
 					 * Failure in ev_remove_path will keep
 					 * path in pathvec in INIT_REMOVED state
 					 * Fail the path to make sure it isn't
-					 * used any more.
+					 * used anymore.
 					 */
 					pp->dmstate = PSTATE_FAILED;
 					dm_fail_path(pp->mpp->alias, pp->dev_t);
@@ -2091,7 +2094,7 @@ retry_count_tick(vector mpvec)
 			condlog(4, "%s: Retrying.. No active path", mpp->alias);
 			if(--mpp->retry_tick == 0) {
 				mpp->stat_map_failures++;
-				dm_queue_if_no_path(mpp->alias, 0);
+				dm_queue_if_no_path(mpp, 0);
 				condlog(2, "%s: Disable queueing", mpp->alias);
 			}
 		}
@@ -3257,7 +3260,7 @@ static void cleanup_maps(struct vectors *vecs)
 	put_multipath_config(conf);
 	if (queue_without_daemon == QUE_NO_DAEMON_OFF)
 		vector_foreach_slot(vecs->mpvec, mpp, i)
-			dm_queue_if_no_path(mpp->alias, 0);
+			dm_queue_if_no_path(mpp, 0);
 	remove_maps_and_stop_waiters(vecs);
 	vecs->mpvec = NULL;
 }
@@ -3323,7 +3326,7 @@ static void cleanup_threads(void)
 
 	/*
 	 * As all threads are joined now, and we're in DAEMON_SHUTDOWN
-	 * state, no new waiter threads will be created any more.
+	 * state, no new waiter threads will be created anymore.
 	 */
 	pthread_attr_destroy(&waiter_attr);
 }
