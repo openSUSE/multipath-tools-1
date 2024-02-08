@@ -152,10 +152,10 @@ CPPFLAGS	:= $(FORTIFY_OPT) \
 		   -DBIN_DIR=\"$(bindir)\" -DMULTIPATH_DIR=\"$(plugindir)\" -DRUN_DIR=\"${RUN}\" \
 		   -DRUNTIME_DIR=\"$(runtimedir)\" \
 		   -DCONFIG_DIR=\"$(configdir)\" -DEXTRAVERSION=\"$(EXTRAVERSION)\" -MMD -MP
-CFLAGS		:= --std=gnu99 $(CFLAGS) $(OPTFLAGS) $(WARNFLAGS) -pipe
-BIN_CFLAGS	= -fPIE -DPIE
-LIB_CFLAGS	= -fPIC
-SHARED_FLAGS	= -shared
+CFLAGS		:= -std=gnu99 $(CFLAGS) $(OPTFLAGS) $(WARNFLAGS) -pipe
+BIN_CFLAGS	:= -fPIE -DPIE
+LIB_CFLAGS	:= -fPIC
+SHARED_FLAGS	:= -shared
 LDFLAGS		:= $(LDFLAGS) -Wl,-z,relro -Wl,-z,now -Wl,-z,defs
 BIN_LDFLAGS	= -pie
 
