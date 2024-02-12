@@ -6,6 +6,11 @@ on:
       - factory
       - next
       - edge
+    paths:
+      - '**.h'
+      - '**.c'
+      - '**Makefile*'
+      - '**.mk'
 
 jobs:
   build-and-test:
