@@ -583,12 +583,11 @@ int update_multipath (struct vectors *vecs, char *mapname)
 
 static bool
 flush_map_nopaths(struct multipath *mpp, struct vectors *vecs) {
-	char alias[WWID_SIZE];
+	int r;
 
 	/*
 	 * flush_map will fail if the device is open
 	 */
-	strlcpy(alias, mpp->alias, WWID_SIZE);
 	if (mpp->flush_on_last_del == FLUSH_ENABLED) {
 		condlog(2, "%s Last path deleted, disabling queueing",
 			mpp->alias);
@@ -598,11 +597,20 @@ flush_map_nopaths(struct multipath *mpp, struct vectors *vecs) {
 		mpp->stat_map_failures++;
 		dm_queue_if_no_path(mpp, 0);
 	}
-	if (!flush_map(mpp, vecs, 1)) {
-		condlog(2, "%s: removed map after removing all paths", alias);
-		return true;
+	r = dm_flush_map_nopaths(mpp->alias, mpp->deferred_remove);
+	if (r != DM_FLUSH_OK) {
+		if (r == DM_FLUSH_DEFERRED) {
+			condlog(2, "%s: devmap deferred remove", mpp->alias);
+			mpp->deferred_remove = DEFERRED_REMOVE_IN_PROGRESS;
+		}
+		else
+			condlog(0, "%s: can't flush", mpp->alias);
+		return false;
 	}
-	return false;
+
+	condlog(2, "%s: map flushed after removing all paths", mpp->alias);
+	remove_map_and_stop_waiter(mpp, vecs);
+	return true;
 }
 
 static void
@@ -738,7 +746,7 @@ coalesce_maps(struct vectors *vecs, vector nmpv)
 			 * remove all current maps not allowed by the
 			 * current configuration
 			 */
-			if (dm_flush_map(ompp->alias)) {
+			if (dm_flush_map(ompp->alias) != DM_FLUSH_OK) {
 				condlog(0, "%s: unable to flush devmap",
 					ompp->alias);
 				/*
@@ -778,30 +786,17 @@ sync_maps_state(vector mpvec)
 }
 
 int
-flush_map(struct multipath * mpp, struct vectors * vecs, int nopaths)
+flush_map(struct multipath * mpp, struct vectors * vecs)
 {
-	int r;
-
-	if (nopaths)
-		r = dm_flush_map_nopaths(mpp->alias, mpp->deferred_remove);
-	else
-		r = dm_flush_map(mpp->alias);
-	/*
-	 * clear references to this map before flushing so we can ignore
-	 * the spurious uevent we may generate with the dm_flush_map call below
-	 */
-	if (r) {
-		if (r == 1)
-			condlog(0, "%s: can't flush", mpp->alias);
-		else {
-			condlog(2, "%s: devmap deferred remove", mpp->alias);
-			mpp->deferred_remove = DEFERRED_REMOVE_IN_PROGRESS;
-		}
+	int r = dm_suspend_and_flush_map(mpp->alias, 0);
+	if (r != DM_FLUSH_OK) {
+		if (DM_FLUSH_FAIL_CANT_RESTORE)
+			remove_feature(&mpp->features, "queue_if_no_path");
+		condlog(0, "%s: can't flush", mpp->alias);
 		return r;
 	}
-	else
-		condlog(2, "%s: map flushed", mpp->alias);
 
+	condlog(2, "%s: map flushed", mpp->alias);
 	remove_map_and_stop_waiter(mpp, vecs);
 
 	return 0;
@@ -936,27 +931,6 @@ out:
 	lock_cleanup_pop(vecs->lock);
 	free(alias);
 	return 0;
-}
-
-/* Called from CLI handler */
-int
-ev_remove_map (char * devname, char * alias, int minor, struct vectors * vecs)
-{
-	struct multipath * mpp;
-
-	mpp = find_mp_by_minor(vecs->mpvec, minor);
-
-	if (!mpp) {
-		condlog(2, "%s: devmap not registered, can't remove",
-			devname);
-		return 1;
-	}
-	if (strcmp(mpp->alias, alias)) {
-		condlog(2, "%s: minor number mismatch (map %d, event %d)",
-			mpp->alias, mpp->dmi.minor, minor);
-		return 1;
-	}
-	return flush_map(mpp, vecs, 0);
 }
 
 static void
@@ -1656,7 +1630,7 @@ uev_update_path (struct uevent *uev, struct vectors * vecs)
 				}
 			}
 		}
-		if (auto_resize != AUTO_RESIZE_NEVER &&
+		if (auto_resize != AUTO_RESIZE_NEVER && mpp &&
 		    !mpp->wait_for_udev) {
 			struct pathgroup *pgp;
 			struct path *pp2;
@@ -2125,7 +2099,7 @@ partial_retrigger_tick(vector pathvec)
 	}
 }
 
-int update_prio(struct path *pp, int refresh_all)
+static int update_prio(struct path *pp, int force_refresh_all)
 {
 	int oldpriority;
 	struct path *pp1;
@@ -2141,7 +2115,9 @@ int update_prio(struct path *pp, int refresh_all)
 		pthread_cleanup_pop(1);
 	}
 
-	if (pp->priority == oldpriority && !refresh_all)
+	if (pp->priority != oldpriority)
+		changed = 1;
+	else if (!force_refresh_all)
 		return 0;
 
 	vector_foreach_slot (pp->mpp->pg, pgp, i) {

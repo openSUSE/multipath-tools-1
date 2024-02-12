@@ -39,8 +39,7 @@ int need_to_delay_reconfig (struct vectors *);
 int ev_add_path (struct path *, struct vectors *, int);
 int ev_remove_path (struct path *, struct vectors *, int);
 int ev_add_map (char *, const char *, struct vectors *);
-int ev_remove_map (char *, char *, int, struct vectors *);
-int flush_map(struct multipath *, struct vectors *, int);
+int flush_map(struct multipath *, struct vectors *);
 
 void handle_signals(bool);
 int refresh_multipath(struct vectors * vecs, struct multipath * mpp);
