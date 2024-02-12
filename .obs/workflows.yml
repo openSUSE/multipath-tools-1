@@ -32,9 +32,9 @@ workflow:
               - s390x
               - ppc64le
               - aarch64
-          - name: SLE_15_SP3
+          - name: SLE_15_SP6
             paths:
-              - target_project: SUSE:SLE-15-SP3:GA
+              - target_project: SUSE:SLE-15-SP6:GA
                 target_repository: pool
             architectures:
               - x86_64
