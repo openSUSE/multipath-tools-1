@@ -98,9 +98,6 @@ The following variables can be passed to the `make` command line:
     By default, command line editing is disabled.
     Note that using libreadline may
     [make binary indistributable due to license incompatibility](https://github.com/opensvc/multipath-tools/issues/36).
- * `SCHED_RT_PRIO={0-99}`: for values {1-99} set the realtime priority
-    multipathd will attempt to run with. for value 0, disable multipathd
-    changing itself to a realtime process.
  * `ENABLE_LIBDMMP=0`: disable building libdmmp
  * `ENABLE_DMEVENTS_POLL=0`: disable support for the device-mapper event
    polling API. For use with pre-5.0 kernels that don't support dmevent polling
@@ -153,6 +150,39 @@ sufficient control. See `Makefile.inc` for even more fine-grained control.
 	multipath-tools' `systemd_prefix` corresponds to systemd's `prefixdir`.
 	On such distributions, override `unitdir` and `libudevdir` to use systemd's
    `rootprefix`: `make libudevdir=/lib/udev unitdir=/lib/systemd/system`
+
+### prefix, DESTDIR and TGTDIR
+
+`prefix` and related variables are included in compiled-in paths like
+`plugindir` and are used by `make install`. Using `prefix` is useful if
+multipath-tools is built locally on the same host where it's supposed to be
+installed.
+
+By convention, the `DESTDIR` variable is prepended to all paths by `make
+install`, but not to any compiled-in paths.
+It is useful if the software is built on one system (build host) but intended
+to be run on another system (installation host). This is typically used in build
+systems like *rpmbuild* to set a root directory for all the installed
+files.
+
+On the contrary, the `TGTDIR` variable is used for compiled-in paths only, and
+ignored by `make install`. It is useful for running multipath-tools in a separate
+subdirectory in the installation host, mostly for testing / development
+purposes.
+
+For example,
+
+    make prefix=/opt DESTDIR=/build TGTDIR=/test install
+
+will install plugins into `/build/opt/lib64/multipath` on the build
+host. On the installation host, the plugins will be expected to be found under
+`/test/opt/lib64/multipath`. If the developer runs
+
+    rsync -a $BUILD_HOST:$DESTDIR/ $INSTALL_HOST:$TGTDIR/
+	
+and adds `$TGTDIR/lib64` to `LD_LIBRARY_PATH` on the installation host, the
+multipath binaries installed under `$TGTDIR` will find their plugins and
+configuration files in the expected compiled-in paths.
 
 ### Compiler Options
 

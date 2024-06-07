@@ -9,6 +9,7 @@ on:
       - factory
       - sles*
     paths:
+      - '.github/workflows/native.yaml'
       - '**.h'
       - '**.c'
       - '**Makefile*'
@@ -18,6 +19,7 @@ on:
       - master
       - queue
     paths:
+      - '.github/workflows/native.yaml'
       - '**.h'
       - '**.c'
       - '**Makefile*'
@@ -34,7 +36,7 @@ jobs:
           - debian-buster
           - debian-bullseye
           - debian-bookworm
-          - fedora-39
+          - fedora-40
           - opensuse-leap
     container: ghcr.io/mwilck/multipath-build-${{ matrix.os }}
     steps:
