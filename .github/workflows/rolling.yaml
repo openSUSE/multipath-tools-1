@@ -5,6 +5,7 @@ on:
       - master
       - queue
       - tip
+      - test
     paths:
       - '.github/workflows/rolling.yaml'
       - '**.h'
