@@ -24,6 +24,7 @@
 #include <setjmp.h>
 #include <stdlib.h>
 #include <cmocka.h>
+#include <libaio.h>
 #include "wrap64.h"
 #include "globals.c"
 #include "../libmultipath/checkers/directio.c"
