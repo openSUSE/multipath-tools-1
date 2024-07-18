@@ -58,6 +58,7 @@ jobs:
         # See https://github.community/t/expressions-in-docker-uri/16271
         uses: mosteo-actions/docker-run@v1
         with:
-          params: --platform ${{ matrix.arch }}
           image: registry.opensuse.org/home/mwilck/containers/${{ env.REPO_NAME }}/${{ env.CONT_NAME }}
+          params: --platform ${{ matrix.arch }}
+          pull-params: "--platform ${{ matrix.arch }}"
           command: test
