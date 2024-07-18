@@ -62,3 +62,25 @@ jobs:
           params: --platform ${{ matrix.arch }}
           pull-params: "--platform ${{ matrix.arch }}"
           command: test
+
+      - name: remove output files
+        run: rm -f tests/directio.out tests/dmevents.out
+      - name: mpath
+        run: sudo modprobe dm_multipath
+      - name: brd
+        run: sudo modprobe brd rd_nr=1 rd_size=65536
+      - name: choose root tests (x86_64)
+        run: echo "ROOT_TESTS=directio.out dmevents.out" >> $GITHUB_ENV
+        if: ${{ matrix.arch == 'x86_64' }}
+      - name: choose root tests (other)
+        run: echo "ROOT_TESTS=dmevents.out" >> $GITHUB_ENV
+        if: ${{ matrix.arch != 'x86_64' }}
+      - name: run root tests
+        uses: mosteo-actions/docker-run@v1
+        with:
+          image: registry.opensuse.org/home/mwilck/containers/${{ env.REPO_NAME }}/${{ env.CONT_NAME }}
+          params: >
+            --platform ${{ matrix.arch }} --privileged
+            -v /dev/ram0:/dev/ram0 -e DIO_TEST_DEV=/dev/ram0
+          pull-params: "--platform ${{ matrix.arch }}"
+          command: -C tests ${{ env.ROOT_TESTS }}
