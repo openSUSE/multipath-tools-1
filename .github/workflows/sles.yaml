@@ -7,6 +7,7 @@ on:
       - next
       - edge
     paths:
+      - '.github/workflows/sles.yaml'
       - '**.h'
       - '**.c'
       - '**Makefile*'
