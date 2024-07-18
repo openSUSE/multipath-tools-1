@@ -2,6 +2,8 @@
 #define _WRAP64_H 1
 #include <syscall.h>
 #include <linux/types.h>
+/* The following include is required for LIBAIO_REDIRECT */
+#include <libaio.h>
 #include "util.h"
 
 /*
