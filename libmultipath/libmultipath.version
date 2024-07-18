@@ -43,7 +43,7 @@ LIBMPATHCOMMON_1.0.0 {
 	put_multipath_config;
 };
 
-LIBMULTIPATH_24.0.0 {
+LIBMULTIPATH_25.0.0 {
 global:
 	/* symbols referenced by multipath and multipathd */
 	add_foreign;
@@ -66,6 +66,7 @@ global:
 	check_foreign;
 	cleanup_bindings;
 	cleanup_lock;
+	cleanup_multipath_and_paths;
 	coalesce_paths;
 	count_active_paths;
 	delete_all_foreign;
@@ -77,14 +78,11 @@ global:
 	dm_flush_map_nopaths;
 	dm_flush_maps;
 	dm_geteventnr;
-	dm_get_info;
 	dm_get_major_minor;
 	dm_get_maps;
 	dm_get_multipath;
-	dm_get_uuid;
 	dm_is_mpath;
 	dm_mapname;
-	dm_map_present;
 	dm_prereq;
 	dm_queue_if_no_path;
 	dm_reassign;
@@ -133,15 +131,16 @@ global:
 	libmp_get_version;
 	libmp_get_multipath_config;
 	libmp_dm_task_run;
+	libmp_mapinfo;
 	libmp_put_multipath_config;
 	libmp_udev_set_sync_support;
 	libmultipath_exit;
 	libmultipath_init;
 	load_config;
+	mpath_in_use;
 	need_io_err_check;
 	orphan_path;
 	parse_prkey_flags;
-	partmap_in_use;
 	pathcount;
 	path_discovery;
 	path_get_tpgs;
@@ -205,6 +204,7 @@ global:
 	uninit_config;
 	update_mpp_paths;
 	update_multipath_strings;
+	update_multipath_table__;
 	update_multipath_table;
 	update_queue_mode_add_path;
 	update_queue_mode_del_path;

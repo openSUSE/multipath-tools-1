@@ -31,7 +31,6 @@
 #include "foreign.h"
 #include "strbuf.h"
 #include "cli_handlers.h"
-#include "devmapper.h"
 
 static struct path *
 find_path_by_str(const struct _vector *pathvec, const char *str,
@@ -699,7 +698,8 @@ cli_add_map (void * v, struct strbuf *reply, void * data)
 	char * param = get_keyparam(v, KEY_MAP);
 	int major = -1, minor = -1;
 	char dev_path[FILE_NAME_SIZE];
-	char *refwwid, *alias = NULL;
+	char *refwwid;
+	char *alias __attribute__((cleanup(cleanup_charp))) = NULL;
 	int rc, count = 0;
 	struct config *conf;
 	int invalid = 0;
@@ -748,7 +748,6 @@ cli_add_map (void * v, struct strbuf *reply, void * data)
 		return 1;
 	}
 	rc = ev_add_map(dev_path, alias, vecs);
-	free(alias);
 	return rc;
 }
 

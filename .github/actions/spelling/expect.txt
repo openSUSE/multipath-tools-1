@@ -59,6 +59,7 @@ EVPD
 failback
 failover
 fds
+fexceptions
 FFFFFFFF
 fge
 followover
@@ -90,6 +91,7 @@ igroup
 img
 inotify
 inttypes
+ioctls
 iscsi
 isw
 kpartx
@@ -102,6 +104,7 @@ libdevmapper
 libdmmp
 libedit
 libjson
+libmpathcmd
 libmpathpersist
 libmpathutil
 libmpathvalid
@@ -205,6 +208,7 @@ sysfs
 sysinit
 tcp
 terabytes
+SYSDIR
 TESTDEPS
 testname
 tgill
