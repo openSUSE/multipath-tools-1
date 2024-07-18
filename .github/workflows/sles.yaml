@@ -1,4 +1,4 @@
-name: compile and unit test on Leap
+name: compile and unit test on SUSE distros
 on:
   push:
     branches:
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['tumbleweed', '15.3', '15.4', '15.5', '15.6']
+        os: ['tumbleweed', '15.3', '15.4', '15.5', '15.6', '12']
         # We have -arm too (for armv7l)
         # But tests fail with qemu-user (readdir() returns -EOVERFLOW), see
         # https://gitlab.com/qemu-project/qemu/-/issues/263
@@ -28,13 +28,21 @@ jobs:
         # this means replacing cmocka wrappers like __wrap_lseek() with
         # __wrap_lseek64()
         arch: ['x86_64', 'ppc64le', 'aarch64', 's390x']
+        exclude:
+          - os: 12
+            arch: aarch64
     steps:
       - name: set repository and container name (TW)
         run: |
           echo "REPO_NAME=${{ matrix.os }}" >> $GITHUB_ENV
           echo "CONT_NAME=multipath-build-opensuse-tumbleweed-latest" >> $GITHUB_ENV
         if: ${{ matrix.os == 'tumbleweed' }}
-      - name: set repository and container name (SLE)
+      - name: set repository and container name (SLE12)
+        run: |
+          echo "REPO_NAME=sle_12_sp5" >> $GITHUB_ENV
+          echo "CONT_NAME=multipath-build-sles-12-latest" >> $GITHUB_ENV
+        if: ${{ matrix.os == '12' }}
+      - name: set repository and container name (SLE15)
         run: |
           echo "${{ matrix.os }}" | \
               sed -E 's/15.([0-9]*)/REPO_NAME=sle_15_sp\1/' >> $GITHUB_ENV
