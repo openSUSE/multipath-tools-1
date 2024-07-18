@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['tumbleweed', '15.3', '15.4', '15.5']
+        os: ['tumbleweed', '15.3', '15.4', '15.5', '15.6']
         # We have -arm too (for armv7l)
         # But tests fail with qemu-user (readdir() returns -EOVERFLOW), see
         # https://gitlab.com/qemu-project/qemu/-/issues/263
@@ -28,6 +28,17 @@ jobs:
         # __wrap_lseek64()
         arch: ['x86_64', 'ppc64le', 'aarch64', 's390x']
     steps:
+      - name: set repository and container name (TW)
+        run: |
+          echo "REPO_NAME=${{ matrix.os }}" >> $GITHUB_ENV
+          echo "CONT_NAME=multipath-build-opensuse-tumbleweed-latest" >> $GITHUB_ENV
+        if: ${{ matrix.os == 'tumbleweed' }}
+      - name: set repository and container name (SLE)
+        run: |
+          echo "${{ matrix.os }}" | \
+              sed -E 's/15.([0-9]*)/REPO_NAME=sle_15_sp\1/' >> $GITHUB_ENV
+          echo "CONT_NAME=multipath-build-sles-15-${{ matrix.os }}" >> $GITHUB_ENV
+        if: ${{ startswith( matrix.os, '15') }}
       - name: checkout
         uses: actions/checkout@v1
       - name: enable foreign arch
@@ -39,5 +50,5 @@ jobs:
         uses: mosteo-actions/docker-run@v1
         with:
           params: --platform ${{ matrix.arch }}
-          image: registry.opensuse.org/home/mwilck/containers/${{ matrix.os }}/containers/multipath-build
+          image: registry.opensuse.org/home/mwilck/containers/${{ env.REPO_NAME }}/${{ env.CONT_NAME }}
           command: test
