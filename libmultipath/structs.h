@@ -360,6 +360,7 @@ struct path {
 	unsigned long long size;
 	unsigned int checkint;
 	unsigned int tick;
+	unsigned int pending_ticks;
 	int bus;
 	int offline;
 	int state;
@@ -453,6 +454,8 @@ struct multipath {
 	int ghost_delay;
 	int ghost_delay_tick;
 	int queue_mode;
+	unsigned int sync_tick;
+	int synced_count;
 	uid_t uid;
 	gid_t gid;
 	mode_t mode;

@@ -504,10 +504,17 @@ update_multipath_table (struct multipath *mpp, vector pathvec, int flags)
 	int r = DMP_ERR;
 	char __attribute__((cleanup(cleanup_charp))) *params = NULL;
 	char __attribute__((cleanup(cleanup_charp))) *status = NULL;
-	unsigned long long size = mpp->size;
+	unsigned long long size;
+	struct config *conf;
 
 	if (!mpp)
 		return r;
+
+	size = mpp->size;
+	conf = get_multipath_config();
+	mpp->sync_tick = conf->max_checkint;
+	put_multipath_config(conf);
+	mpp->synced_count++;
 
 	r = libmp_mapinfo(DM_MAP_BY_NAME | MAPINFO_MPATH_ONLY,
 			  (mapid_t) { .str = mpp->alias },
@@ -718,7 +725,8 @@ sync_map_state(struct multipath *mpp)
 
 	vector_foreach_slot (mpp->pg, pgp, i){
 		vector_foreach_slot (pgp->paths, pp, j){
-			if (pp->state == PATH_UNCHECKED ||
+			if (pp->initialized == INIT_REMOVED ||
+			    pp->state == PATH_UNCHECKED ||
 			    pp->state == PATH_WILD ||
 			    pp->state == PATH_DELAYED)
 				continue;
