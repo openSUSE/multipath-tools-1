@@ -131,7 +131,9 @@ static int poll_dmevents = 1;
 /* Don't access this variable without holding config_lock */
 static enum daemon_status running_state = DAEMON_INIT;
 /* Don't access this variable without holding config_lock */
-static bool __delayed_reconfig;
+static bool delayed_reconfig;
+/* Don't access this variable without holding config_lock */
+static enum force_reload_types reconfigure_pending = FORCE_RELOAD_NONE;
 pid_t daemon_pid;
 static pthread_mutex_t config_lock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t config_cond;
@@ -142,19 +144,21 @@ static bool check_thr_started, uevent_thr_started, uxlsnr_thr_started,
 	fpin_consumer_thr_started;
 static int pid_fd = -1;
 
-static inline enum daemon_status get_running_state(void)
+static inline enum daemon_status get_running_state(bool *pending_reconfig)
 {
 	enum daemon_status st;
 
 	pthread_mutex_lock(&config_lock);
 	st = running_state;
+	if (pending_reconfig != NULL)
+		*pending_reconfig = (reconfigure_pending != FORCE_RELOAD_NONE);
 	pthread_mutex_unlock(&config_lock);
 	return st;
 }
 
 int should_exit(void)
 {
-	return get_running_state() == DAEMON_SHUTDOWN;
+	return get_running_state(NULL) == DAEMON_SHUTDOWN;
 }
 
 /*
@@ -179,9 +183,9 @@ static const char *daemon_status_msg[DAEMON_STATUS_SIZE] = {
 };
 
 const char *
-daemon_status(void)
+daemon_status(bool *pending_reconfig)
 {
-	int status = get_running_state();
+	int status = get_running_state(pending_reconfig);
 
 	if (status < DAEMON_INIT || status >= DAEMON_STATUS_SIZE)
 		return NULL;
@@ -239,7 +243,7 @@ static void config_cleanup(__attribute__((unused)) void *arg)
 	pthread_mutex_unlock(&config_lock);
 }
 
-#define __wait_for_state_change(condition, ms)				\
+#define wait_for_state_change__(condition, ms)				\
 	({								\
 		struct timespec tmo;					\
 		int rc = 0;						\
@@ -271,17 +275,14 @@ enum daemon_status wait_for_state_change_if(enum daemon_status oldstate,
 
 	pthread_mutex_lock(&config_lock);
 	pthread_cleanup_push(config_cleanup, NULL);
-	__wait_for_state_change(running_state == oldstate, ms);
+	wait_for_state_change__(running_state == oldstate, ms);
 	st = running_state;
 	pthread_cleanup_pop(1);
 	return st;
 }
 
-/* Don't access this variable without holding config_lock */
-static enum force_reload_types reconfigure_pending = FORCE_RELOAD_NONE;
-
 /* must be called with config_lock held */
-static void __post_config_state(enum daemon_status state)
+static void post_config_state__(enum daemon_status state)
 {
 	if (state != running_state && running_state != DAEMON_SHUTDOWN) {
 		enum daemon_status old_state = running_state;
@@ -298,7 +299,7 @@ void post_config_state(enum daemon_status state)
 {
 	pthread_mutex_lock(&config_lock);
 	pthread_cleanup_push(config_cleanup, NULL);
-	__post_config_state(state);
+	post_config_state__(state);
 	pthread_cleanup_pop(1);
 }
 
@@ -307,15 +308,15 @@ static bool unblock_reconfigure(void)
 	bool was_delayed;
 
 	pthread_mutex_lock(&config_lock);
-	was_delayed = __delayed_reconfig;
+	was_delayed = delayed_reconfig;
 	if (was_delayed) {
-		__delayed_reconfig = false;
+		delayed_reconfig = false;
 		/*
 		 * In IDLE state, make sure child() is woken up
 		 * Otherwise it will wake up when state switches to IDLE
 		 */
 		if (running_state == DAEMON_IDLE)
-			__post_config_state(DAEMON_CONFIGURE);
+			post_config_state__(DAEMON_CONFIGURE);
 	}
 	pthread_mutex_unlock(&config_lock);
 	if (was_delayed)
@@ -349,7 +350,7 @@ void schedule_reconfigure(enum force_reload_types requested_type)
 		break;
 	case DAEMON_IDLE:
 		reconfigure_pending = type;
-		__post_config_state(DAEMON_CONFIGURE);
+		post_config_state__(DAEMON_CONFIGURE);
 		break;
 	case DAEMON_CONFIGURE:
 	case DAEMON_RUNNING:
@@ -377,7 +378,7 @@ static enum daemon_status set_config_state(enum daemon_status state)
 	}
 
 	if (rc == 0 && running_state == DAEMON_IDLE && state != DAEMON_IDLE)
-		__post_config_state(state);
+		post_config_state__(state);
 	st = running_state;
 
 	pthread_cleanup_pop(1);
@@ -1219,7 +1220,7 @@ int
 ev_add_path (struct path * pp, struct vectors * vecs, int need_do_map)
 {
 	struct multipath * mpp;
-	char *params __attribute((cleanup(cleanup_charp))) = NULL;
+	char *params __attribute__((cleanup(cleanup_charp))) = NULL;
 	int retries = 3;
 	int start_waiter = 0;
 	int ret;
@@ -3139,8 +3140,8 @@ void rcu_free_config(struct rcu_head *head)
 	free_config(conf);
 }
 
-static bool reconfigure_check_uid_attrs(const struct _vector *old_attrs,
-					const struct _vector *new_attrs)
+static bool reconfigure_check_uid_attrs(const struct vector_s *old_attrs,
+					const struct vector_s *new_attrs)
 {
 	int i;
 	char *old;
@@ -3748,17 +3749,17 @@ child (__attribute__((unused)) void *param)
 		       /*
 			* Check if another reconfigure request was scheduled
 			* while we last ran reconfigure().
-			* We have to test __delayed_reconfig here
+			* We have to test delayed_reconfig here
 			* to avoid a busy loop
 			*/
 		       (reconfigure_pending == FORCE_RELOAD_NONE
-			 || __delayed_reconfig))
+			 || delayed_reconfig))
 			pthread_cond_wait(&config_cond, &config_lock);
 
 		if (running_state != DAEMON_CONFIGURE &&
 		    running_state != DAEMON_SHUTDOWN)
 			/* This sets running_state to DAEMON_CONFIGURE */
-			__post_config_state(DAEMON_CONFIGURE);
+			post_config_state__(DAEMON_CONFIGURE);
 		state = running_state;
 		pthread_cleanup_pop(1);
 		if (state == DAEMON_SHUTDOWN)
@@ -3775,13 +3776,13 @@ child (__attribute__((unused)) void *param)
 			reload_type = reconfigure_pending == FORCE_RELOAD_YES ?
 				FORCE_RELOAD_YES : FORCE_RELOAD_WEAK;
 			reconfigure_pending = FORCE_RELOAD_NONE;
-			__delayed_reconfig = false;
+			delayed_reconfig = false;
 			pthread_mutex_unlock(&config_lock);
 
 			rc = reconfigure(vecs, reload_type);
 		} else {
 			pthread_mutex_lock(&config_lock);
-			__delayed_reconfig = true;
+			delayed_reconfig = true;
 			pthread_mutex_unlock(&config_lock);
 			condlog(3, "delaying reconfigure()");
 		}

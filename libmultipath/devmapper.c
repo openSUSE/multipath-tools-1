@@ -45,9 +45,9 @@ static int dm_conf_verbosity;
 
 #ifdef LIBDM_API_DEFERRED
 static int dm_cancel_remove_partmaps(const char * mapname);
-#define __DR_UNUSED__ /* empty */
+#define DR_UNUSED__ /* empty */
 #else
-#define __DR_UNUSED__ __attribute__((unused))
+#define DR_UNUSED__ __attribute__((unused))
 #endif
 
 static int dm_remove_partmaps (const char *mapname, int flags);
@@ -86,10 +86,10 @@ const char *dmp_errstr(int rc)
 		[DMP_OK] = "success",
 		[DMP_NOT_FOUND] = "not found",
 		[DMP_NO_MATCH] = "target type mismatch",
-		[__DMP_LAST__] = "**invalid**",
+		[DMP_LAST__] = "**invalid**",
 	};
-	if (rc < 0 || rc > __DMP_LAST__)
-		rc = __DMP_LAST__;
+	if (rc < 0 || rc > DMP_LAST__)
+		rc = DMP_LAST__;
 	return str[rc];
 }
 
@@ -624,7 +624,7 @@ has_dm_info(const struct multipath *mpp)
 
 static int libmp_set_map_identifier(int flags, mapid_t id, struct dm_task *dmt)
 {
-	switch (flags & __DM_MAP_BY_MASK) {
+	switch (flags & DM_MAP_BY_MASK__) {
 	case DM_MAP_BY_UUID:
 		if (!id.str || !(*id.str))
 			return 0;
@@ -682,7 +682,7 @@ static int libmp_mapinfo__(int flags, mapid_t id, mapinfo_t info, const char *ma
 	 */
 	if (info.target && !info.status)
 		ioctl_nr = DM_DEVICE_TABLE;
-	else if (info.status || info.size || flags & __MAPINFO_TGT_TYPE)
+	else if (info.status || info.size || flags & MAPINFO_TGT_TYPE__)
 		ioctl_nr = DM_DEVICE_STATUS;
 	else
 		ioctl_nr = DM_DEVICE_INFO;
@@ -715,7 +715,7 @@ static int libmp_mapinfo__(int flags, mapid_t id, mapinfo_t info, const char *ma
 		return DMP_NOT_FOUND;
 	}
 
-	if (info.target || info.status || info.size || flags & __MAPINFO_TGT_TYPE) {
+	if (info.target || info.status || info.size || flags & MAPINFO_TGT_TYPE__) {
 		if (dm_get_next_target(dmt, NULL, &start, &length,
 				       &target_type, &params) != NULL) {
 			condlog(2, "%s: map %s has multiple targets", fname__, map_id);
@@ -725,7 +725,7 @@ static int libmp_mapinfo__(int flags, mapid_t id, mapinfo_t info, const char *ma
 			condlog(2, "%s: map %s has no targets", fname__, map_id);
 			return DMP_NOT_FOUND;
 		}
-		if (flags & __MAPINFO_TGT_TYPE) {
+		if (flags & MAPINFO_TGT_TYPE__) {
 			const char *tgt_type = flags & MAPINFO_MPATH_ONLY ? TGT_MPATH : TGT_PART;
 
 			if (strcmp(target_type, tgt_type)) {
@@ -797,7 +797,7 @@ static int libmp_mapinfo__(int flags, mapid_t id, mapinfo_t info, const char *ma
 /* Helper: format a string describing the map for log messages */
 static const char* libmp_map_identifier(int flags, mapid_t id, char buf[BLK_DEV_SIZE])
 {
-	switch (flags & __DM_MAP_BY_MASK) {
+	switch (flags & DM_MAP_BY_MASK__) {
 	case DM_MAP_BY_NAME:
 	case DM_MAP_BY_UUID:
 		return id.str;
@@ -965,7 +965,7 @@ int mpath_in_use(const char *name)
 	return 0;
 }
 
-int _dm_flush_map (const char *mapname, int flags, int retries)
+int dm_flush_map__ (const char *mapname, int flags, int retries)
 {
 	int r;
 	int queue_if_no_path = 0;
@@ -1041,7 +1041,7 @@ int _dm_flush_map (const char *mapname, int flags, int retries)
 }
 
 int
-dm_flush_map_nopaths(const char *mapname, int deferred_remove __DR_UNUSED__)
+dm_flush_map_nopaths(const char *mapname, int deferred_remove DR_UNUSED__)
 {
 	int flags = DMFL_NEED_SYNC;
 
@@ -1050,7 +1050,7 @@ dm_flush_map_nopaths(const char *mapname, int deferred_remove __DR_UNUSED__)
 		   deferred_remove == DEFERRED_REMOVE_IN_PROGRESS) ?
 		  DMFL_DEFERRED : 0);
 #endif
-	return _dm_flush_map(mapname, flags, 0);
+	return dm_flush_map__(mapname, flags, 0);
 }
 
 int dm_flush_maps(int retries)
@@ -1196,7 +1196,7 @@ dm_disablegroup(const char * mapname, int index)
 
 static int dm_get_multipath(const char *name, struct multipath **pmpp)
 {
-	struct multipath __attribute((cleanup(cleanup_multipath))) *mpp = NULL;
+	struct multipath __attribute__((cleanup(cleanup_multipath))) *mpp = NULL;
 	char uuid[DM_UUID_LEN];
 	int rc;
 

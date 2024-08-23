@@ -6,7 +6,7 @@
 .\" Update the date below if you make any significant change.
 .\" ----------------------------------------------------------------------------
 .
-.TH MULTIPATH.CONF 5 2024-04-25 Linux
+.TH MULTIPATH.CONF 5 2024-08-15 Linux
 .
 .
 .\" ----------------------------------------------------------------------------
@@ -220,7 +220,7 @@ The default is: \fBservice-time 0\fR
 .
 .TP
 .B path_grouping_policy
-The default path grouping policy to apply to unspecified
+(Hardware-dependent) The default path grouping policy to apply to unspecified
 multipaths. Possible values are:
 .RS
 .TP 12
@@ -533,7 +533,8 @@ second, until \fIchecker_timeout\fR seconds have elapsed. Possible values are:
 deprecated, please use \fItur\fR or \fIdirectio\fR instead.
 .TP
 .I tur
-Issue a \fITEST UNIT READY\fR command to the device.
+(Hardware-dependent)
+Issue a \fITEST UNIT READY\fR command to a SCSI device.
 .TP
 .I emc_clariion
 (Hardware-dependent)

@@ -33,7 +33,7 @@
 #include "cli_handlers.h"
 
 static struct path *
-find_path_by_str(const struct _vector *pathvec, const char *str,
+find_path_by_str(const struct vector_s *pathvec, const char *str,
 		  const char *action_str)
 {
 	struct path *pp;
@@ -157,15 +157,15 @@ show_map_json (struct strbuf *reply, struct multipath * mpp,
 }
 
 static int
-show_config (struct strbuf *reply, const struct _vector *hwtable,
-	     const struct _vector *mpvec)
+show_config (struct strbuf *reply, const struct vector_s *hwtable,
+	     const struct vector_s *mpvec)
 {
 	struct config *conf;
 	int rc;
 
 	conf = get_multipath_config();
 	pthread_cleanup_push(put_multipath_config, conf);
-	rc = __snprint_config(conf, reply, hwtable, mpvec);
+	rc = snprint_config__(conf, reply, hwtable, mpvec);
 	pthread_cleanup_pop(1);
 	if (rc < 0)
 		return 1;
@@ -342,8 +342,15 @@ show_status (struct strbuf *reply, struct vectors *vecs)
 static int
 show_daemon (struct strbuf *reply)
 {
-	if (print_strbuf(reply, "pid %d %s\n",
-			 daemon_pid, daemon_status()) < 0)
+	const char *status;
+	bool pending_reconfig;
+
+	status = daemon_status(&pending_reconfig);
+	if (status == NULL)
+		return 1;
+	if (print_strbuf(reply, "pid %d %s%s\n",
+			 daemon_pid, status,
+			 pending_reconfig ? " (pending reconfigure)" : "") < 0)
 		return 1;
 
 	return 0;

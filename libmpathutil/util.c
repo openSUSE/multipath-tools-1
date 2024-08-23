@@ -121,7 +121,7 @@ get_word (const char *sentence, char **word)
 	return skip + len;
 }
 
-size_t strlcpy(char * restrict dst, const char * restrict src, size_t size)
+size_t libmp_strlcpy(char * restrict dst, const char * restrict src, size_t size)
 {
 	size_t bytes = 0;
 	char ch;
@@ -138,7 +138,7 @@ size_t strlcpy(char * restrict dst, const char * restrict src, size_t size)
 	return bytes;
 }
 
-size_t strlcat(char * restrict dst, const char * restrict src, size_t size)
+size_t libmp_strlcat(char * restrict dst, const char * restrict src, size_t size)
 {
 	size_t bytes = 0;
 	char ch;
@@ -354,7 +354,7 @@ struct bitfield *alloc_bitfield(unsigned int maxbit)
 	return bf;
 }
 
-void _log_bitfield_overflow(const char *f, unsigned int bit, unsigned int len)
+void log_bitfield_overflow__(const char *f, unsigned int bit, unsigned int len)
 {
 	condlog(0, "%s: bitfield overflow: %u >= %u", f, bit, len);
 }
