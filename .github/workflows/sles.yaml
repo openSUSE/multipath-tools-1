@@ -6,6 +6,7 @@ on:
       - factory
       - next
       - edge
+      - 'stable-*'
     paths:
       - '.github/workflows/sles.yaml'
       - '**.h'
