@@ -49,6 +49,7 @@ DIO
 directio
 disablequeueing
 dmevent
+dmi
 dmmp
 dmraid
 dmsetup
@@ -183,6 +184,7 @@ rtprio
 sas
 sbp
 scsi
+SCST
 sda
 sdc
 setmarginal
@@ -245,6 +247,7 @@ VNX
 vpd
 VSN
 wakka
+watchdogsec
 weightedpath
 wholedisk
 Wilck

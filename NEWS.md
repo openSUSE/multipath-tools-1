@@ -65,6 +65,22 @@ handled).
 * Fixed the problem that, if there were multiple maps with deferred failback
   (`failback` value > 0 in `multipath.conf`), some maps might fail back later
   than configured. The problem existed since 0.9.6.
+* Fixed handling of empty maps, i.e. multipath maps that have a multipath UUID
+  but don't contain a device-mapper table. Such maps can occur in very rare
+  cases if some device-mapper operation has failed, or if a tool has been
+  killed in the process of map creation. multipathd will now detect such
+  cases, and either remove these maps or reload them as appropriate.
+* During map creation, fixed the case where a map with different name, but
+  matching UUID and matching type was already present. multipathd
+  previously failed to set up such maps. Now it will reload them with the
+  correct content.
+* Fixed the logic for enabling the systemd watchdog (`WatchdogSec=` in the
+  systemd unit file for multipathd).
+* Fixed a memory leak in the nvme foreign library. The bug existed since
+  0.7.8.
+* Fixed a problem in the marginal path detection algorithm that could cause
+  the io error check for a recently failed path to be delayed. This bug
+  existed since 0.7.4.
 
 ### Other
 
@@ -73,8 +89,14 @@ handled).
   kernel 4.3 and later, which automatically selects hardware handlers when
   SCSI devices are added. See the notes about `SCSI_DH_MODULES_PRELOAD` in
   [README.md](README.md).
+* Added a hardware table entry for the SCSI Target Subsystem for Linux (SCST).
 * The text of the licenses has been updated to the latest versions from the
   Free Software Foundation.
+
+### Internal
+
+* `libmp_mapinfo()` now fills in the `name`, `uuid`, and `dmi` fields
+  if requested by the caller, even if it encounters an error or an empty map.
 
 ## multipath-tools 0.10.0, 2024/08
 

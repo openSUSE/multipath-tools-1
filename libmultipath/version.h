@@ -22,7 +22,7 @@
 
 #define VERSION_CODE 0x000B00
 /* MMDDYY, in hex */
-#define DATE_CODE    0x0B0D18
+#define DATE_CODE    0x110119
 
 #define PROG    "multipath-tools"
 
