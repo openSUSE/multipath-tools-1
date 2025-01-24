@@ -1,6 +1,27 @@
 # multipath-tools Release Notes
 
-## multipath-tools 0.10.1, 2024/11
+## multipath-tools 0.10.2, 2025/02
+
+This release contains backported bug fixes from the stable-0.11.y branch.
+
+### Bug fixes
+
+* Fix multipathd crash because of invalid path group index value, for example
+  if an invalid path device was removed from a map.
+  Fixes [#105](https://github.com/opensvc/multipath-tools/issues/105).
+* Make sure maps are reloaded in the path checker loop after detecting an
+  inconsistent or wrong kernel state (e.g. missing or falsely mapped path
+  device). Wrongly mapped paths will be unmapped and released to the system.
+  Fixes another issue reported in
+  [#105](https://github.com/opensvc/multipath-tools/issues/105).
+* Fix the problem that `group_by_tpg` might be disabled if one or more
+  paths were offline during initial configuration.
+* Fix possible misdetection of changed pathgroups in a map.
+* Fix the problem that if a map was scheduled to be reloaded already,
+  `max_sectors_kb` might not be set on a path device that
+  was being added to a multipath map. This problem was introduced in 0.9.9.
+
+## multipath-tools 0.10.1, 2025/01
 
 This is the first bug fix release on the `stable-0.10.y` branch. It contains
 bug fixes from 0.11.0, and some CI-related fixes.
@@ -22,6 +43,14 @@ bug fixes from 0.11.0, and some CI-related fixes.
 * Fixed the problem that, if there were multiple maps with deferred failback
   (`failback` value > 0 in `multipath.conf`), some maps might fail back later
   than configured. The problem existed since 0.9.6.
+* Removed a warning message that multipathd would print if systemd's
+  `WATCHDOG_USEC` environment variable had the value "0", which means that the
+  watchdog is simply disabled. This (minor) problem existed since 0.4.9.
+* Fixed a memory leak in the nvme foreign library. The bug existed since
+  0.7.8.
+* Fixed a problem in the marginal path detection algorithm that could cause
+  the io error check for a recently failed path to be delayed. This bug
+  existed since 0.7.4.
 
 ## multipath-tools 0.10.0, 2024/08
 
